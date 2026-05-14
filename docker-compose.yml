@@ -11,7 +11,8 @@ services:
 
   frontend:
     build:
-      context: frontend/docker/development/nginx
+      context: frontend/docker
+      dockerfile: development/nginx/Dockerfile
     volumes:
       - ./frontend:/app
 
@@ -26,6 +27,7 @@ services:
 
   api-php-fpm:
     build:
-      context: api/docker/development/php-fpm
+      context: api/docker
+      dockerfile: development/php-fpm/Dockerfile
     volumes:
       - ./api:/app
