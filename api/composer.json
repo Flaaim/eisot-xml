@@ -20,7 +20,9 @@
         "allow-plugins": {
             "php-http/discovery": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "process-timeout": false,
+            "sort-packages": true
         },
         "bump-after-update": true,
         "sort-packages": true
