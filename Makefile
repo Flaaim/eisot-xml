@@ -12,12 +12,16 @@ docker-down:
 docker-down-clear:
 	docker-compose down -v --remove-orphans
 
-
 docker-pull:
 	docker-compose pull
 
 docker-build:
 	docker-compose build
+
+api-init: api-composer-install
+
+api-composer-install:
+	docker compose run --rm api-php-cli composer install
 
 build: build-gateway build-frontend build-api
 
