@@ -65,7 +65,8 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "lint": "phplint"
     },
     "conflict": {
         "symfony/symfony": "*"
