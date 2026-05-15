@@ -18,7 +18,8 @@
     },
     "require-dev": {
         "overtrue/phplint": "^9.7",
-        "roave/security-advisories": "dev-latest"
+        "roave/security-advisories": "dev-latest",
+        "vimeo/psalm": "^6.16"
     },
     "config": {
         "allow-plugins": {
