@@ -135,6 +135,9 @@
       <path value="$PROJECT_DIR$/api/vendor/symfony/css-selector" />
       <path value="$PROJECT_DIR$/api/vendor/symfony/browser-kit" />
       <path value="$PROJECT_DIR$/api/vendor/symfony/dom-crawler" />
+      <path value="$PROJECT_DIR$/api/vendor/brick/math" />
+      <path value="$PROJECT_DIR$/api/vendor/ramsey/collection" />
+      <path value="$PROJECT_DIR$/api/vendor/ramsey/uuid" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

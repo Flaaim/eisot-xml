@@ -7,11 +7,11 @@
         "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "nyholm/psr7": "^1.8",
-        "ramsey/uuid": "^4.9",
+        "nyholm/psr7": "^1.8.2",
+        "ramsey/uuid": "^4.9.2",
         "symfony/console": "8.0.*",
         "symfony/dotenv": "8.0.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.10",
         "symfony/framework-bundle": "8.0.*",
         "symfony/psr-http-message-bridge": "8.0.*",
         "symfony/runtime": "8.0.*",
@@ -20,15 +20,15 @@
     },
     "require-dev": {
         "dg/bypass-finals": "^1.9",
-        "friendsofphp/php-cs-fixer": "^3.95",
+        "friendsofphp/php-cs-fixer": "^3.95.2",
         "lctrs/psalm-psr-container-plugin": "^1.11",
-        "overtrue/phplint": "^9.7",
-        "phpunit/phpunit": "^13",
+        "overtrue/phplint": "^9.7.1",
+        "phpunit/phpunit": "^13.1.10",
         "psalm/plugin-phpunit": "^0.19.7",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "8.0.*",
         "symfony/css-selector": "8.0.*",
-        "vimeo/psalm": "^6.16",
+        "vimeo/psalm": "^6.16.1",
         "weirdan/doctrine-psalm-plugin": "^2.10"
     },
     "config": {
@@ -51,7 +51,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Tests\\": "tests/"
         }
     },
     "replace": {
