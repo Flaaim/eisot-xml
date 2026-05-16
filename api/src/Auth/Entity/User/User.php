@@ -9,6 +9,7 @@ use DateTimeImmutable;
 final class User
 {
     private ?Token $joinConfirmToken;
+    private Status $status;
 
     public function __construct(
         private Id $id,
@@ -18,6 +19,7 @@ final class User
         Token $token
     ) {
         $this->joinConfirmToken = $token;
+        $this->status = Status::wait();
     }
 
     public function getId(): Id
@@ -43,5 +45,15 @@ final class User
     public function getJoinConfirmToken(): ?Token
     {
         return $this->joinConfirmToken;
+    }
+
+    public function isWait(): bool
+    {
+        return $this->status->isWait();
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status->isActive();
     }
 }
