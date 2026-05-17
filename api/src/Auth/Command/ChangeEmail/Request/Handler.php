@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Auth\Command\ChangeEmail\Request;
 
-
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\UserRepository;
@@ -17,10 +16,10 @@ use Infrastructure\Doctrine\Flusher;
 final class Handler
 {
     public function __construct(
-        private readonly UserRepository             $users,
-        private readonly Tokenizer                  $tokenizer,
+        private readonly UserRepository $users,
+        private readonly Tokenizer $tokenizer,
         private readonly NewEmailConfirmTokenSender $sender,
-        private readonly Flusher                    $flusher
+        private readonly Flusher $flusher
     ) {}
 
     public function handle(Command $command): void

@@ -16,6 +16,8 @@ interface UserRepository
 
     public function hasByNetwork(NetworkIdentity $identity): bool;
 
+    public function findByNewEmailToken(string $token): ?User;
+
     /**
      * @throws DomainException
      */
