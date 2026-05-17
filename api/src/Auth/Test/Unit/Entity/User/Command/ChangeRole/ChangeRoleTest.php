@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Test\Unit\Command\ChangeRole;
+namespace App\Auth\Test\Unit\Entity\User\Command\ChangeRole;
 
 use App\Auth\Entity\User\Role;
 use App\Auth\Test\Builder\UserBuilder;

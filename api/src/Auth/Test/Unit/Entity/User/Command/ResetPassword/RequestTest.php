@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Test\Unit\Command\ResetPassword;
+namespace App\Auth\Test\Unit\Entity\User\Command\ResetPassword;
 
 use App\Auth\Entity\User\Token;
 use App\Auth\Event\PasswordResetRequested;
@@ -63,10 +63,10 @@ final class RequestTest extends TestCase
         $user->requestPasswordReset($newToken, $newDate);
 
         self::assertEquals($newToken, $user->getPasswordResetToken());
-        
+
         self::assertNotEmpty($events = $user->releaseEvents());
         $event = end($events);
-        
+
         self::assertInstanceOf(PasswordResetRequested::class, $event);
         self::assertEquals($user->getEmail()->getValue(), $event->email);
         self::assertEquals($user->getPasswordResetToken()->getValue(), $event->token);

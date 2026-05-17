@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Test\Unit\Command\JoinByEmail;
+namespace App\Auth\Test\Unit\Entity\User\Command\JoinByEmail;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;

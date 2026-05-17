@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Test\Unit\Command\ChangeEmail;
+namespace App\Auth\Test\Unit\Entity\User\Command\ChangeEmail;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Token;

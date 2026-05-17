@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Test\Unit\Command\ChangePassword;
+namespace App\Auth\Test\Unit\Entity\User\Command\ChangePassword;
 
 use App\Auth\Service\PasswordHasher;
 use App\Auth\Test\Builder\UserBuilder;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\Test\Unit\Command\Remove;
+namespace App\Auth\Test\Unit\Entity\User\Command\Remove;
 
 use App\Auth\Event\UserRemoved;
 use App\Auth\Test\Builder\UserBuilder;
