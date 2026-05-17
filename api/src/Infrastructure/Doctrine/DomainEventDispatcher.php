@@ -2,15 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Doctrine;
+namespace Infrastructure\Doctrine;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
-
-interface DomainEventDispatcher
+final class DomainEventDispatcher
 {
-    public function onFlush(): void;
+    public function onFlush(): void {}
 
-    public function postFlush(): void;
+    public function postFlush(): void {}
 }
-
-

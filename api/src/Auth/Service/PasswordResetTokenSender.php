@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Auth\Service;
 
 use App\Auth\Entity\User\Email;
-use App\Auth\Entity\User\Token;
 
-interface PasswordResetTokenSender
+final class PasswordResetTokenSender
 {
-    public function send(Email $email, Token $token): void;
+    public function send(Email $email, string $token): void {}
 }

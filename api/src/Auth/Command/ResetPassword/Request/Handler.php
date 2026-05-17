@@ -6,7 +6,6 @@ namespace App\Auth\Command\ResetPassword\Request;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\UserRepository;
-use App\Auth\Service\PasswordResetTokenSender;
 use App\Auth\Service\Tokenizer;
 use DateTimeImmutable;
 use Infrastructure\Doctrine\Flusher;
@@ -16,7 +15,6 @@ final class Handler
     public function __construct(
         private readonly UserRepository $users,
         private readonly Tokenizer $tokenizer,
-        private readonly PasswordResetTokenSender $sender,
         private readonly Flusher $flusher
     ) {}
 
@@ -29,12 +27,10 @@ final class Handler
         $date = new DateTimeImmutable();
 
         $user->requestPasswordReset(
-            $token = $this->tokenizer->generate($date),
+            $this->tokenizer->generate($date),
             $date
         );
 
         $this->flusher->flush();
-
-        $this->sender->send($email, $token);
     }
 }

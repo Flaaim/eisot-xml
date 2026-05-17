@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Test\Unit\Command\ResetPassword;
 
 use App\Auth\Entity\User\Token;
+use App\Auth\Event\PasswordResetRequested;
 use App\Auth\Test\Builder\UserBuilder;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -27,11 +28,18 @@ final class RequestTest extends TestCase
 
         self::assertNotNull($user->getPasswordResetToken());
         self::assertEquals($token, $user->getPasswordResetToken());
+
+        self::assertNotEmpty($events = $user->releaseEvents());
+        $event = end($events);
+        self::assertInstanceOf(PasswordResetRequested::class, $event);
+
+        self::assertEquals($user->getEmail()->getValue(), $event->email);
+        self::assertEquals($user->getPasswordResetToken()->getValue(), $event->token);
     }
 
     public function testAlready(): void
     {
-        $user = (new UserBuilder())->active()->build();
+        $user = new UserBuilder()->active()->build();
 
         $now = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));
@@ -55,11 +63,18 @@ final class RequestTest extends TestCase
         $user->requestPasswordReset($newToken, $newDate);
 
         self::assertEquals($newToken, $user->getPasswordResetToken());
+        
+        self::assertNotEmpty($events = $user->releaseEvents());
+        $event = end($events);
+        
+        self::assertInstanceOf(PasswordResetRequested::class, $event);
+        self::assertEquals($user->getEmail()->getValue(), $event->email);
+        self::assertEquals($user->getPasswordResetToken()->getValue(), $event->token);
     }
 
     public function testNotActive(): void
     {
-        $user = (new UserBuilder())->build();
+        $user = new UserBuilder()->build();
 
         $now = new DateTimeImmutable();
         $token = $this->createToken($now->modify('+1 hour'));

@@ -23,7 +23,7 @@ final class RemoveTest extends TestCase
             ->build();
         $user->remove();
 
-        $this->assertNotEmpty($events = $user->releaseEvents());
+        self::assertNotEmpty($events = $user->releaseEvents());
         $event = end($events);
 
         self::assertInstanceOf(UserRemoved::class, $event);

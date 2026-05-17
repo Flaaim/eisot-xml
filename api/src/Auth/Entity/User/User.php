@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
+use App\Auth\Event\PasswordResetRequested;
 use App\Auth\Event\UserRemoved;
 use App\Auth\Service\PasswordHasher;
 use App\SharedDomain\AggregateRoot;
@@ -102,6 +103,11 @@ final class User implements AggregateRoot
             throw new DomainException('Resetting is already requested.');
         }
         $this->passwordResetToken = $token;
+
+        $this->recordEvent(new PasswordResetRequested(
+            $this->email->getValue(),
+            $token->getValue(),
+        ));
     }
 
     public function getPasswordResetToken(): ?Token

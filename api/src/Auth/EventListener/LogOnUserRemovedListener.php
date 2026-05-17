@@ -11,10 +11,10 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 #[AsEventListener]
 final class LogOnUserRemovedListener
 {
-
     public function __construct(
         private readonly LoggerInterface $logger,
     ) {}
+
     public function __invoke(UserRemoved $event): void
     {
         $userId = $event->id->getValue();

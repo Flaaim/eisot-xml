@@ -11,5 +11,4 @@ final class UserRemoved
     public function __construct(
         public Id $id
     ) {}
-
 }
