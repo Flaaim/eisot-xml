@@ -7,6 +7,6 @@ namespace App\Auth\Event;
 final class PasswordReset
 {
     public function __construct(
-       public readonly string $id
+        public readonly string $id
     ) {}
 }

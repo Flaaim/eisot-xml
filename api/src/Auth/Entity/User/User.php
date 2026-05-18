@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
+use App\Auth\Event\PasswordReset;
 use App\Auth\Event\PasswordResetRequested;
 use App\Auth\Event\UserRemoved;
 use App\Auth\Service\PasswordHasher;
@@ -123,6 +124,8 @@ final class User implements AggregateRoot
         $this->passwordResetToken->validate($token, $date);
         $this->passwordResetToken = null;
         $this->passwordHash = $hash;
+
+        $this->recordEvent(new PasswordReset($this->id->getValue()));
     }
 
     public function changePassword(string $current, string $new, PasswordHasher $hasher): void
@@ -195,7 +198,7 @@ final class User implements AggregateRoot
         if (!$this->isWait()) {
             throw new DomainException('Unable to remove active user.');
         }
-        $this->recordEvent(new UserRemoved($this->id));
+        $this->recordEvent(new UserRemoved($this->id->getValue()));
     }
 
     public function getNewEmail(): ?Email

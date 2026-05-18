@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Test\Unit\Entity\User\Command\ResetPassword;
 
 use App\Auth\Entity\User\Token;
+use App\Auth\Event\PasswordReset;
 use App\Auth\Test\Builder\UserBuilder;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +32,12 @@ final class ResetTest extends TestCase
 
         self::assertNull($user->getPasswordResetToken());
         self::assertEquals($hash, $user->getPasswordHash());
+
+        self::assertNotEmpty($events = $user->releaseEvents());
+        $event = end($events);
+
+        self::assertInstanceOf(PasswordReset::class, $event);
+        self::assertEquals($user->getId()->getValue(), $event->id);
     }
 
     public function testInvalidToken(): void

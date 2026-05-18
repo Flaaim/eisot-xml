@@ -15,6 +15,7 @@ final class DomainEventDispatcher
     public function __construct(
         private readonly MessageBusInterface $messageBus
     ) {}
+
     public function onFlush(OnFlushEventArgs $args): void
     {
         $em = $args->getObjectManager();
