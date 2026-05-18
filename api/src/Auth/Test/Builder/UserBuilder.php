@@ -20,7 +20,8 @@ final class UserBuilder
     private DateTimeImmutable $date;
     private Token $joinConfirmToken;
     private bool $active = false;
-    private ?Network $networkIdentity = null;
+    private ?string $network = null;
+    private ?string $identity = null;
 
     public function __construct()
     {
@@ -38,10 +39,11 @@ final class UserBuilder
         return $clone;
     }
 
-    public function viaNetwork(?Network $identity): self
+    public function viaNetwork(string $network, string $identity): self
     {
         $clone = clone $this;
-        $clone->networkIdentity = $identity ?? new Network('vk', '0000001');
+        $clone->network = $network;
+        $clone->identity = $identity;
         return $clone;
     }
 
@@ -76,6 +78,10 @@ final class UserBuilder
             );
         }
 
+
+        if($this->network !== null && $this->identity !== null) {
+            $user->attachNetwork($this->network, $this->identity);
+        }
         return $user;
     }
 }

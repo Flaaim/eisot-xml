@@ -20,11 +20,12 @@ final class AttachNetworkTest extends TestCase
             ->active()
             ->build();
 
-        $network = new Network('vk', '0000001');
-        $user->attachNetwork($network);
+        $user->attachNetwork($name = 'vk', $identity = '0000001');
 
         self::assertCount(1, $networks = $user->getNetworks());
-        self::assertEquals($network, $networks[0] ?? null);
+        /** @var array<Network> $networks */
+        self::assertEquals($name, $networks[0]->getNetwork() ?? null);
+        self::assertEquals($identity, $networks[0]->getIdentity() ?? null);
     }
 
     public function testAlready(): void
@@ -33,11 +34,10 @@ final class AttachNetworkTest extends TestCase
             ->active()
             ->build();
 
-        $network = new Network('vk', '0000001');
+        $user->attachNetwork($name = 'vk', $identity = '0000001');
 
-        $user->attachNetwork($network);
 
         $this->expectExceptionMessage('Network is already attached.');
-        $user->attachNetwork($network);
+        $user->attachNetwork('vk', '0000001');
     }
 }

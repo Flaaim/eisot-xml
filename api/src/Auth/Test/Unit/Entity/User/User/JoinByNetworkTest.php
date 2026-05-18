@@ -23,7 +23,8 @@ final class JoinByNetworkTest extends TestCase
             $id = Id::generate(),
             $date = new DateTimeImmutable(),
             $email = new Email('email@app.test'),
-            $network = new Network('vk', '0000001')
+            $name = 'vk',
+            $identity = '0000001'
         );
 
         self::assertEquals($id, $user->getId());
@@ -34,6 +35,8 @@ final class JoinByNetworkTest extends TestCase
         self::assertTrue($user->isActive());
 
         self::assertCount(1, $networks = $user->getNetworks());
-        self::assertEquals($network, $networks[0] ?? null);
+        /** @var array<Network> $networks */
+        self::assertEquals($name, $networks[0]->getNetwork() ?? null);
+        self::assertEquals($identity, $networks[0]->getIdentity() ?? null);
     }
 }

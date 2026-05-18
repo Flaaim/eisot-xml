@@ -4,16 +4,29 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
+use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Embeddable]
 final class Network
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'guid')]
+    private string $id;
     public function __construct(
+        #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'networks')]
+        #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+        private User $user,
+        #[ORM\Column(type: 'string', length: 16)]
         private string $network,
+        #[ORM\Column(type: 'string', length: 16)]
         private string $identity
     ) {
         Assert::notEmpty($network);
         Assert::notEmpty($identity);
+
+        $this->id = Uuid::uuid4()->toString();
     }
 
     public function isEqualTo(self $network): bool

@@ -14,32 +14,44 @@ use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use ArrayObject;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use DomainException;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'users')]
 final class User implements AggregateRoot
 {
     use EventTrait;
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $passwordHash = null;
+    #[ORM\Embedded(class: Token::class, columnPrefix: 'join_confirm_token_')]
     private ?Token $joinConfirmToken = null;
-    private ArrayObject $networks;
+    private Collection $networks;
+    #[ORM\Embedded(class: Token::class, columnPrefix: 'password_reset_token_')]
     private ?Token $passwordResetToken = null;
+    #[ORM\Column(type: 'user_email', nullable: true)]
     private ?Email $newEmail = null;
+    #[ORM\Embedded(class: Token::class, columnPrefix: 'new_email_token_')]
     private ?Token $newEmailToken = null;
+    #[ORM\Column(type: 'user_role')]
     private Role $role;
 
     private function __construct(
+        #[ORM\Id]
+        #[ORM\Column(type:'auth_user_id', length: 255)]
         private Id $id,
+        #[ORM\Column(type:'datetime_immutable')]
         private DateTimeImmutable $date,
+        #[ORM\Column(type: 'user_email')]
         private Email $email,
+        #[ORM\Column(type:'user_status')]
         private Status $status,
     ) {
-        $this->networks = new ArrayObject();
+        $this->networks = new ArrayCollection();
         $this->role = Role::user();
 
-
-        $this->recordEvent(new UserCreated(
-            $email->getValue()
-        ));
     }
 
     public static function requestJoinByEmail(
@@ -65,10 +77,11 @@ final class User implements AggregateRoot
         Id $id,
         DateTimeImmutable $date,
         Email $email,
-        Network $identity
+        string $network,
+        string $identity
     ) {
         $user = new self($id, $date, $email, Status::active());
-        $user->networks->append($identity);
+        $user->networks->add(new Network($user, $network, $identity));
 
         $user->recordEvent(new UserCreated($email->getValue()));
 
@@ -100,15 +113,16 @@ final class User implements AggregateRoot
         return $this->joinConfirmToken;
     }
 
-    public function attachNetwork(Network $identity): void
+    public function attachNetwork(string $network, string $identity): void
     {
+        $newNetwork = new Network($this, $network, $identity);
         /** @var Network $existing */
         foreach ($this->networks as $existing) {
-            if ($existing->isEqualTo($identity)) {
+            if ($existing->isEqualTo($newNetwork)) {
                 throw new DomainException('Network is already attached.');
             }
         }
-        $this->networks->append($identity);
+        $this->networks->add($newNetwork);
     }
 
     public function requestPasswordReset(Token $token, DateTimeImmutable $date): void
@@ -233,7 +247,7 @@ final class User implements AggregateRoot
     public function getNetworks(): array
     {
         /** @var Network[] */
-        return $this->networks->getArrayCopy();
+        return $this->networks->toArray();
     }
 
     public function getRole(): Role
