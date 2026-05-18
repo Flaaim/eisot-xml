@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Auth\EventListener;
+namespace App\Auth\MessageHandler;
 
 use App\Auth\Event\UserRemoved;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsEventListener]
-final class LogOnUserRemovedListener
+#[AsMessageHandler]
+final class LogOnUserRemovedHandler
 {
     public function __construct(
         private readonly LoggerInterface $logger,
