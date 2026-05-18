@@ -7,7 +7,10 @@ namespace App\Auth\Service;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Token;
 
-interface JoinConfirmationSender
+final class JoinConfirmationSender
 {
-    public function send(Email $email, Token $token): void;
+    public function send(Email $email, string $token): void
+    {
+
+    }
 }

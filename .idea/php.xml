@@ -138,6 +138,20 @@
       <path value="$PROJECT_DIR$/api/vendor/brick/math" />
       <path value="$PROJECT_DIR$/api/vendor/ramsey/collection" />
       <path value="$PROJECT_DIR$/api/vendor/ramsey/uuid" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/doctrine-bridge" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/collections" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/persistence" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/orm" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/api/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/api/vendor/psr/clock" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/clock" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/messenger" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

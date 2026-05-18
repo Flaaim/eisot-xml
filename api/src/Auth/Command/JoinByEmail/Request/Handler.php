@@ -22,7 +22,6 @@ final class Handler
         private PasswordHasher $hasher,
         private Tokenizer $tokenizer,
         private Flusher $flusher,
-        private JoinConfirmationSender $sender
     ) {}
 
     public function handle(Command $command): void
@@ -39,13 +38,11 @@ final class Handler
             $date,
             $email,
             $this->hasher->hash($command->password),
-            $token = $this->tokenizer->generate($date)
+            $this->tokenizer->generate($date)
         );
 
         $this->users->add($user);
 
         $this->flusher->flush();
-
-        $this->sender->send($email, $token);
     }
 }

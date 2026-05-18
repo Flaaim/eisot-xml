@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Auth\Entity\User;
 
+use App\Auth\Event\JoinByEmailRequested;
+use App\Auth\Event\UserCreated;
 use App\Auth\Event\PasswordReset;
 use App\Auth\Event\PasswordResetRequested;
 use App\Auth\Event\UserRemoved;
@@ -33,6 +35,11 @@ final class User implements AggregateRoot
     ) {
         $this->networks = new ArrayObject();
         $this->role = Role::user();
+
+
+        $this->recordEvent(new UserCreated(
+            $email->getValue()
+        ));
     }
 
     public static function requestJoinByEmail(
@@ -45,6 +52,12 @@ final class User implements AggregateRoot
         $user = new self($id, $date, $email, Status::wait());
         $user->passwordHash = $passwordHash;
         $user->joinConfirmToken = $token;
+
+        $user->recordEvent(new JoinByEmailRequested(
+            $token->getValue(),
+            $email->getValue()
+        ));
+        $user->recordEvent(new UserCreated($email->getValue()));
         return $user;
     }
 
@@ -56,6 +69,9 @@ final class User implements AggregateRoot
     ) {
         $user = new self($id, $date, $email, Status::active());
         $user->networks->append($identity);
+
+        $user->recordEvent(new UserCreated($email->getValue()));
+
         return $user;
     }
 
