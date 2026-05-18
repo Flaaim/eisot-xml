@@ -11,6 +11,7 @@ doctrine:
             auth_user_id: App\Auth\Entity\User\IdType
             user_email: App\Auth\Entity\User\EmailType
             user_status: App\Auth\Entity\User\StatusType
+            user_role: App\Auth\Entity\User\RoleType
 
     orm:
         validate_xml_mapping: true
