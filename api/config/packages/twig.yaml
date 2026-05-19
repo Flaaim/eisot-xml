@@ -1,5 +1,13 @@
 twig:
+    default_path: '%kernel.project_dir%/templates'
     file_name_pattern: '*.twig'
+
+    globals:
+        site_url: '%env(SITE_URL)%'
+        site_name: '%env(SITE_NAME)%'
+when@dev:
+    twig:
+        strict_variables: true
 
 when@test:
     twig:
