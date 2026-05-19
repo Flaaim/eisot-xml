@@ -32,7 +32,7 @@ api-composer-install:
 	docker compose run --rm api-php-cli composer install
 
 api-migrations:
-	docker compose run --rm api-php-cli bin/console doctrine:migrations:migrate -- --no-interaction
+	docker compose run --rm api-php-cli bin/console doctrine:migrations:migrate --no-interaction
 
 api-permissions:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 var
@@ -107,8 +107,7 @@ deploy:
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose pull'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose up --build --remove-orphans -d'
 
-	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose run --rm api-php-cli wait-for-it mysql:3306 -t 60'
-	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose run --rm api-php-cli composer app migrations:migrate -- --no-interaction'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose run --rm api-php-cli composer app migrations:migrate --no-interaction'
 
 	ssh ${HOST} -p ${PORT} 'rm -f site'
 	ssh ${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'
