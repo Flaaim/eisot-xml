@@ -39,8 +39,12 @@ services:
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
+      MAILER_FROM_NAME: admin
+      FRONTEND_URL: http://localhost:8000
+      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+
 
   api-php-cli:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
@@ -58,6 +62,9 @@ services:
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
+      MAILER_FROM_NAME: admin
+      FRONTEND_URL: http://localhost:8000
+      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
 
