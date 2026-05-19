@@ -39,6 +39,8 @@ services:
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
 
   api-php-cli:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
@@ -56,6 +58,8 @@ services:
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
 
   api-postgres:
     image: postgres:12.2-alpine
