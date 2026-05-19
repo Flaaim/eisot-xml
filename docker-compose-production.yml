@@ -26,6 +26,10 @@ services:
     image: ${REGISTRY}/rtn-tests-api-php-fpm:${IMAGE_TAG}
     restart: always
     environment:
+      DB_HOST: api-postgres
+      DB_USER: app
+      DB_PASSWORD: ${API_DB_PASSWORD}
+      DB_NAME: app
       MAILER_HOST: ${API_MAILER_HOST}
       MAILER_PORT: ${API_MAILER_PORT}
       MAILER_USER: ${API_MAILER_USER}
@@ -35,6 +39,10 @@ services:
   api-php-cli:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
     environment:
+      DB_HOST: api-postgres
+      DB_USER: app
+      DB_PASSWORD: ${API_DB_PASSWORD}
+      DB_NAME: app
       MAILER_HOST: ${API_MAILER_HOST}
       MAILER_PORT: ${API_MAILER_PORT}
       MAILER_USER: ${API_MAILER_USER}
