@@ -52,6 +52,8 @@ services:
         resource: '../src/Http/'
 
 
-
+    App\Auth\Fixture\:
+        resource: '../src/Auth/Fixture/'
+        tags: [ 'doctrine.fixture.orm' ]
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
