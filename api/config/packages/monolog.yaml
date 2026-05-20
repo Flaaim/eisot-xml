@@ -50,7 +50,6 @@ when@prod:
                 channel: '%env(TELEGRAM_CHAT_ID)%'
                 level: warning
                 channels: ["!event", "!doctrine", "!console"]
-                
             console:
                 type: console
                 process_psr_3_messages: false
