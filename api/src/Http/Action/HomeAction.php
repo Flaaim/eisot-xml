@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace Http\Action;
 
-use Nyholm\Psr7\Response;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeAction
 {
     #[Route('/', name: 'home', methods: ['GET'])]
-    public function __invoke(ServerRequestInterface $_request): ResponseInterface
+    public function __invoke(Request $request): Response
     {
-        $response = new Response(200);
-        $response->getBody()->write('{}');
-
-        return $response->withHeader('Content-Type', 'application/json');
+        return new Response('{}', 200, ['Content-Type' => 'application/json']);
     }
 }
