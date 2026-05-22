@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'users')]
+#[ORM\HasLifecycleCallbacks]
 final class User implements AggregateRoot
 {
     use EventTrait;
@@ -134,6 +135,7 @@ final class User implements AggregateRoot
         if (null !== $this->passwordResetToken && !$this->passwordResetToken->isExpiredTo($date)) {
             throw new DomainException('Resetting is already requested.');
         }
+
         $this->passwordResetToken = $token;
 
         $this->recordEvent(new PasswordResetRequested(
@@ -258,5 +260,19 @@ final class User implements AggregateRoot
     public function getRole(): Role
     {
         return $this->role;
+    }
+
+    #[ORM\PostLoad]
+    public function checkEmbeddables(): void
+    {
+        if ($this->joinConfirmToken !== null && $this->joinConfirmToken->isEmpty()) {
+            $this->joinConfirmToken = null;
+        }
+        if ($this->passwordResetToken !== null && $this->passwordResetToken->isEmpty()) {
+            $this->passwordResetToken = null;
+        }
+        if ($this->newEmailToken !== null && $this->newEmailToken->isEmpty()) {
+            $this->newEmailToken = null;
+        }
     }
 }

@@ -26,7 +26,10 @@ final class Token
     {
         return $this->value;
     }
-
+    public function isEmpty(): bool
+    {
+        return !isset($this->value);
+    }
     public function getExpiresAt(): DateTimeImmutable
     {
         return $this->expiresAt;
