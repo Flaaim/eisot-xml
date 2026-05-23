@@ -7,7 +7,7 @@ namespace App\Auth\Command\ChangeRole;
 use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\UserRepository;
-use Infrastructure\Doctrine\Flusher;
+use App\Infrastructure\Doctrine\Flusher;
 
 final class Handler
 {
