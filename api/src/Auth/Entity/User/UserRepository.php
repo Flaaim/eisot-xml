@@ -48,14 +48,14 @@ final class UserRepository
         return $this->repo->findOneBy(['passwordResetToken.value' => $token]);
     }
 
-    public function hasByNetwork(Network $network): bool
+    public function hasByNetwork(string $network, string $identity): bool
     {
         return $this->repo->createQueryBuilder('t')
                 ->select('COUNT(t.id)')
                 ->innerJoin('t.networks', 'n')
-                ->andWhere('n.network.name = :name and n.network.identity = :identity')
-                ->setParameter(':name', $network->getNetwork())
-                ->setParameter(':identity', $network->getIdentity())
+                ->andWhere('n.name = :name and n.identity = :identity')
+                ->setParameter(':name', $network)
+                ->setParameter(':identity', $identity)
                 ->getQuery()->getSingleScalarResult() > 0;
     }
     /**
