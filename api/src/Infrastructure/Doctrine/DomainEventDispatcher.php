@@ -25,11 +25,16 @@ final class DomainEventDispatcher
         $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
-        $entities = [
-            ...$uow->getScheduledEntityInsertions(),
-            ...$uow->getScheduledEntityUpdates(),
-            ...$uow->getScheduledEntityDeletions(),
-        ];
+        $entities = [];
+
+        foreach ($uow->getIdentityMap() as $class => $classEntities) {
+            foreach ($classEntities as $entity) {
+                $entities[] = $entity;
+            }
+        }
+        foreach ($uow->getScheduledEntityInsertions() as $entity) {
+            $entities[] = $entity;
+        }
 
         foreach ($entities as $entity) {
             if ($entity instanceof AggregateRoot) {
