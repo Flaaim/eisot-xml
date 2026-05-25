@@ -40,7 +40,7 @@ final class JoinConfirmationSenderTest extends TestCase
             ->willReturnCallback(static function (SymfonyEmail $message) use ($symfonyEmail): int {
                 self::assertEquals($symfonyEmail->getTo(), $message->getTo());
                 self::assertEquals($symfonyEmail->getSubject(), $message->getSubject());
-                self::assertStringContainsString($symfonyEmail->getHtmlBody(), $message->getHtmlBody());
+                self::assertStringContainsString((string)$symfonyEmail->getHtmlBody(), (string)$message->getHtmlBody());
                 return 1;
             });
 
