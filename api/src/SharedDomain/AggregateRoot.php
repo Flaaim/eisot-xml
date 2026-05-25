@@ -6,5 +6,5 @@ namespace App\SharedDomain;
 
 interface AggregateRoot
 {
-    public function releaseEvents();
+    public function releaseEvents(): array;
 }
