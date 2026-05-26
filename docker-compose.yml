@@ -18,7 +18,20 @@ services:
       dockerfile: development/nginx/Dockerfile
     volumes:
       - ./frontend:/app
+    depends_on:
+      - frontend-node
 
+  frontend-node:
+    build:
+      context: frontend/docker/development/node
+    volumes:
+      - ./frontend:/app
+    environment:
+      - WDS_SOCKET_PORT=0
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:8081
+      - INTERNAL_BACKEND_URL=http://api
+    command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && yarn dev"
+    tty: true
 
   frontend-node-cli:
     build:
