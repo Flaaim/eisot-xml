@@ -11,8 +11,7 @@ const eslintConfig = defineConfig([
       "react/style-prop-object": "error",
       "no-console": ["warn", { "allow": ["warn", "error"] }],
       "prefer-const": "error",
-      "semi": "error",
-      "consistent-return": ["error", { "treatUndefinedAsUnspecified": true }],
+      "semi": "error"
     }
   },
   // Override default ignores of eslint-config-next.
