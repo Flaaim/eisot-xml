@@ -1,7 +1,7 @@
+import Home from "../../components/Home/Home"
 
-
-export default function Home() {
+export default function Page() {
   return (
-        <h1 className="text-4xl font-extrabold text-gray-600 sm:text-5xl">Привет!</h1>
+    <Home />
   );
 }
