@@ -1,11 +1,11 @@
 import {render, screen } from "@testing-library/react";
-import JoinForm from "./JoinForm";
+import JoinByEmail from "./JoinByEmail";
 import userEvent from "@testing-library/user-event";
 
 describe('join form', () => {
   it('renders all fields and the submit button', () => {
 
-    render(<JoinForm />)
+    render(<JoinByEmail />)
     expect(screen.getByText("Регистрация в системе")).toBeInTheDocument();
     expect(screen.getByLabelText(/Электронная почта/i)).toBeInTheDocument();
     expect(screen.getByLabelText("Пароль")).toBeInTheDocument();
@@ -17,7 +17,7 @@ describe('join form', () => {
   it("shows validation errors", async () => {
     const user = userEvent.setup()
 
-    render(<JoinForm />)
+    render(<JoinByEmail />)
 
     const emailInput = screen.getByLabelText(/Электронная почта/i);
     const passwordInput = screen.getByLabelText("Пароль")

@@ -1,2 +1,2 @@
 export * from "./Home/Home"
-export * from "./Join/Join"
+export * from "./Join/JoinByEmail/JoinByEmail"

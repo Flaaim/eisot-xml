@@ -8,6 +8,7 @@ import {Button} from "@/components/ui/button";
 import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import JoinAction from "@/actions/auth";
+import Link from "next/link";
 
 
 const schema = z.object({
@@ -27,7 +28,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-export default function JoinForm() {
+export default function JoinByEmail() {
 
   const form = useForm({
     mode: 'onBlur',
@@ -48,7 +49,8 @@ export default function JoinForm() {
     }
   }
   return (
-    <Card className="w-full max-w-md mx-auto shadow-sm">
+    <div className="flex h-screen items-center justify-center">
+      <Card className="w-full max-w-md mx-auto shadow-sm">
       <CardHeader className="text-center space-y-2">
         <CardTitle className="text-2xl font-semibold tracking-tight">Регистрация в системе</CardTitle>
           <CardDescription>
@@ -125,25 +127,31 @@ export default function JoinForm() {
         </form>
       </CardContent>
       <CardFooter>
-        <div className="pt-4 space-y-4">
-          {form.formState.errors.root && (
-            <div className="text-sm font-medium text-destructive text-center bg-destructive/10 p-2 rounded-md">
-              {form.formState.errors.root.message}
-            </div>
-          )}
-          <Button
-            type="submit"
-            form="join-form"
-            disabled={form.formState.isSubmitting}
-            className="py-2"
-          >
-            {form.formState.isSubmitting ? "Загрузка..." : "Присоединиться"}
-          </Button>
+        <div className="flex flex-col">
+          <div className="pt-4 space-y-4">
+            {form.formState.errors.root && (
+              <div className="text-sm font-medium text-destructive text-center bg-destructive/10 p-2 rounded-md">
+                {form.formState.errors.root.message}
+              </div>
+            )}
+            <Button
+              type="submit"
+              form="join-form"
+              disabled={form.formState.isSubmitting}
+              className="py-2 cursor-pointer"
+            >
+              {form.formState.isSubmitting ? "Загрузка..." : "Присоединиться"}
+            </Button>
+          </div>
+
+          <div className="pt-4 space-y-4">
+            Есть аккаунт? <Link
+            href="/join/login"
+          >Войти в систему</Link>
+          </div>
         </div>
-
-
       </CardFooter>
     </Card>
-
+    </div>
   );
 }
