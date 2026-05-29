@@ -54,6 +54,7 @@ services:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
       SENTRY_DSN: ${SENTRY_DSN}
+      JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
 
   api-php-cli:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
@@ -77,6 +78,7 @@ services:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
       SENTRY_DSN: ${SENTRY_DSN}
+      JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
 
   api-postgres:
     image: postgres:12.2-alpine

@@ -67,6 +67,7 @@ services:
       TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
       TELEGRAM_CHAT_ID: 1954013093
       SENTRY_DSN: https://4c7ee997911a9ecfa772d8b6aa4e0a92@o4511418890452992.ingest.de.sentry.io/4511419447246928
+      JWT_ENCRYPTION_KEY: secret
     volumes:
       - ./api:/app
     depends_on:
@@ -98,6 +99,7 @@ services:
       TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
       TELEGRAM_CHAT_ID: 1954013093
       SENTRY_DSN: https://4c7ee997911a9ecfa772d8b6aa4e0a92@o4511418890452992.ingest.de.sentry.io/4511419447246928
+      JWT_ENCRYPTION_KEY: secret
 
   api-postgres:
     image: postgres:18-alpine
