@@ -9,3 +9,7 @@
 
 controllers:
     resource: routing.controllers
+
+oauth2:
+    resource: '@LeagueOAuth2ServerBundle/config/routes.php'
+    type: php

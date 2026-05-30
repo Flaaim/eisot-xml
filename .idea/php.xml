@@ -187,6 +187,16 @@
       <path value="$PROJECT_DIR$/api/vendor/paragonie/random_compat" />
       <path value="$PROJECT_DIR$/api/vendor/lcobucci/clock" />
       <path value="$PROJECT_DIR$/api/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/property-access" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/security-bundle" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/type-info" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/security-http" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/security-core" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/security-csrf" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/password-hasher" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/property-info" />
+      <path value="$PROJECT_DIR$/api/vendor/nyholm/psr7" />
+      <path value="$PROJECT_DIR$/api/vendor/league/oauth2-server-bundle" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
