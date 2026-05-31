@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\OAuth\Entity;
 
 use App\Auth\Entity\User\Email;
-use App\Auth\Service\PasswordHasher;
 use App\Auth\Entity\User\UserRepository as DomainUserRepository;
+use App\Auth\Service\PasswordHasher;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 
+/** @psalm-suppress UnusedClass */
 final class UserRepository implements UserRepositoryInterface
 {
     public function __construct(
@@ -24,17 +25,22 @@ final class UserRepository implements UserRepositoryInterface
         string $password,
         string $grantType,
         ClientEntityInterface $clientEntity
-    ): ?UserEntityInterface
-    {
-
+    ): ?UserEntityInterface {
         $user = $this->domainUserRepository->findByEmail(new Email($username));
 
-        if($user->isWait()){
+        if($user === null) {
+            return null;
+        }
+
+        if ($user->isWait()) {
             throw OAuthServerException::accessDenied('User is not confirmed.');
         }
 
-        if(!$this->passwordHasher->validate($password, $user->getPasswordHash())){
-            return null;
+        $hash = $user->getPasswordHash();
+        if($hash !== null){
+            if (!$this->passwordHasher->validate($password, $hash)) {
+                return null;
+            }
         }
 
         return new User($user->getId()->getValue());
