@@ -2,12 +2,13 @@
 
 import { JoinData, LoginData } from "@/interfaces/auth.interface";
 import {cookies} from "next/headers";
+import {apiFetch} from "@/lib/apiClient";
 
 export async function JoinAction(data: JoinData) {
   const { confirm_password, ...payload } = data;
 
   try {
-    const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/v1/auth/join/request`, {
+    const response = await apiFetch('/v1/auth/join/request', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +55,7 @@ export async function LoginAction(data: LoginData){
   });
 
   try{
-    const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/token`, {
+    const response = await apiFetch<void>('/token', {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -163,8 +164,10 @@ export async function RefreshSessionAction() {
         secure: process.env.NODE_ENV === 'production',
         maxAge: 2592000
       })
+
+      return { success: true, access_token: result.access_token };
     }
-    return { success: true };
+
   } catch (error) {
     console.error("Fetch error:", error);
     return {success: false, error: "Не удалось подключиться к серверу API"};
