@@ -15,6 +15,10 @@ parameters:
           client_id: 'frontend'
           secret: 'my-super-secret-123'
           redirect_uri: '%env(FRONTEND_URL)%/oauth'
+          grant_types:
+              password:
+              refresh_token:
+
 
 services:
     # default configuration for services in *this* file

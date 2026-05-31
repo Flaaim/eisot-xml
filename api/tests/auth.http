@@ -3,4 +3,19 @@ POST http://localhost:8081/token
 Content-Type: application/x-www-form-urlencoded
 Accept: application/json
 
-grant_type=password&client_id=frontend&client_secret=my-super-secret-123&username=flaaim@list.ru&password=123456
+grant_type=password&client_id=frontend&client_secret=my-super-secret-123&username=flaaim@list.ru&password=12345678
+
+
+
+### Обновление токена через JSON
+POST http://localhost:8081/token
+Content-Type: application/json
+Accept: application/json
+
+{
+    "grant_type": "refresh_token",
+    "client_id": "frontend",
+    "client_secret": "my-super-secret-123",
+    "refresh_token": "def50200d804f5102c8f0f3fe9500ef5d16b17514bf1fa1f95c73e9a81bc4f73698787d323ab38ded4eb5dcb1eafc410bc0df279607f56720e617c88c3f3fc77cb79ca626466088208bdc68e8a09732d94d40db8994e0c7a0da4cf3661854031930ac5762361909c081faf7336b2eccba721c124214af0d78638a7ddf3b2065cb39ab74769adc2d47d21bceed2d622db266a8edbfcbde2dcc551e888dc57a15f842dcbdeb425fc6e482d53260fb9c9f88e44e2b3fe5e3bdc8416cecef049dd39cdbf2eab20faa62954226a9c445c19864a8c0e2cf6261b97c130dd2d2f261fbd0a673197ac4b5a0ca1be8a0e27b12943a25a7fd168c3ee6aff27cf084e95a1891ba89510f23759addb6e6efebd67496cf3cfe2029843ff2a101d751d61fb7fed0fa4c8eeeaf3b157edb16fb9720d554f4d79f0ddd0d69b11a8695e4da5b50dae4713aa93059e1948d7da4e06819564acf901bdf3e198f07ee4f779757b8f0a3f3d1aac85e348626c0e9b499b5f05e50f45034903ff89c71bd3a821b093818b35c19840de09759f79b3d5b89210"
+}
+
