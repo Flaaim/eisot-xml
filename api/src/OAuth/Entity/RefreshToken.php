@@ -37,6 +37,9 @@ class RefreshToken implements RefreshTokenEntityInterface
     #[ORM\Column(type: 'guid', nullable: false)]
     private ?string $userIdentifier = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $revoked = false;
+
     public function setAccessToken(AccessTokenEntityInterface $accessToken): void
     {
         $this->accessToken = $accessToken;
@@ -47,5 +50,10 @@ class RefreshToken implements RefreshTokenEntityInterface
     {
         /** @var non-empty-string|null */
         return $this->userIdentifier;
+    }
+
+    public function revoked(): void
+    {
+        $this->revoked = true;
     }
 }

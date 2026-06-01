@@ -38,9 +38,9 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function revokeRefreshToken(string $tokenId): void
     {
         $token = $this->repo->find($tokenId);
-
         if (null !== $token) {
-            $this->em->remove($token);
+            /** @var RefreshToken $token */
+            $token->revoked();
             $this->em->flush();
         }
     }
