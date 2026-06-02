@@ -175,3 +175,26 @@ export async function joinConfirm(token: string): Promise<ActionResponse> {
     return { success: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function requestResetPassword(email: string): Promise<ActionResponse> {
+  try {
+    const response = await fetch(
+      `${process.env.INTERNAL_BACKEND_URL}/v1/auth/password/reset/request`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ email: email }),
+      }
+    );
+    const parsed = await handleApiResponse(response);
+    if (!parsed.ok) {
+      return { success: false, error: parsed.error };
+    }
+    return { success: true };
+  } catch (error) {
+    console.error("Join confirm token request error:", error);
+  }
+}

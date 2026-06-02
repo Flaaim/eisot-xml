@@ -29,11 +29,10 @@ describe("Login form", () => {
     expect(screen.getByRole("button", { name: "Войти" })).toBeInTheDocument();
 
     const registerLink = screen.getByRole("link", { name: "Зарегистрироваться" });
-    expect(registerLink).toHaveAttribute('href', '/join/register');
+    expect(registerLink).toHaveAttribute("href", "/join/register");
 
-    const forgotPassword = screen.getByRole("link", {name: "Забыли свой пароль?"});
-    expect(forgotPassword).toHaveAttribute('href', '/join/reset');
-
+    const forgotPassword = screen.getByRole("link", { name: "Забыли свой пароль?" });
+    expect(forgotPassword).toHaveAttribute("href", "/join/reset");
   });
 
   it("shows validations errors", async () => {

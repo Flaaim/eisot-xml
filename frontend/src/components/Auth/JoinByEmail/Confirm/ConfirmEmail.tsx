@@ -2,13 +2,7 @@
 
 import { z } from "zod";
 import { useSearchParams } from "next/navigation";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { JSX, Suspense, useEffect, useRef, useState } from "react";
 import { CheckCircle2, Loader2, MailOpen, XCircle } from "lucide-react";
 import { joinConfirm } from "@/actions/auth";
