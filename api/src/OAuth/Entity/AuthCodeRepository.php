@@ -10,6 +10,7 @@ use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
+/** @psalm-suppress UnusedClass */
 final class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
     private EntityRepository $repo;
@@ -37,7 +38,8 @@ final class AuthCodeRepository implements AuthCodeRepositoryInterface
 
     public function revokeAuthCode(string $codeId): void
     {
-        if ($code = $this->repo->find($codeId)) {
+        $code = $this->repo->find($codeId);
+        if($code !== null) {
             $this->em->remove($code);
             $this->em->flush();
         }

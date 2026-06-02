@@ -11,6 +11,7 @@ use League\OAuth2\Server\Entities\Traits\AuthCodeTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
+/** @psalm-suppress MissingConstructor */
 #[ORM\Entity]
 #[ORM\Table(name: 'oauth_auth_codes')]
 class AuthCode implements AuthCodeEntityInterface
