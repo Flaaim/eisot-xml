@@ -40,8 +40,8 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
         $token = $this->repo->find($tokenId);
         if (null !== $token) {
             /** @var RefreshToken $token */
-            $token->revoked();
-            $this->em->flush();
+                $token->revoked();
+                $this->em->flush();
         }
     }
 

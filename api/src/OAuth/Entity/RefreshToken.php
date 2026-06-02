@@ -6,6 +6,7 @@ namespace App\OAuth\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
@@ -43,7 +44,11 @@ class RefreshToken implements RefreshTokenEntityInterface
     public function setAccessToken(AccessTokenEntityInterface $accessToken): void
     {
         $this->accessToken = $accessToken;
-        $this->userIdentifier = (string)$accessToken->getUserIdentifier();
+        $identifier = (string)$accessToken->getUserIdentifier();
+        if($identifier === ''){
+            throw new InvalidArgumentException('Access token cannot be empty string');
+        }
+        $this->userIdentifier = $identifier;
     }
 
     public function getUserIdentifier(): ?string
@@ -54,6 +59,13 @@ class RefreshToken implements RefreshTokenEntityInterface
 
     public function revoked(): void
     {
-        $this->revoked = true;
+        if(!$this->isRevoked()){
+            $this->revoked = true;
+        }
+    }
+
+    public function isRevoked(): bool
+    {
+        return $this->revoked;
     }
 }
