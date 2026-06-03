@@ -4,6 +4,7 @@ import { JoinData, LoginData } from "@/interfaces/auth.interface";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {ApiResponse} from "@/interfaces/response.interface";
+import {API} from "@/app/api";
 
 interface TokenResponseData {
   access_token: string;
@@ -13,7 +14,7 @@ interface TokenResponseData {
 }
 async function handleApiResponse(
   response: Response
-): Promise<ApiResponse<T>> {
+): Promise<ApiResponse<T = any>> {
   const text = await response.text();
   let data;
 
@@ -37,18 +38,19 @@ async function handleApiResponse(
   return { ok: true, data: data as T };
 }
 export async function JoinAction(data: JoinData): Promise<ApiResponse> {
-  const { confirm_password, ...payload } = data;
-
   try {
-    const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/v1/auth/join/request`, {
+    const response = await fetch(API.auth.joinByEmail(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password
+      }),
     });
-    const parsed = await handleApiResponse<TokenResponseData>(response);
+    const parsed = await handleApiResponse(response);
     if (!parsed.ok) {
       return { ok: false, error: parsed.error };
     }
@@ -69,7 +71,7 @@ export async function LoginAction(data: LoginData): Promise<ApiResponse> {
   });
 
   try {
-    const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/token`, {
+    const response = await fetch(API.auth.login(), {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -78,7 +80,7 @@ export async function LoginAction(data: LoginData): Promise<ApiResponse> {
       body: searchParams.toString(),
     });
 
-    const parsed = await handleApiResponse(response);
+    const parsed = await handleApiResponse<TokenResponseData>(response);
 
     if (!parsed.ok) {
       return { ok: false, error: parsed.error };
@@ -112,7 +114,7 @@ export async function LoginAction(data: LoginData): Promise<ApiResponse> {
 
 export async function RefreshSessionAction(refreshToken: string): Promise<TokenResponseData | null> {
   try {
-    const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/token`, {
+    const response = await fetch(API.auth.refreshToken(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -163,7 +165,7 @@ export async function Logout(): Promise<never> {
 
 export async function joinConfirm(token: string): Promise<ApiResponse> {
   try {
-    const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/v1/auth/join/confirm`, {
+    const response = await fetch(API.auth.joinConfirm(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -184,8 +186,7 @@ export async function joinConfirm(token: string): Promise<ApiResponse> {
 
 export async function requestResetPassword(email: string): Promise<ApiResponse> {
   try {
-    const response = await fetch(
-      `${process.env.INTERNAL_BACKEND_URL}/v1/auth/password/reset/request`,
+    const response = await fetch(API.auth.requestResetPassword(),
       {
         method: "POST",
         headers: {
