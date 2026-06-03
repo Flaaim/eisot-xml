@@ -16,7 +16,7 @@ final class Token
         #[ORM\Column(type: 'string', nullable: true)]
         private string $value,
         #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-        private DateTimeImmutable $expiresAt
+        private ?DateTimeImmutable $expiresAt = null,
     ) {
         Assert::uuid($value);
         $this->value = mb_strtolower($value);

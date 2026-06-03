@@ -7,7 +7,7 @@ namespace App\OAuth\Entity;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-
+/** @psalm-suppress UnusedClass */
 final class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
     public function getNewToken(
@@ -16,8 +16,8 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
         ?string $userIdentifier = null
     ): AccessTokenEntityInterface {
         $accessToken = new AccessToken($clientEntity, $scopes);
-
         if (null !== $userIdentifier) {
+            /** @var non-empty-string $userIdentifier */
             $accessToken->setUserIdentifier($userIdentifier);
         }
 

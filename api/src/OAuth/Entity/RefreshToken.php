@@ -45,7 +45,7 @@ class RefreshToken implements RefreshTokenEntityInterface
     {
         $this->accessToken = $accessToken;
         $identifier = (string)$accessToken->getUserIdentifier();
-        if($identifier === ''){
+        if ('' === $identifier) {
             throw new InvalidArgumentException('Access token cannot be empty string');
         }
         $this->userIdentifier = $identifier;
@@ -59,7 +59,7 @@ class RefreshToken implements RefreshTokenEntityInterface
 
     public function revoked(): void
     {
-        if(!$this->isRevoked()){
+        if (!$this->isRevoked()) {
             $this->revoked = true;
         }
     }

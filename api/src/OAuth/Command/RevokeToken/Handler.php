@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class Handler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         #[Autowire(env: 'JWT_ENCRYPTION_KEY')]
         private readonly string $encryptionKey,
@@ -25,9 +26,11 @@ final class Handler
 
             if (is_file($keyContent)) {
                 $keyContent = file_get_contents($keyContent);
+                if($keyContent === false) {
+                    throw new Exception('Unable to read key file.');
+                }
             }
             $cleanToken = trim($token);
-            $payload = null;
             try {
                 $key = Key::loadFromAsciiSafeString($keyContent);
                 $decrypted = Crypto::decrypt($cleanToken, $key);
@@ -36,7 +39,7 @@ final class Handler
                 $decrypted = Crypto::decryptWithPassword($cleanToken, $keyContent);
                 $payload = json_decode($decrypted, true);
             }
-            if (\is_array($payload) && isset($payload['refresh_token_id'])) {
+            if (is_array($payload) && isset($payload['refresh_token_id'])) {
                 $this->refreshTokenRepository->revokeRefreshToken($payload['refresh_token_id']);
             }
         } catch (Exception $e) {

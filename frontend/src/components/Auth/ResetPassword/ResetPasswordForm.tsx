@@ -37,7 +37,7 @@ export default function RequestResetPassword() {
   });
   async function onSubmit(values: FormData) {
     const result = await requestResetPassword(values.email);
-    if (!result.success) {
+    if (!result.ok) {
       form.setError("root", { type: "server", message: result.error });
       return;
     }
@@ -46,10 +46,10 @@ export default function RequestResetPassword() {
   if (isSuccess) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <Card className="w-full max-w-md mx-auto shadow-sm text-center py-6">
+        <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
           <CardHeader className="space-y-4">
-            <div className="mx-auto bg-green-100 p-4 rounded-full w-fit">
-              <MailCheck className="w-10 h-10 text-green-600" />
+            <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
+              <MailCheck className="h-10 w-10 text-green-600" />
             </div>
             <CardTitle className="text-2xl font-semibold tracking-tight">
               Проверьте вашу почту
@@ -61,7 +61,7 @@ export default function RequestResetPassword() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Пожалуйста, перейдите по ссылке в письме, чтобы сбросить текущий пароль и установить
               новый.
             </p>
@@ -79,7 +79,7 @@ export default function RequestResetPassword() {
   }
   return (
     <div className="flex h-screen items-center justify-center">
-      <Card className="w-full max-w-md mx-auto shadow-sm text-center py-6">
+      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Восстановление пароля
@@ -115,9 +115,9 @@ export default function RequestResetPassword() {
         </CardContent>
         <CardFooter>
           <div className="flex flex-col">
-            <div className="pt-2 space-y-2">
+            <div className="space-y-2 pt-2">
               {form.formState.errors.root && (
-                <div className="text-sm font-medium text-destructive text-center bg-destructive/10 p-2 rounded-md">
+                <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
                   {form.formState.errors.root.message}
                 </div>
               )}
@@ -125,7 +125,7 @@ export default function RequestResetPassword() {
                 type="submit"
                 form="reset-password-form"
                 disabled={form.formState.isSubmitting}
-                className="py-2 cursor-pointer"
+                className="cursor-pointer py-2"
               >
                 {form.formState.isSubmitting ? "Загрузка..." : "Отправить запрос"}
               </Button>

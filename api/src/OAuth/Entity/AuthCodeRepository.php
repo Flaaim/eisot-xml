@@ -39,7 +39,7 @@ final class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function revokeAuthCode(string $codeId): void
     {
         $code = $this->repo->find($codeId);
-        if($code !== null) {
+        if (null !== $code) {
             $this->em->remove($code);
             $this->em->flush();
         }

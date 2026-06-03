@@ -25,6 +25,7 @@ final class RequestAction
         $email = (string)($body['email'] ?? '');
 
         $command = new Command($email);
+
         $this->validator->validate($command);
         $this->handler->handle($command);
 
