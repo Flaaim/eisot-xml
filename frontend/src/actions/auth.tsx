@@ -3,18 +3,24 @@
 import { JoinData, LoginData } from "@/interfaces/auth.interface";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { ActionResponse } from "@/interfaces/response.interface";
+import {ApiResponse} from "@/interfaces/response.interface";
 
+interface TokenResponseData {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+  token_type: string;
+}
 async function handleApiResponse(
   response: Response
-): Promise<{ ok: boolean; data: any; error?: string }> {
+): Promise<ApiResponse<T>> {
   const text = await response.text();
   let data;
 
   try {
     data = text ? JSON.parse(text) : {};
   } catch (parseError) {
-    console.error("Ошибка парсинга ответа API:", text);
+    console.error("Ошибка парсинга ответа API:", parseError);
     return { ok: false, data: null, error: "Сервер вернул некорректный ответ." };
   }
 
@@ -28,9 +34,9 @@ async function handleApiResponse(
     }
     return { ok: false, data, error: errorMessage };
   }
-  return { ok: true, data };
+  return { ok: true, data: data as T };
 }
-export async function JoinAction(data: JoinData): Promise<ActionResponse> {
+export async function JoinAction(data: JoinData): Promise<ApiResponse> {
   const { confirm_password, ...payload } = data;
 
   try {
@@ -42,18 +48,18 @@ export async function JoinAction(data: JoinData): Promise<ActionResponse> {
       },
       body: JSON.stringify(payload),
     });
-    const parsed = await handleApiResponse(response);
+    const parsed = await handleApiResponse<TokenResponseData>(response);
     if (!parsed.ok) {
-      return { success: false, error: parsed.error };
+      return { ok: false, error: parsed.error };
     }
-    return { success: true };
+    return { ok: true };
   } catch (error) {
     console.error("JoinAction Fetch error:", error);
-    return { success: false, error: "Не удалось подключиться к серверу API" };
+    return { ok: false, error: "Не удалось подключиться к серверу API" };
   }
 }
 
-export async function LoginAction(data: LoginData): Promise<ActionResponse> {
+export async function LoginAction(data: LoginData): Promise<ApiResponse> {
   const searchParams = new URLSearchParams({
     username: data.email,
     password: data.password,
@@ -75,7 +81,7 @@ export async function LoginAction(data: LoginData): Promise<ActionResponse> {
     const parsed = await handleApiResponse(response);
 
     if (!parsed.ok) {
-      return { success: false, error: parsed.error };
+      return { ok: false, error: parsed.error };
     }
 
     if (parsed.data.access_token) {
@@ -97,14 +103,14 @@ export async function LoginAction(data: LoginData): Promise<ActionResponse> {
         maxAge: 2592000,
       });
     }
-    return { success: true };
+    return { ok: true };
   } catch (error) {
     console.error("LoginAction Fetch error:", error);
-    return { success: false, error: "Не удалось подключиться к серверу API" };
+    return { ok: false, error: "Не удалось подключиться к серверу API" };
   }
 }
 
-export async function RefreshSessionAction(refreshToken: string) {
+export async function RefreshSessionAction(refreshToken: string): Promise<TokenResponseData | null> {
   try {
     const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/token`, {
       method: "POST",
@@ -125,12 +131,12 @@ export async function RefreshSessionAction(refreshToken: string) {
     }
     return await response.json();
   } catch (error) {
-    console.error("Auth API Error:", error);
+    console.error("RefreshSessionAction API Error:", error);
     return null;
   }
 }
 
-export async function Logout() {
+export async function Logout(): Promise<never> {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refresh_token")?.value;
 
@@ -155,7 +161,7 @@ export async function Logout() {
   redirect("/join/login");
 }
 
-export async function joinConfirm(token: string): Promise<ActionResponse> {
+export async function joinConfirm(token: string): Promise<ApiResponse> {
   try {
     const response = await fetch(`${process.env.INTERNAL_BACKEND_URL}/v1/auth/join/confirm`, {
       method: "POST",
@@ -167,16 +173,16 @@ export async function joinConfirm(token: string): Promise<ActionResponse> {
     });
     const parsed = await handleApiResponse(response);
     if (!parsed.ok) {
-      return { success: false, error: parsed.error };
+      return { ok: false, error: parsed.error };
     }
-    return { success: true };
+    return { ok: true };
   } catch (error) {
     console.error("Join confirm token request error:", error);
-    return { success: false, error: "Не удалось подключиться к серверу API." };
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
 
-export async function requestResetPassword(email: string): Promise<ActionResponse> {
+export async function requestResetPassword(email: string): Promise<ApiResponse> {
   try {
     const response = await fetch(
       `${process.env.INTERNAL_BACKEND_URL}/v1/auth/password/reset/request`,
@@ -191,10 +197,11 @@ export async function requestResetPassword(email: string): Promise<ActionRespons
     );
     const parsed = await handleApiResponse(response);
     if (!parsed.ok) {
-      return { success: false, error: parsed.error };
+      return { ok: false, error: parsed.error };
     }
-    return { success: true };
+    return { ok: true };
   } catch (error) {
     console.error("Join confirm token request error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

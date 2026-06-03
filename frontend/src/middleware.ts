@@ -54,7 +54,6 @@ export async function middleware(request: NextRequest) {
         maxAge: 2592000,
       });
     } catch (error) {
-      console.log(error);
       return NextResponse.redirect(new URL("/join/login", request.url));
     }
   }
