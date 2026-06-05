@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Company\Entity\Company;
 
+use App\Company\Entity\Company\Event\CompanyAdded;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,7 +31,11 @@ final class Company implements AggregateRoot
         Name $name,
         Inn $inn,
     ): self {
-        return new self($id, $name, $inn);
+        $company = new self($id, $name, $inn);
+
+        $company->recordEvent(new CompanyAdded($id, $name, $inn));
+
+        return $company;
     }
 
     public function getId(): Id
