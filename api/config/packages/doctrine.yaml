@@ -12,9 +12,9 @@ doctrine:
             user_email: App\Auth\Entity\User\EmailType
             user_status: App\Auth\Entity\User\StatusType
             user_role: App\Auth\Entity\User\RoleType
-            company_id: App\Company\Entity\IdType
-            company_name: App\Company\Entity\NameType
-            company_inn: App\Company\Entity\InnType
+            company_id: App\Company\Entity\Company\IdType
+            company_name: App\Company\Entity\Company\NameType
+            company_inn: App\Company\Entity\Company\InnType
 
     orm:
         validate_xml_mapping: true

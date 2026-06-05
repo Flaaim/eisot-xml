@@ -22,6 +22,6 @@ final class IdType extends StringType
     }
     public function getName(): string
     {
-        return self::name;
+        return self::NAME;
     }
 }
