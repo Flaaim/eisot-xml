@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Check, Loader2, Wrench, XCircle } from "lucide-react";
+import {ArrowLeft, Check, Loader2, Wrench, XCircle} from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -106,7 +106,8 @@ const ResetPasswordFormContent = (): JSX.Element => {
 
   if (isSuccess) {
     return (
-      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
+      <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
+        <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
             <Check className="h-10 w-10 text-green-600" />
@@ -122,11 +123,13 @@ const ResetPasswordFormContent = (): JSX.Element => {
           </Button>
         </CardFooter>
       </Card>
+      </div>
     );
   }
   if (error) {
     return (
-      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
+      <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
+        <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-red-100 p-4">
             <XCircle className="h-10 w-10 text-red-600" />
@@ -142,10 +145,20 @@ const ResetPasswordFormContent = (): JSX.Element => {
           </Button>
         </CardFooter>
       </Card>
+      </div>
     );
   }
   return (
-    <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
+    <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
+      <div className="mb-6">
+        <Button variant="ghost" size="sm" className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900">
+          <Link href="/user/profile" className="inline-flex items-center">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            <span>Назад на страницу входа</span>
+          </Link>
+        </Button>
+      </div>
+      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
       <CardHeader className="space-y-4">
         <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
           <Wrench className="h-10 w-10 text-green-600" />
@@ -220,15 +233,10 @@ const ResetPasswordFormContent = (): JSX.Element => {
               {form.formState.isSubmitting ? "Загрузка..." : "Обновить пароль"}
             </Button>
           </div>
-          <div className="space-y-4 pt-4">
-            Вернуться на{" "}
-            <Link className="link" href="/join/login">
-              страницу входа
-            </Link>
-          </div>
         </div>
       </CardFooter>
     </Card>
+    </div>
   );
 };
 

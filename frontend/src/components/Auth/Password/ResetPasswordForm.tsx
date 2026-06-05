@@ -15,7 +15,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { MailCheck } from "lucide-react";
+import {ArrowLeft, MailCheck} from "lucide-react";
 import Link from "next/link";
 import { passwordResetRequest } from "@/actions/auth";
 
@@ -45,7 +45,7 @@ export default function RequestResetPassword() {
   }
   if (isSuccess) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
         <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
           <CardHeader className="space-y-4">
             <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
@@ -78,7 +78,16 @@ export default function RequestResetPassword() {
     );
   }
   return (
-    <div className="flex h-screen items-center justify-center">
+
+    <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
+      <div className="mb-6">
+        <Button variant="ghost" size="sm" className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900">
+          <Link href="/user/profile" className="inline-flex items-center">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            <span>Назад в профиль</span>
+          </Link>
+        </Button>
+      </div>
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <CardTitle className="text-2xl font-semibold tracking-tight">
