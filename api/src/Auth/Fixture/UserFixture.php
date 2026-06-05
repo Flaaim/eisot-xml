@@ -35,7 +35,7 @@ final class UserFixture extends AbstractFixture
         $passwordHasher = new PasswordHasher();
 
         $myUser = User::requestJoinByEmail(
-            new Id('00000000-0000-0000-0000-000000000002'),
+            new Id('eaa3e157-5017-4d01-84f7-3275f8e4492e'),
             $date = new DateTimeImmutable('-30 days'),
             new Email('flaaim@list.ru'),
             $passwordHasher->hash('12345678'),
