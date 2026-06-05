@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\StringType;
 
 final class IdType extends StringType
 {
-    public const NAME = 'company_id';
+    public const string NAME = 'company_id';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
