@@ -12,6 +12,7 @@ doctrine:
             user_email: App\Auth\Entity\User\EmailType
             user_status: App\Auth\Entity\User\StatusType
             user_role: App\Auth\Entity\User\RoleType
+            company_id: App\Company\Entity\IdType
 
     orm:
         validate_xml_mapping: true
@@ -32,6 +33,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/OAuth/Entity'
                 prefix: 'App\OAuth\Entity'
                 alias: OAuth
+            Company:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Company/Entity'
+                prefix: 'App\Company\Entity'
+                alias: Company
 
 when@test:
     doctrine:
