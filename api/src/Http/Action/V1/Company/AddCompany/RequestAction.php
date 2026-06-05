@@ -25,10 +25,11 @@ final class RequestAction
     {
         $body = $request->toArray();
 
+        $id = Id::generate()->getValue();
         $name = (string)($body['name'] ?? '');
         $inn  = (string)($body['inn'] ?? '');
 
-        $command = new Command($name, $inn);
+        $command = new Command($id, $name, $inn);
 
         $this->validator->validate($command);
 

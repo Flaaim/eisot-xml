@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Company\Entity\Company\Event;
+namespace App\Company\Event;
 
 use App\Company\Entity\Company\Id;
 use App\Company\Entity\Company\Inn;

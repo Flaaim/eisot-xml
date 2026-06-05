@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Company\Entity\Company;
 
-use App\Company\Entity\Company\Event\CompanyAdded;
+use App\Company\Event\CompanyAdded;
+use App\Company\Event\CompanyInnChanged;
+use App\Company\Event\CompanyRenamed;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -60,6 +62,8 @@ final class Company implements AggregateRoot
         }
 
         $this->name = $newName;
+
+        $this->recordEvent(new CompanyRenamed($this->id, $newName));
     }
 
     public function changeInn(Inn $newInn): void
@@ -69,5 +73,7 @@ final class Company implements AggregateRoot
         }
 
         $this->inn = $newInn;
+
+        $this->recordEvent(new CompanyInnChanged($this->id, $newInn));
     }
 }

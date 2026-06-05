@@ -33,7 +33,7 @@ final class Handler
 
     public function handle(Command $command): void
     {
-        $id   = Id::generate()->getValue();
+        $id   = new Id($command->id);
         $name = Name::fromString($command->name);
         $inn  = Inn::fromString($command->inn);
 

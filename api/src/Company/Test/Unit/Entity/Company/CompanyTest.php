@@ -7,6 +7,8 @@ namespace App\Company\Test\Unit\Entity\Company;
 use App\Company\Entity\Company\Id;
 use App\Company\Entity\Company\Inn;
 use App\Company\Entity\Company\Name;
+use App\Company\Event\CompanyInnChanged;
+use App\Company\Event\CompanyRenamed;
 use App\Company\Test\Builder\CompanyBuilder;
 use DomainException;
 use PHPUnit\Framework\TestCase;
@@ -89,5 +91,47 @@ final class CompanyTest extends TestCase
 
         $this->expectException(DomainException::class);
         $company->changeInn(Inn::fromString('7707083893'));
+    }
+
+    // -------------------------------------------------------------------------
+    // Тесты генерации событий
+    // -------------------------------------------------------------------------
+
+    public function testRenameRecordsCompanyRenamedEvent(): void
+    {
+        $company = (new CompanyBuilder())
+            ->withName(Name::fromString('Старое название'))
+            ->build();
+
+        // Сбросим событие CompanyAdded, записанное при create()
+        $company->releaseEvents();
+
+        $newName = Name::fromString('Новое название');
+        $company->rename($newName);
+
+        $events = $company->releaseEvents();
+
+        self::assertCount(1, $events);
+        self::assertInstanceOf(CompanyRenamed::class, $events[0]);
+        self::assertSame($newName->getValue(), $events[0]->name->getValue());
+    }
+
+    public function testChangeInnRecordsCompanyInnChangedEvent(): void
+    {
+        $company = (new CompanyBuilder())
+            ->withInn(Inn::fromString('7707083893'))
+            ->build();
+
+        // Сбросим событие CompanyAdded, записанное при create()
+        $company->releaseEvents();
+
+        $newInn = Inn::fromString('500100732259');
+        $company->changeInn($newInn);
+
+        $events = $company->releaseEvents();
+
+        self::assertCount(1, $events);
+        self::assertInstanceOf(CompanyInnChanged::class, $events[0]);
+        self::assertSame($newInn->getValue(), $events[0]->inn->getValue());
     }
 }

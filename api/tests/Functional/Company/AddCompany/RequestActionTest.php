@@ -6,8 +6,7 @@ namespace Tests\Functional\Company\AddCompany;
 
 use App\Company\Entity\Company\CompanyRepository;
 use App\Company\Entity\Company\Id;
-use App\Company\Entity\Company\Inn;
-use App\Company\Entity\Company\Event\CompanyAdded;
+use App\Company\Event\CompanyAdded;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
