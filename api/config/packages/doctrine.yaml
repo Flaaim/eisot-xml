@@ -13,6 +13,7 @@ doctrine:
             user_status: App\Auth\Entity\User\StatusType
             user_role: App\Auth\Entity\User\RoleType
             company_id: App\Company\Entity\IdType
+            company_name: App\Company\Entity\NameType
 
     orm:
         validate_xml_mapping: true
