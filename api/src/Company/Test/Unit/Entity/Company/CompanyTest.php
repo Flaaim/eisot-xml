@@ -7,6 +7,7 @@ namespace App\Company\Test\Unit\Entity\Company;
 use App\Company\Entity\Company\Id;
 use App\Company\Entity\Company\Inn;
 use App\Company\Entity\Company\Name;
+use App\Company\Event\CompanyArchived;
 use App\Company\Event\CompanyInnChanged;
 use App\Company\Event\CompanyRenamed;
 use App\Company\Test\Builder\CompanyBuilder;
@@ -134,4 +135,47 @@ final class CompanyTest extends TestCase
         self::assertInstanceOf(CompanyInnChanged::class, $events[0]);
         self::assertSame($newInn->getValue(), $events[0]->inn->getValue());
     }
+
+    // -------------------------------------------------------------------------
+    // Тесты архивации (мягкое удаление)
+    // -------------------------------------------------------------------------
+
+    public function testArchive(): void
+    {
+        $company = (new CompanyBuilder())->build();
+
+        self::assertFalse($company->isArchived());
+
+        $company->archive();
+
+        self::assertTrue($company->isArchived());
+    }
+
+    public function testArchiveAlreadyArchivedThrowsException(): void
+    {
+        $company = (new CompanyBuilder())->build();
+        $company->archive();
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Company is already archived.');
+
+        $company->archive();
+    }
+
+    public function testArchiveRecordsCompanyArchivedEvent(): void
+    {
+        $company = (new CompanyBuilder())->build();
+
+        // Сбросим событие CompanyAdded, записанное при create()
+        $company->releaseEvents();
+
+        $company->archive();
+
+        $events = $company->releaseEvents();
+
+        self::assertCount(1, $events);
+        self::assertInstanceOf(CompanyArchived::class, $events[0]);
+        self::assertSame($company->getId()->getValue(), $events[0]->id->getValue());
+    }
 }
+

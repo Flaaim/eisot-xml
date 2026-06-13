@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Company\Entity\Company;
 
 use App\Company\Event\CompanyAdded;
+use App\Company\Event\CompanyArchived;
 use App\Company\Event\CompanyInnChanged;
 use App\Company\Event\CompanyRenamed;
 use App\SharedDomain\AggregateRoot;
@@ -25,6 +26,8 @@ final class Company implements AggregateRoot
         private Name $name,
         #[ORM\Column(type: 'company_inn')]
         private Inn $inn,
+        #[ORM\Column(type: 'boolean', options: ['default' => false])]
+        private bool $isArchived = false,
     ) {
     }
 
@@ -55,6 +58,11 @@ final class Company implements AggregateRoot
         return $this->inn;
     }
 
+    public function isArchived(): bool
+    {
+        return $this->isArchived;
+    }
+
     public function rename(Name $newName): void
     {
         if ($this->name->isEqualTo($newName)) {
@@ -75,5 +83,21 @@ final class Company implements AggregateRoot
         $this->inn = $newInn;
 
         $this->recordEvent(new CompanyInnChanged($this->id, $newInn));
+    }
+
+    /**
+     * Переводит компанию в архив (мягкое удаление).
+     *
+     * Инвариант: нельзя архивировать уже архивированную компанию.
+     */
+    public function archive(): void
+    {
+        if ($this->isArchived) {
+            throw new \DomainException('Company is already archived.');
+        }
+
+        $this->isArchived = true;
+
+        $this->recordEvent(new CompanyArchived($this->id));
     }
 }

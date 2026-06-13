@@ -46,4 +46,20 @@ final class CompanyRepository
     {
         $this->em->persist($company);
     }
+
+    /**
+     * Возвращает только активные (не архивированные) компании.
+     * Используется для query-эндпоинтов (списки, XML-выгрузки).
+     *
+     * @return Company[]
+     */
+    public function findAllActive(): array
+    {
+        return $this->repo->createQueryBuilder('c')
+            ->andWhere('c.isArchived = :archived')
+            ->setParameter('archived', false)
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
