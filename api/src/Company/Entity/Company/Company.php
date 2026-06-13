@@ -26,19 +26,28 @@ final class Company implements AggregateRoot
         private Name $name,
         #[ORM\Column(type: 'company_inn')]
         private Inn $inn,
+        #[ORM\Column(name: 'user_id', type: 'company_user_id')]
+        private UserId $userId,
         #[ORM\Column(type: 'boolean', options: ['default' => false])]
         private bool $isArchived = false,
     ) {
     }
 
+    /**
+     * Фабричный метод: зарегистрировать нового контрагента за пользователем.
+     *
+     * Агрегат с момента создания знает своего владельца ($userId),
+     * что позволяет в будущем защищать данные от чужих изменений.
+     */
     public static function create(
-        Id $id,
-        Name $name,
-        Inn $inn,
+        Id     $id,
+        Name   $name,
+        Inn    $inn,
+        UserId $userId,
     ): self {
-        $company = new self($id, $name, $inn);
+        $company = new self($id, $name, $inn, $userId);
 
-        $company->recordEvent(new CompanyAdded($id, $name, $inn));
+        $company->recordEvent(new CompanyAdded($id, $name, $inn, $userId));
 
         return $company;
     }
@@ -56,6 +65,11 @@ final class Company implements AggregateRoot
     public function getInn(): Inn
     {
         return $this->inn;
+    }
+
+    public function getUserId(): UserId
+    {
+        return $this->userId;
     }
 
     public function isArchived(): bool

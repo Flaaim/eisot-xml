@@ -7,12 +7,15 @@ namespace App\Company\Test\Unit\Entity\Company;
 use App\Company\Entity\Company\Id;
 use App\Company\Entity\Company\Inn;
 use App\Company\Entity\Company\Name;
+use App\Company\Entity\Company\UserId;
+use App\Company\Event\CompanyAdded;
 use App\Company\Event\CompanyArchived;
 use App\Company\Event\CompanyInnChanged;
 use App\Company\Event\CompanyRenamed;
 use App\Company\Test\Builder\CompanyBuilder;
 use DomainException;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @internal
@@ -27,23 +30,42 @@ final class CompanyTest extends TestCase
         self::assertNotNull($company->getId());
         self::assertNotNull($company->getName());
         self::assertNotNull($company->getInn());
+        self::assertNotNull($company->getUserId());
     }
 
     public function testCreateStoresCorrectValues(): void
     {
-        $id   = Id::generate();
-        $name = Name::fromString('ООО Тест');
-        $inn  = Inn::fromString('7707083893');
+        $id     = Id::generate();
+        $name   = Name::fromString('ООО Тест');
+        $inn    = Inn::fromString('7707083893');
+        $userId = new UserId(Uuid::uuid4()->toString());
 
         $company = (new CompanyBuilder())
             ->withId($id)
             ->withName($name)
             ->withInn($inn)
+            ->withUserId($userId)
             ->build();
 
         self::assertSame($id->getValue(), $company->getId()->getValue());
         self::assertSame($name->getValue(), $company->getName()->getValue());
         self::assertSame($inn->getValue(), $company->getInn()->getValue());
+        self::assertSame($userId->getValue(), $company->getUserId()->getValue());
+    }
+
+    public function testCreateRecordsCompanyAddedEventWithUserId(): void
+    {
+        $userId = new UserId(Uuid::uuid4()->toString());
+
+        $company = (new CompanyBuilder())
+            ->withUserId($userId)
+            ->build();
+
+        $events = $company->releaseEvents();
+
+        self::assertCount(1, $events);
+        self::assertInstanceOf(CompanyAdded::class, $events[0]);
+        self::assertSame($userId->getValue(), $events[0]->userId->getValue());
     }
 
     public function testRename(): void
@@ -178,4 +200,3 @@ final class CompanyTest extends TestCase
         self::assertSame($company->getId()->getValue(), $events[0]->id->getValue());
     }
 }
-

@@ -8,18 +8,22 @@ use App\Company\Entity\Company\Company;
 use App\Company\Entity\Company\Id;
 use App\Company\Entity\Company\Inn;
 use App\Company\Entity\Company\Name;
+use App\Company\Entity\Company\UserId;
+use Ramsey\Uuid\Uuid;
 
 final class CompanyBuilder
 {
-    private Id $id;
-    private Name $name;
-    private Inn $inn;
+    private Id     $id;
+    private Name   $name;
+    private Inn    $inn;
+    private UserId $userId;
 
     public function __construct()
     {
-        $this->id   = Id::generate();
-        $this->name = Name::fromString('ООО Рога и Копыта');
-        $this->inn  = Inn::fromString('7707083893');
+        $this->id     = Id::generate();
+        $this->name   = Name::fromString('ООО Рога и Копыта');
+        $this->inn    = Inn::fromString('7707083893');
+        $this->userId = new UserId(Uuid::uuid4()->toString());
     }
 
     public function withId(Id $id): self
@@ -43,12 +47,20 @@ final class CompanyBuilder
         return $clone;
     }
 
+    public function withUserId(UserId $userId): self
+    {
+        $clone = clone $this;
+        $clone->userId = $userId;
+        return $clone;
+    }
+
     public function build(): Company
     {
         return Company::create(
             $this->id,
             $this->name,
             $this->inn,
+            $this->userId,
         );
     }
 }

@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * Содержит только идентификатор компании — DTO намерения пользователя.
  * Бизнес-семантика: «Архивировать», а не «Удалить».
+ *
+ * $userId заполняется контроллером из JWT-токена/сессии (не из тела запроса).
  */
 final class Command
 {
@@ -18,5 +20,8 @@ final class Command
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public readonly string $id,
+        #[Assert\NotBlank]
+        #[Assert\Uuid]
+        public readonly string $userId,
     ) {}
 }

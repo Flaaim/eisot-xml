@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
+use Tests\Functional\OAuthTokenTrait;
 
 /**
  * @internal
@@ -19,8 +20,11 @@ use Tests\Functional\Json;
  */
 final class RequestActionTest extends WebTestCase
 {
+    use OAuthTokenTrait;
+
     private KernelBrowser $client;
     private CompanyRepository $companies;
+    private string $accessToken;
 
     protected function setUp(): void
     {
@@ -34,6 +38,27 @@ final class RequestActionTest extends WebTestCase
         /** @var EntityManagerInterface $em */
         $em = $container->get(EntityManagerInterface::class);
         $this->companies = new CompanyRepository($em);
+
+        // Получаем токен владельца
+        $this->accessToken = $this->getAccessToken(
+            $this->client,
+            RequestFixture::USER_EMAIL,
+            RequestFixture::USER_PASS,
+        );
+    }
+
+    // -------------------------------------------------------------------------
+    // Тест 0: Без авторизации — 401
+    // -------------------------------------------------------------------------
+
+    public function testUnauthenticatedReturns401(): void
+    {
+        $this->client->jsonRequest('POST', '/v1/companies', [
+            'name' => 'ООО Ромашка',
+            'inn'  => '0901046828',
+        ]);
+
+        self::assertEquals(401, $this->client->getResponse()->getStatusCode());
     }
 
     // -------------------------------------------------------------------------
@@ -42,13 +67,14 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
-        $transport->reset();
+        $this->client->getContainer()->get('messenger.transport.async')->reset();
 
-        $this->client->jsonRequest('POST', '/v1/companies', [
-            'name' => 'ООО Ромашка',
-            'inn'  => '0901046828',
-        ]);
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/companies',
+            ['name' => 'ООО Ромашка', 'inn' => '0901046828'],
+            $this->authHeaders($this->accessToken),
+        );
 
         self::assertEquals(201, $this->client->getResponse()->getStatusCode());
 
@@ -62,8 +88,11 @@ final class RequestActionTest extends WebTestCase
         $company = $this->companies->get(new Id($data['id']));
         self::assertEquals('ООО Ромашка', $company->getName()->getValue());
         self::assertEquals('0901046828', $company->getInn()->getValue());
+        // userId привязан к текущему пользователю
+        self::assertEquals(RequestFixture::USER_ID, $company->getUserId()->getValue());
 
-        // Событие CompanyAdded отправлено в шину
+        // Событие CompanyAdded отправлено в шину с userId
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
         $sent = $transport->getSent();
         self::assertCount(1, $sent);
 
@@ -71,6 +100,7 @@ final class RequestActionTest extends WebTestCase
         self::assertInstanceOf(CompanyAdded::class, $event);
         self::assertEquals('ООО Ромашка', $event->name->getValue());
         self::assertEquals('0901046828', $event->inn->getValue());
+        self::assertEquals(RequestFixture::USER_ID, $event->userId->getValue());
     }
 
     // -------------------------------------------------------------------------
@@ -79,10 +109,12 @@ final class RequestActionTest extends WebTestCase
 
     public function testInvalidInn(): void
     {
-        $this->client->jsonRequest('POST', '/v1/companies', [
-            'name' => 'ООО Тест',
-            'inn'  => '123456789', // 9 цифр — неверно
-        ]);
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/companies',
+            ['name' => 'ООО Тест', 'inn' => '123456789'],
+            $this->authHeaders($this->accessToken),
+        );
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 
@@ -99,10 +131,12 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmptyName(): void
     {
-        $this->client->jsonRequest('POST', '/v1/companies', [
-            'name' => '',
-            'inn'  => '0901046828',
-        ]);
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/companies',
+            ['name' => '', 'inn' => '0901046828'],
+            $this->authHeaders($this->accessToken),
+        );
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 
@@ -119,11 +153,12 @@ final class RequestActionTest extends WebTestCase
 
     public function testDuplicateInn(): void
     {
-        // RequestFixture уже загрузил компанию с ИНН 7707083893
-        $this->client->jsonRequest('POST', '/v1/companies', [
-            'name' => 'Другая компания',
-            'inn'  => RequestFixture::INN_EXISTS,
-        ]);
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/companies',
+            ['name' => 'Другая компания', 'inn' => RequestFixture::INN_EXISTS],
+            $this->authHeaders($this->accessToken),
+        );
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
 

@@ -7,6 +7,8 @@ namespace App\Http\Action\V1\Company\ChangeCompanyInn;
 use App\Company\Command\ChangeCompanyInn\Command;
 use App\Company\Command\ChangeCompanyInn\Handler;
 use App\Infrastructure\Http\Validator\Validator;
+use App\OAuth\Entity\UserAdapter;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,16 +19,25 @@ final class RequestAction
     public function __construct(
         private readonly Handler   $handler,
         private readonly Validator $validator,
+        private readonly Security  $security,
     ) {}
 
     #[Route('/v1/companies/{id}/inn', name: 'company.change_inn', methods: ['PATCH'])]
     public function __invoke(Request $request, string $id): Response
     {
+        /** @var UserAdapter|null $userAdapter */
+        $userAdapter = $this->security->getUser();
+
+        if (!$userAdapter instanceof UserAdapter) {
+            return new JsonResponse(['message' => 'Access Denied.'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $body = $request->toArray();
 
         $command = new Command(
-            id:  $id,
-            inn: (string)($body['inn'] ?? ''),
+            id:     $id,
+            inn:    (string)($body['inn'] ?? ''),
+            userId: $userAdapter->getUserIdentifier(),
         );
 
         $this->validator->validate($command);

@@ -48,8 +48,28 @@ final class CompanyRepository
     }
 
     /**
-     * Возвращает только активные (не архивированные) компании.
-     * Используется для query-эндпоинтов (списки, XML-выгрузки).
+     * Возвращает только активные (не архивированные) компании текущего пользователя.
+     *
+     * Query-метод: фильтрует строго по user_id — пользователь видит только свои компании.
+     * Используется для query-эндпоинтов (списки, XML-выгрузки ЕИСОТ).
+     *
+     * @return Company[]
+     */
+    public function findAllActiveByUser(UserId $userId): array
+    {
+        return $this->repo->createQueryBuilder('c')
+            ->andWhere('c.userId = :userId')
+            ->andWhere('c.isArchived = :archived')
+            ->setParameter('userId', $userId->getValue())
+            ->setParameter('archived', false)
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @deprecated Используйте findAllActiveByUser() для запросов с фильтрацией по владельцу.
+     * Оставлен для обратной совместимости на период миграции.
      *
      * @return Company[]
      */

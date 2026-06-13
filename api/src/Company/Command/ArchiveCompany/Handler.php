@@ -6,6 +6,8 @@ namespace App\Company\Command\ArchiveCompany;
 
 use App\Company\Entity\Company\CompanyRepository;
 use App\Company\Entity\Company\Id;
+use App\Company\Entity\Company\UserId;
+use App\Company\Exception\AccessDeniedException;
 use App\Infrastructure\Doctrine\Flusher;
 
 /**
@@ -13,8 +15,9 @@ use App\Infrastructure\Doctrine\Flusher;
  *
  * Ответственность:
  *  1. Поиск агрегата по ID (DomainException если не найден)
- *  2. Делегирование бизнес-логики агрегату (archive() проверяет инварианты + записывает событие)
- *  3. Сброс (flush) через Flusher
+ *  2. Проверка: команду инициировал владелец компании
+ *  3. Делегирование бизнес-логики агрегату (archive() проверяет инварианты + записывает событие)
+ *  4. Сброс (flush) через Flusher
  */
 final class Handler
 {
@@ -26,6 +29,11 @@ final class Handler
     public function handle(Command $command): void
     {
         $company = $this->companies->get(new Id($command->id));
+
+        // Проверяем право на изменение: только владелец может архивировать компанию
+        if (!$company->getUserId()->isEqualTo(new UserId($command->userId))) {
+            throw new AccessDeniedException();
+        }
 
         $company->archive();
 

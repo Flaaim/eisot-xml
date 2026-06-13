@@ -18,9 +18,10 @@ final class LogOnCompanyAddedHandler
     public function __invoke(CompanyAdded $event): void
     {
         $this->logger->info('Company added', [
-            'id'   => $event->id->getValue(),
-            'name' => $event->name->getValue(),
-            'inn'  => $event->inn->getValue(),
+            'id'      => $event->id->getValue(),
+            'name'    => $event->name->getValue(),
+            'inn'     => $event->inn->getValue(),
+            'user_id' => $event->userId->getValue(),
         ]);
     }
 }

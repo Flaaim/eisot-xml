@@ -15,6 +15,7 @@ doctrine:
             company_id: App\Company\Entity\Company\IdType
             company_name: App\Company\Entity\Company\NameType
             company_inn: App\Company\Entity\Company\InnType
+            company_user_id: App\Company\Entity\Company\UserIdType
 
     orm:
         validate_xml_mapping: true

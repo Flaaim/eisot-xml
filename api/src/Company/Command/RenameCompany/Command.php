@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * Содержит только примитивные типы — DTO намерения пользователя.
  * Валидация инвариантов произойдёт при создании Value Objects в Handler.
+ *
+ * $userId заполняется контроллером из JWT-токена/сессии (не из тела запроса).
  */
 final class Command
 {
@@ -21,5 +23,8 @@ final class Command
         #[Assert\NotBlank]
         #[Assert\Length(max: 500)]
         public readonly string $name,
+        #[Assert\NotBlank]
+        #[Assert\Uuid]
+        public readonly string $userId,
     ) {}
 }
