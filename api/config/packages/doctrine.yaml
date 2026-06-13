@@ -16,6 +16,11 @@ doctrine:
             company_name: App\Company\Entity\Company\NameType
             company_inn: App\Company\Entity\Company\InnType
             company_user_id: App\Company\Entity\Company\UserIdType
+            worker_id: App\Worker\Entity\Worker\WorkerIdType
+            worker_company_id: App\Worker\Entity\Worker\CompanyIdType
+            worker_full_name: App\Worker\Entity\Worker\FullNameType
+            worker_profession: App\Worker\Entity\Worker\ProfessionType
+            worker_snils_info: App\Worker\Entity\Worker\SnilsInfoType
 
     orm:
         validate_xml_mapping: true
@@ -42,6 +47,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Company/Entity'
                 prefix: 'App\Company\Entity'
                 alias: Company
+            Worker:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Worker/Entity'
+                prefix: 'App\Worker\Entity'
+                alias: Worker
 
 when@test:
     doctrine:
