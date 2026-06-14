@@ -53,9 +53,9 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/workers/' . RequestFixture::WORKER_ID . '/training-records',
             [
-                'program'        => '1. Оказание первой помощи пострадавшим',
+                'program'        => 1,
                 'result'         => 'удовлетворительно',
-                'date'           => '28.09.2023 16:56:01',
+                'date'           => '28.09.2023',
                 'protocolNumber' => 'ПР-001',
             ],
         );
@@ -73,9 +73,9 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/workers/' . RequestFixture::WORKER_ID . '/training-records',
             [
-                'program'        => '1. Оказание первой помощи пострадавшим',
+                'program'        => 1,
                 'result'         => 'удовлетворительно',
-                'date'           => '28.09.2023 16:56:01',
+                'date'           => '28.09.2023',
                 'protocolNumber' => 'ПР-001',
             ],
             $this->authHeaders($this->otherToken),
@@ -96,9 +96,9 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/workers/' . RequestFixture::WORKER_ID . '/training-records',
             [
-                'program'        => '1. Оказание первой помощи пострадавшим',
+                'program'        => 1,
                 'result'         => 'удовлетворительно',
-                'date'           => '28.09.2023 16:56:01',
+                'date'           => '28.09.2023',
                 'protocolNumber' => 'ПР-001/2023',
             ],
             $this->authHeaders($this->ownerToken),
@@ -112,9 +112,10 @@ final class RequestActionTest extends WebTestCase
 
         // Запись сохранена в БД
         $record = $this->records->get(new \App\Training\Entity\Record\Id($data['id']));
-        self::assertEquals('1. Оказание первой помощи пострадавшим', $record->getProgram()->getValue());
+        self::assertEquals(1, $record->getProgram()->getId());
+        self::assertEquals('Оказание первой помощи пострадавшим', $record->getProgram()->getTitle());
         self::assertTrue($record->getResult()->isSatisfactory());
-        self::assertEquals('28.09.2023 16:56:01', $record->getDate()->format('d.m.Y H:i:s'));
+        self::assertEquals('28.09.2023', $record->getDate()->format('d.m.Y'));
         self::assertEquals('ПР-001/2023', $record->getProtocolNumber()->getValue());
         self::assertNull($record->getRegistryNumber());
 
@@ -135,9 +136,9 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/workers/' . RequestFixture::WORKER_ID . '/training-records',
             [
-                'program'        => '9. Безопасные методы и приемы выполнения работ на высоте',
+                'program'        => 9,
                 'result'         => 'неудовлетворительно',
-                'date'           => '01.10.2023 10:00:00',
+                'date'           => '01.10.2023',
                 'protocolNumber' => 'ПР-002/2023',
             ],
             $this->authHeaders($this->ownerToken),
@@ -151,7 +152,7 @@ final class RequestActionTest extends WebTestCase
     }
 
     // -------------------------------------------------------------------------
-    // 409 — недопустимая программа (DomainException через InvalidArgument)
+    // 409 — недопустимая программа (DomainException)
     // -------------------------------------------------------------------------
 
     public function testInvalidProgramThrowsDomainError(): void
@@ -160,9 +161,9 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/workers/' . RequestFixture::WORKER_ID . '/training-records',
             [
-                'program'        => 'Несуществующая программа',
+                'program'        => 999,
                 'result'         => 'удовлетворительно',
-                'date'           => '28.09.2023 16:56:01',
+                'date'           => '28.09.2023',
                 'protocolNumber' => 'ПР-001',
             ],
             $this->authHeaders($this->ownerToken),
@@ -181,9 +182,9 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/workers/dd8b1f8d-3cca-40f2-b21d-81c81cbf9579/training-records',
             [
-                'program'        => '1. Оказание первой помощи пострадавшим',
+                'program'        => 1,
                 'result'         => 'удовлетворительно',
-                'date'           => '28.09.2023 16:56:01',
+                'date'           => '28.09.2023',
                 'protocolNumber' => 'ПР-001',
             ],
             $this->authHeaders($this->ownerToken),
@@ -202,7 +203,7 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/workers/' . RequestFixture::WORKER_ID . '/training-records',
             [
-                'program'        => '',
+                'program'        => 0,
                 'result'         => '',
                 'date'           => '',
                 'protocolNumber' => '',

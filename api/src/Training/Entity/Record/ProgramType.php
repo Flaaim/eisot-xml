@@ -13,12 +13,12 @@ final class ProgramType extends StringType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
-        return $value instanceof Program ? $value->getValue() : $value;
+        return $value instanceof Program ? $value->getId() : $value;
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?Program
     {
-        return !empty($value) ? Program::fromString((string)$value) : null;
+        return $value !== null ? Program::fromId((int)$value) : null;
     }
 
     public function getName(): string

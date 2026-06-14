@@ -25,7 +25,7 @@ final class TrainingRecordBuilder
     {
         $this->id             = Id::generate();
         $this->workerId       = new WorkerId(Uuid::uuid4()->toString());
-        $this->program        = Program::fromString('1. Оказание первой помощи пострадавшим');
+        $this->program        = Program::fromId(1);
         $this->result         = Result::satisfactory();
         $this->date           = new \DateTimeImmutable('2023-09-28 16:56:01');
         $this->protocolNumber = ProtocolNumber::fromString('ПР-001/2023');

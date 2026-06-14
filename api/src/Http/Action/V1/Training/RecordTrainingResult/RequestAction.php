@@ -42,7 +42,7 @@ final class RequestAction
             id:             $id,
             workerId:       $workerId,
             userId:         $userId,
-            program:        (string)($body['program'] ?? ''),
+            program:        (int)($body['program'] ?? 0),
             result:         (string)($body['result'] ?? ''),
             date:           (string)($body['date'] ?? ''),
             protocolNumber: (string)($body['protocolNumber'] ?? ''),

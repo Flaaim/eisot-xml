@@ -14,34 +14,70 @@ use PHPUnit\Framework\TestCase;
  */
 final class ProgramTest extends TestCase
 {
-    public function testValidProgram(): void
+    public function testFromIdValid(): void
     {
-        $program = Program::fromString('1. Оказание первой помощи пострадавшим');
+        $program = Program::fromId(1);
 
-        self::assertEquals('1. Оказание первой помощи пострадавшим', $program->getValue());
+        self::assertEquals(1, $program->getId());
+        self::assertEquals('Оказание первой помощи пострадавшим', $program->getTitle());
     }
 
-    public function testAllowedProgramsReturns28Items(): void
+    public function testCatalogReturns28Items(): void
     {
-        self::assertCount(28, Program::allowedPrograms());
+        self::assertCount(28, Program::catalog());
     }
 
-    public function testEachAllowedProgramCanBeCreated(): void
+    public function testAllowedIdsReturns28Items(): void
     {
-        foreach (Program::allowedPrograms() as $name) {
-            $program = Program::fromString($name);
-            self::assertEquals($name, $program->getValue());
+        self::assertCount(28, Program::allowedIds());
+    }
+
+    public function testEachAllowedIdCanBeCreated(): void
+    {
+        foreach (Program::catalog() as $id => $title) {
+            $program = Program::fromId($id);
+            self::assertEquals($id, $program->getId());
+            self::assertEquals($title, $program->getTitle());
         }
     }
 
-    public function testInvalidProgramThrowsException(): void
+    public function testInvalidIdThrowsException(): void
+    {
+        $this->expectException(DomainException::class);
+
+        Program::fromId(999);
+    }
+
+    public function testIdFiveDoesNotExist(): void
+    {
+        $this->expectException(DomainException::class);
+
+        Program::fromId(5);
+    }
+
+    public function testIdZeroThrowsException(): void
+    {
+        $this->expectException(DomainException::class);
+
+        Program::fromId(0);
+    }
+
+    public function testFromStringValid(): void
+    {
+        $program = Program::fromString('Оказание первой помощи пострадавшим');
+
+        self::assertEquals(1, $program->getId());
+        self::assertEquals('Оказание первой помощи пострадавшим', $program->getTitle());
+    }
+
+    public function testFromStringInvalidThrowsException(): void
     {
         $this->expectException(DomainException::class);
 
         Program::fromString('Несуществующая программа');
     }
 
-    public function testEmptyProgramThrowsException(): void
+    public function testFromStringEmptyThrowsException(): void
     {
         $this->expectException(DomainException::class);
 
@@ -50,26 +86,31 @@ final class ProgramTest extends TestCase
 
     public function testEquality(): void
     {
-        $a = Program::fromString('9. Безопасные методы и приемы выполнения работ на высоте');
-        $b = Program::fromString('9. Безопасные методы и приемы выполнения работ на высоте');
+        $a = Program::fromId(9);
+        $b = Program::fromId(9);
 
         self::assertTrue($a->isEqualTo($b));
     }
 
     public function testInequality(): void
     {
-        $a = Program::fromString('1. Оказание первой помощи пострадавшим');
-        $b = Program::fromString('2. Использование (применение) средств индивидуальной защиты');
+        $a = Program::fromId(1);
+        $b = Program::fromId(2);
 
         self::assertFalse($a->isEqualTo($b));
     }
 
-    public function testLongProgramName(): void
+    public function testGetValueReturnsTitle(): void
     {
-        $program = Program::fromString(
-            '26. Безопасные методы и приемы работ по перемещению тяжеловесных и крупногабаритных грузов при отсутствии машин соответствующей грузоподъемности и разборке покосившихся и опасных (неправильно уложенных) штабелей круглых лесоматериалов'
-        );
+        $program = Program::fromId(29);
 
-        self::assertNotEmpty($program->getValue());
+        self::assertEquals('Безопасные методы и приемы работ в театрах', $program->getValue());
+    }
+
+    public function testToStringReturnsTitle(): void
+    {
+        $program = Program::fromId(1);
+
+        self::assertEquals('Оказание первой помощи пострадавшим', (string)$program);
     }
 }

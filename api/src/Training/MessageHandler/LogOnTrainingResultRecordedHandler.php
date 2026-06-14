@@ -20,9 +20,10 @@ final class LogOnTrainingResultRecordedHandler
         $this->logger->info('Training result recorded', [
             'id'              => $event->id->getValue(),
             'worker_id'       => $event->workerId->getValue(),
-            'program'         => $event->program->getValue(),
+            'program_id'      => $event->program->getId(),
+            'program'         => $event->program->getTitle(),
             'result'          => $event->result->getValue(),
-            'date'            => $event->date->format('d.m.Y H:i:s'),
+            'date'            => $event->date->format('d.m.Y'),
             'protocol_number' => $event->protocolNumber->getValue(),
         ]);
     }

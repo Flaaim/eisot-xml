@@ -56,7 +56,7 @@ final class Handler
         $record = TrainingRecord::record(
             new Id($command->id),
             new WorkerId($command->workerId),
-            Program::fromString($command->program),
+            Program::fromId($command->program),
             Result::fromString($command->result),
             $date,
             ProtocolNumber::fromString($command->protocolNumber),

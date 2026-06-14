@@ -65,7 +65,7 @@ final class RequestFixture extends AbstractFixture
         $record = TrainingRecord::record(
             new RecordId(self::RECORD_ID),
             new TrainingWorkerId(self::WORKER_ID),
-            Program::fromString('1. Оказание первой помощи пострадавшим'),
+            Program::fromId(1),
             Result::satisfactory(),
             new \DateTimeImmutable('2023-09-28 16:56:01'),
             ProtocolNumber::fromString('ПР-001/2023'),

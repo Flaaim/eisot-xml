@@ -21,8 +21,8 @@ final class Command
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public readonly string $userId,
-        #[Assert\NotBlank]
-        public readonly string $program,
+        #[Assert\Positive]
+        public readonly int $program,
         #[Assert\NotBlank]
         public readonly string $result,
         #[Assert\NotBlank]
