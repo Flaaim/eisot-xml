@@ -6,6 +6,7 @@ namespace App\Infrastructure\Http\EventSubscriber;
 
 use App\Company\Exception\AccessDeniedException as CompanyAccessDenied;
 use App\Worker\Exception\AccessDeniedException as WorkerAccessDenied;
+use App\Training\Exception\AccessDeniedException as TrainingAccessDenied;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,7 +29,7 @@ final class AccessDeniedExceptionSubscriber implements EventSubscriberInterface
     {
         $exception = $event->getThrowable();
 
-        if (!$exception instanceof CompanyAccessDenied && !$exception instanceof WorkerAccessDenied) {
+        if (!$exception instanceof CompanyAccessDenied && !$exception instanceof WorkerAccessDenied && !$exception instanceof TrainingAccessDenied) {
             return;
         }
 

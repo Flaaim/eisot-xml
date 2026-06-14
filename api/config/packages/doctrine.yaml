@@ -21,6 +21,12 @@ doctrine:
             worker_full_name: App\Worker\Entity\Worker\FullNameType
             worker_profession: App\Worker\Entity\Worker\ProfessionType
             worker_snils_info: App\Worker\Entity\Worker\SnilsInfoType
+            training_record_id: App\Training\Entity\Record\IdType
+            training_worker_id: App\Training\Entity\Record\WorkerIdType
+            training_program: App\Training\Entity\Record\ProgramType
+            training_result: App\Training\Entity\Record\ResultType
+            training_protocol_number: App\Training\Entity\Record\ProtocolNumberType
+            training_registry_number: App\Training\Entity\Record\RegistryNumberType
 
     orm:
         validate_xml_mapping: true
@@ -53,6 +59,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Worker/Entity'
                 prefix: 'App\Worker\Entity'
                 alias: Worker
+            Training:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Training/Entity'
+                prefix: 'App\Training\Entity'
+                alias: Training
 
 when@test:
     doctrine:
