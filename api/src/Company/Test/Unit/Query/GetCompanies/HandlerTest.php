@@ -52,11 +52,13 @@ final class HandlerTest extends TestCase
                 'id'   => '11111111-1111-1111-1111-111111111111',
                 'name' => '\u041e\u041e\u041e \u00ab\u0410\u043b\u044c\u0444\u0430\u00bb',
                 'inn'  => '7707083893',
+                'is_archived' => false,
             ],
             [
                 'id'   => '22222222-2222-2222-2222-222222222222',
                 'name' => '\u0418\u041f \u0418\u0432\u0430\u043d\u043e\u0432',
                 'inn'  => '771234567890',
+                'is_archived' => false,
             ],
         ];
 
@@ -74,10 +76,12 @@ final class HandlerTest extends TestCase
         self::assertInstanceOf(CompanyShortDTO::class, $result[0]);
         self::assertSame('11111111-1111-1111-1111-111111111111', $result[0]->id);
         self::assertSame('7707083893', $result[0]->inn);
+        self::assertFalse($result[0]->is_archived);
 
         self::assertInstanceOf(CompanyShortDTO::class, $result[1]);
         self::assertSame('22222222-2222-2222-2222-222222222222', $result[1]->id);
         self::assertSame('771234567890', $result[1]->inn);
+        self::assertFalse($result[1]->is_archived);
     }
 
     public function testPassesCorrectUserIdToFetcher(): void
