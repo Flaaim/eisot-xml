@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { CompaniesList } from "./CompaniesList";
+import { CompaniesList } from "./ActiveCompaniesList";
 
 // Mock next/link
 jest.mock("next/link", () => {

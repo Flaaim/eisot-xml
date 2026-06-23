@@ -1,12 +1,19 @@
-import { PlusCircle, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import {AlertCircle, PlusCircle} from "lucide-react";
 import { fetchCompaniesAction } from "@/actions/company";
-import { CompaniesList } from "@/components/User/Company/CompaniesList";
+import {ActiveCompaniesList, CompaniesList} from "@/components/User/Company/ActiveCompaniesList";
+import {ArchiveCompaniesList} from "@/components/User/Company/ArchiveCompanyLIst";
+import Link from "next/link";
+import {Button} from "@/components/ui/button";
 
 export default async function CompanyPage() {
   const result = await fetchCompaniesAction();
-  console.log(result);
+
+  const archivedCompanies = result.data?.filter((company => company.is_archived));
+
+  const activeCompanies = result.data?.filter((company => !company.is_archived));
+
+  const hasArchiveCompanies = archivedCompanies && archivedCompanies.length > 0;
+
   if (!result.ok || !result.data) {
     return (
       <div className="mx-auto max-w-4xl p-4 md:p-8">
@@ -27,7 +34,7 @@ export default async function CompanyPage() {
     <div className="mx-auto max-w-4xl p-4 md:p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Мои компании</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Активные компании</h1>
           <p className="text-muted-foreground text-sm mt-1">
             Выберите компанию для перехода в её рабочее пространство
           </p>
@@ -41,7 +48,21 @@ export default async function CompanyPage() {
           </Button>
         )}
       </div>
-      <CompaniesList companies={result.data} />
+      <ActiveCompaniesList companies={activeCompanies} />
+
+      {hasArchiveCompanies ? (
+        <div className="mt-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">Архив компаний</h1>
+              <p className="text-muted-foreground text-sm mt-1">
+                Архив содержит компании, с которыми вы когда-то работали
+              </p>
+            </div>
+          </div><ArchiveCompaniesList companies={archivedCompanies} />
+        </div>
+
+      ) : ''}
     </div>
   );
 }

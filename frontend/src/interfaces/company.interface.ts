@@ -15,4 +15,5 @@ export interface CompanyShort {
   readonly id: string;
   readonly name: string;
   readonly inn: string;
+  readonly is_archived: boolean
 }

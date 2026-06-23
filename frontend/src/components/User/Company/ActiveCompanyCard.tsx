@@ -7,7 +7,6 @@ import {archiveCompany} from "@/actions/company";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
 import {useState} from "react";
-import CompanyLoading from "@/app/(user)/user/company/loading";
 
 interface CompanyCardProps {
   readonly company: CompanyShort;
@@ -17,14 +16,13 @@ interface CompanyCardProps {
  * Карточка компании для дашборда.
  * Отображает название и ИНН. Стилизована с hover-эффектами.
  */
-export function CompanyCard({ company }: CompanyCardProps) {
+export function ActiveCompanyCard({ company }: CompanyCardProps) {
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter();
   const archive = async (id: string) => {
     try {
       setLoading(true)
       const response = await archiveCompany(id);
-      console.log(response);
       if (response.ok) {
         toast.success('Компания успешно удалена!')
         router.refresh();
@@ -82,14 +80,17 @@ export function CompanyCard({ company }: CompanyCardProps) {
         </span>
       </CardContent>
       <CardFooter>
-        <div className="flex items-end justify-end">
+        <div className="flex flex-row">
           <button onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             archive(company.id)
-          }}>
-            <Archive className="h-5 w-5" />
+          }}
+
+          >
+            <Archive className="h-5 w-5" /><span className="text-xs">В архив</span>
           </button>
+
         </div>
       </CardFooter>
     </Card>

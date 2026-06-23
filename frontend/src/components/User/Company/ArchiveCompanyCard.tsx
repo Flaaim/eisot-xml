@@ -1,0 +1,95 @@
+"use client"
+
+import {Archive, Building2, Power} from "lucide-react";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import type { CompanyShort } from "@/interfaces/company.interface";
+import {archiveCompany} from "@/actions/company";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
+import {useState} from "react";
+
+interface CompanyCardProps {
+  readonly company: CompanyShort;
+}
+
+/**
+ * Карточка компании для дашборда.
+ * Отображает название и ИНН. Стилизована с hover-эффектами.
+ */
+export function ArchiveCompanyCard({ company }: CompanyCardProps) {
+  const [loading, setLoading] = useState<boolean>(false)
+  const router = useRouter();
+  const activate = async (id: string) => {
+    try {
+      setLoading(true)
+      const response = await archiveCompany(id);
+      if (response.ok) {
+        toast.success('Компания успешно активирована!')
+        router.refresh();
+      }
+    } catch (error) {
+      toast.success('Ошибка при активации компании.')
+    } finally {
+      setLoading(false)
+    }
+
+
+  }
+
+  if(loading) {
+    return (
+      <div className="pointer-events-none opacity-50">
+        <Card className="group transition-all duration-200">
+          <CardHeader className="pb-2">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 animate-pulse rounded-lg bg-muted" />
+              <div className="h-5 w-3/4 animate-pulse rounded-md bg-muted" />
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="h-6 w-24 animate-pulse rounded-md bg-muted" />
+          </CardContent>
+          <CardFooter>
+            <div className="flex items-end justify-end">
+              <div className="h-5 w-5 animate-pulse rounded bg-muted" />
+            </div>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <Card
+      data-testid={`company-card-${company.id}`}
+      className="group cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:ring-2 hover:ring-primary/20"
+    >
+      <CardHeader className="pb-2">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+            <Building2 className="h-5 w-5" />
+          </div>
+          <CardTitle className="text-base leading-snug line-clamp-2">
+            {company.name}
+          </CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent className="pt-0">
+        <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-inset ring-border">
+          ИНН {company.inn}
+        </span>
+      </CardContent>
+      <CardFooter>
+        <div className="flex items-end justify-end">
+          <button onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            activate(company.id)
+          }}>
+            <Power className="h-5 w-5" />
+          </button>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+}

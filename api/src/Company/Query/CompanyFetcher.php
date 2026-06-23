@@ -30,12 +30,10 @@ final class CompanyFetcher implements CompanyFetcherInterface
         $qb = $this->connection->createQueryBuilder();
 
         $result = $qb
-            ->select('id', 'name', 'inn')
+            ->select('id', 'name', 'inn', 'is_archived')
             ->from('companies')
             ->where('user_id = :userId')
-            ->andWhere('is_archived = :isArchived')
             ->setParameter('userId', $userId)
-            ->setParameter('isArchived', false, ParameterType::BOOLEAN)
             ->executeQuery();
 
         /** @var list<array{id: string, name: string, inn: string}> */
