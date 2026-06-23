@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
 final class UserId
 {
     public function __construct(
-        private readonly string $value
+        private string $value
     ) {
         Assert::uuid($value, 'User ID must be a valid UUID, got: %s');
         $this->value = mb_strtolower($value);

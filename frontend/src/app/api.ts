@@ -16,5 +16,10 @@ export const API = {
   },
   user: {
     profile: () => BASE_URL + `/v1/user/profile`
-  }
+  },
+  company: {
+    add: () => BASE_URL + `/v1/companies`,
+    list: () => BASE_URL + `/v1/companies`,
+    archive: (id) => BASE_URL + `/v1/companies/${id}`
+  },
 };

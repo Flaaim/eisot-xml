@@ -16,7 +16,7 @@ import {
 import { Logout } from "@/actions/auth";
 import Link from "next/link";
 
-const items = [{ title: "Панель", url: "/user/dashboard", icon: LayoutDashboard }];
+const items = [{ title: "Компания", url: "/user/company", icon: LayoutDashboard }];
 export interface DashboardSidebarProps {
   email: string;
 }

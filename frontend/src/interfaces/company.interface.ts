@@ -1,0 +1,18 @@
+export interface AddCompanyPayload {
+  name: string;
+  inn: string;
+}
+
+export interface AddCompanyResponseData {
+  id: string;
+}
+
+/**
+ * Краткая информация о компании для списка / дашборда.
+ * Соответствует CompanyShortDto на бэкенде.
+ */
+export interface CompanyShort {
+  readonly id: string;
+  readonly name: string;
+  readonly inn: string;
+}
