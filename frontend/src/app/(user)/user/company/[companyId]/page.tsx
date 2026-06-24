@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {Users, GraduationCap, CheckCircle2, Badge, Building2} from "lucide-react";
+import {Users, GraduationCap, CheckCircle2, Badge, Building2, AlertCircle, SearchX} from "lucide-react";
 import {fetchCompanyAction} from "@/actions/company";
+import Link from "next/link";
+import {Button} from "@/components/ui/button";
 
 interface CompanyOverviewPageProps {
   params: Promise<{ companyId: string }>;
@@ -10,13 +12,45 @@ export default async function CompanyOverviewPage({ params }: CompanyOverviewPag
   const { companyId } = await params;
 
   const result = await fetchCompanyAction(companyId);
-  console.log(result);
+
   if(!result.ok){
     return (
-      <div>Ошибка загрузки данных. Ошибка: {result.error}</div>
-    );
+      <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center animate-fade-in">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
+          <AlertCircle className="h-6 w-6 text-destructive" />
+        </div>
+        <h3 className="mt-4 text-lg font-semibold">Ошибка загрузки данных</h3>
+        <p className="mb-4 mt-2 text-sm text-muted-foreground max-w-sm">
+          Не удалось получить информацию о компании. {result.error}
+        </p>
+        <Link href="/user/company">
+          <Button variant="outline" size="sm">
+            Вернуться к списку
+          </Button>
+        </Link>
+      </div>
+    )
   }
   const company = result.data;
+  if(!company) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+        <SearchX className="h-6 w-6 text-muted-foreground" />
+      </div>
+      <h3 className="mt-4 text-lg font-semibold">Компания не найдена</h3>
+      <p className="mb-4 mt-2 text-sm text-muted-foreground max-w-sm">
+        Запрашиваемая компания не существует или была удалена.
+      </p>
+      <Link href="/user/company">
+        <Button size="sm">
+          К списку компаний
+        </Button>
+      </Link>
+    </div>
+    );
+  }
+
   const companyStatus = !company?.is_archived ? 'Активна' : 'В архиве';
   const stats = [
     {
