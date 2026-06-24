@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Company\Query;
 
+use App\Company\Entity\Company\Company;
+use App\Company\Query\GetCompanies\CompanyShortDTO;
 use App\Company\ReadModel\CompanyFetcherInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -38,5 +40,23 @@ final class CompanyFetcher implements CompanyFetcherInterface
 
         /** @var list<array{id: string, name: string, inn: string}> */
         return $result->fetchAllAssociative();
+    }
+
+    public function findOneByUserId(string $id, string $userId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+        $result = $qb
+            ->select('id', 'name', 'inn', 'is_archived')
+            ->from('companies')
+            ->where('id = :id')
+            ->andWhere('user_id = :userId')
+            ->setParameter('id', $id)
+            ->setParameter('userId', $userId)
+            ->executeQuery();
+
+        $result = $result->fetchAssociative();
+
+        if(!$result) return [];
+        return $result;
     }
 }
