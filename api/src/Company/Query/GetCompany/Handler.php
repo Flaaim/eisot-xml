@@ -25,7 +25,7 @@ final class Handler
             $row['id'],
             $row['name'],
             $row['inn'],
-            $row['is_archived']
+            $row['status']
         );
     }
 }

@@ -10,6 +10,6 @@ final readonly class CompanyShortDTO
         public string $id,
         public string $name,
         public string $inn,
-        public bool $is_archived,
+        public string $status,
     ) {}
 }

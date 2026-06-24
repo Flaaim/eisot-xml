@@ -4,6 +4,7 @@ import { Building2, ArrowLeft } from "lucide-react";
 
 import { fetchCompanyAction } from "@/actions/company";
 import { CompanyTabs } from "@/components/company/CompanyTabs";
+import { CompanyStatusToggle } from "@/components/company/CompanyStatusToggle";
 
 interface CompanyLayoutProps {
   children: React.ReactNode;
@@ -45,11 +46,14 @@ export default async function CompanyLayout({ children, params }: CompanyLayoutP
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
                 <span>ИНН: {company.inn}</span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  Активна
+                  <span className={`h-2 w-2 rounded-full ${company.status === 'ACTIVE' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                  {company.status === 'ACTIVE' ? 'Активна' : 'В архиве'}
                 </span>
               </div>
             </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <CompanyStatusToggle companyId={companyId} status={company.status} />
           </div>
         </div>
       </div>

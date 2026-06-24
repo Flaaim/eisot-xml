@@ -2,35 +2,34 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Action\V1\Company\ArchiveCompany;
+namespace App\Http\Action\V1\Company\RestoreCompany;
 
-use App\Company\Command\ArchiveCompany\Command;
-use App\Company\Command\ArchiveCompany\Handler;
+use App\Company\Command\RestoreCompany\Command;
+use App\Company\Command\RestoreCompany\Handler;
 use App\Infrastructure\Http\Validator\Validator;
 use App\OAuth\Entity\UserAdapter;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Архивирование компании (мягкое удаление).
+ * Восстановление компании из архива.
  *
- * REST: DELETE /v1/companies/{id}
+ * REST: POST /v1/companies/{companyId}/restore
  * Успех: 204 No Content.
- * Конфликт (уже архивирована / не найдена): 409 Conflict (через DomainExceptionSubscriber).
- * Нет прав: 403 Forbidden (через AccessDeniedException).
+ * Конфликт (уже активна / не найдена): 409 Conflict.
+ * Нет прав: 403 Forbidden.
  */
-final class RequestAction
+final readonly class RequestAction
 {
     public function __construct(
-        private readonly Handler   $handler,
-        private readonly Validator $validator,
-        private readonly Security  $security,
+        private Handler   $handler,
+        private Validator $validator,
+        private Security  $security,
     ) {}
 
-    #[Route('/v1/companies/{companyId}/archive', name: 'company.archive', methods: ['POST'])]
+    #[Route('/v1/companies/{companyId}/restore', name: 'company.restore', methods: ['POST'])]
     public function __invoke(string $companyId): Response
     {
         /** @var UserAdapter|null $userAdapter */

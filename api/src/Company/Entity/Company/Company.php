@@ -8,6 +8,7 @@ use App\Company\Event\CompanyAdded;
 use App\Company\Event\CompanyArchived;
 use App\Company\Event\CompanyInnChanged;
 use App\Company\Event\CompanyRenamed;
+use App\Company\Event\CompanyRestored;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,8 +29,8 @@ final class Company implements AggregateRoot
         private Inn $inn,
         #[ORM\Column(name: 'user_id', type: 'company_user_id')]
         private UserId $userId,
-        #[ORM\Column(type: 'boolean', options: ['default' => false])]
-        private bool $isArchived = false,
+        #[ORM\Column(type: 'string', length: 16, enumType: CompanyStatus::class, options: ['default' => CompanyStatus::ACTIVE])]
+        private CompanyStatus $status = CompanyStatus::ACTIVE,
     ) {
     }
 
@@ -72,9 +73,14 @@ final class Company implements AggregateRoot
         return $this->userId;
     }
 
+    public function getStatus(): CompanyStatus
+    {
+        return $this->status;
+    }
+
     public function isArchived(): bool
     {
-        return $this->isArchived;
+        return $this->status === CompanyStatus::ARCHIVED;
     }
 
     public function rename(Name $newName): void
@@ -106,12 +112,28 @@ final class Company implements AggregateRoot
      */
     public function archive(): void
     {
-        if ($this->isArchived) {
+        if ($this->status === CompanyStatus::ARCHIVED) {
             throw new \DomainException('Company is already archived.');
         }
 
-        $this->isArchived = true;
+        $this->status = CompanyStatus::ARCHIVED;
 
         $this->recordEvent(new CompanyArchived($this->id));
+    }
+
+    /**
+     * Восстанавливает компанию из архива.
+     *
+     * Инвариант: нельзя восстановить уже активную компанию.
+     */
+    public function restore(): void
+    {
+        if ($this->status === CompanyStatus::ACTIVE) {
+            throw new \DomainException('Company is already active.');
+        }
+
+        $this->status = CompanyStatus::ACTIVE;
+
+        $this->recordEvent(new CompanyRestored($this->id));
     }
 }

@@ -21,7 +21,7 @@ final readonly class Handler
     {
         // Проверка существования компании и прав владельца
         $companyRow = $this->connection->createQueryBuilder()
-            ->select('is_archived')
+            ->select('status')
             ->from('companies')
             ->where('id = :companyId')
             ->andWhere('user_id = :userId')
@@ -34,8 +34,7 @@ final readonly class Handler
             throw new \DomainException('Company not found.');
         }
 
-        $isArchived = (bool)$companyRow['is_archived'];
-        $status = $isArchived ? 'В архиве' : 'Активна';
+        $status = $companyRow['status'] === 'ARCHIVED' ? 'В архиве' : 'Активна';
 
         // 1. SELECT COUNT(w.id) FROM workers w JOIN companies c ON w.company_id = c.id WHERE w.company_id = :companyId AND c.user_id = :userId
         $workersCount = (int)$this->connection->createQueryBuilder()

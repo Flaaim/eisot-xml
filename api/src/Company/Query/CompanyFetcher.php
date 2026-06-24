@@ -25,20 +25,29 @@ final class CompanyFetcher implements CompanyFetcherInterface
     /**
      * @throws Exception
      *
-     * @return list<array{id: string, name: string, inn: string}>
+     * @return list<array{id: string, name: string, inn: string, status: string, workers_count: int, protocols_count: int}>
      */
     public function findAllByUserId(string $userId): array
     {
         $qb = $this->connection->createQueryBuilder();
 
         $result = $qb
-            ->select('id', 'name', 'inn', 'is_archived')
-            ->from('companies')
-            ->where('user_id = :userId')
+            ->select(
+                'c.id',
+                'c.name',
+                'c.inn',
+                'c.status',
+                '(SELECT COUNT(w.id) FROM workers w WHERE w.company_id = c.id) AS workers_count',
+                '(SELECT COUNT(tr.id) FROM training_records tr JOIN workers w ON tr.worker_id = w.id WHERE w.company_id = c.id) AS protocols_count'
+            )
+            ->from('companies', 'c')
+            ->where('c.user_id = :userId')
             ->setParameter('userId', $userId)
+            ->orderBy("CASE WHEN c.status = 'ACTIVE' THEN 0 ELSE 1 END", 'ASC')
+            ->addOrderBy('c.name', 'ASC')
             ->executeQuery();
 
-        /** @var list<array{id: string, name: string, inn: string}> */
+        /** @var list<array{id: string, name: string, inn: string, status: string, workers_count: int, protocols_count: int}> */
         return $result->fetchAllAssociative();
     }
 
@@ -46,7 +55,7 @@ final class CompanyFetcher implements CompanyFetcherInterface
     {
         $qb = $this->connection->createQueryBuilder();
         $result = $qb
-            ->select('id', 'name', 'inn', 'is_archived')
+            ->select('id', 'name', 'inn', 'status')
             ->from('companies')
             ->where('id = :id')
             ->andWhere('user_id = :userId')

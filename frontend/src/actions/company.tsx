@@ -4,6 +4,7 @@ import { AddCompanyPayload, CompanyShort, CompanyStats } from "@/interfaces/comp
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
+import { revalidatePath } from "next/cache";
 
 interface AddCompanyResponseData {
   id: string;
@@ -87,22 +88,48 @@ export async function fetchCompanyAction(id: string): Promise<ApiResponse<Compan
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
-export async function archiveCompany(id: string): Promise<ApiResponse> {
+export async function archiveCompanyAction(companyId: string): Promise<ApiResponse> {
   try {
-      const response = await apiFetch(API.company.archive(id), {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        }
-      })
+    const response = await apiFetch(API.company.archive(companyId), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
     const parsed = await handleApiResponse(response);
     if (!parsed.ok) {
       return { ok: false, error: parsed.error };
     }
+    revalidatePath("/user/company");
+    revalidatePath(`/user/company/${companyId}`);
     return { ok: true };
-  }catch (error){
-    console.error("archiveCompany Fetch error:", error);
+  } catch (error) {
+    console.error("archiveCompanyAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function unarchiveCompanyAction(companyId: string): Promise<ApiResponse> {
+  try {
+    const response = await apiFetch(API.company.restore(companyId), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    const parsed = await handleApiResponse(response);
+    if (!parsed.ok) {
+      return { ok: false, error: parsed.error };
+    }
+    revalidatePath("/user/company");
+    revalidatePath(`/user/company/${companyId}`);
+    return { ok: true };
+  } catch (error) {
+    console.error("unarchiveCompanyAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

@@ -8,9 +8,9 @@ import {Button} from "@/components/ui/button";
 export default async function CompanyPage() {
   const result = await fetchCompaniesAction();
 
-  const archivedCompanies = result.data?.filter((company => company.is_archived));
+  const archivedCompanies = result.data?.filter((company => company.status === "ARCHIVED"));
 
-  const activeCompanies = result.data?.filter((company => !company.is_archived));
+  const activeCompanies = result.data?.filter((company => company.status === "ACTIVE"));
 
   const hasArchiveCompanies = archivedCompanies && archivedCompanies.length > 0;
 

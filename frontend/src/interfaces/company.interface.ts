@@ -15,7 +15,9 @@ export interface CompanyShort {
   readonly id: string;
   readonly name: string;
   readonly inn: string;
-  readonly is_archived: boolean
+  readonly status: "ACTIVE" | "ARCHIVED";
+  readonly workersCount?: number;
+  readonly protocolsCount?: number;
 }
 
 export interface CompanyStats {

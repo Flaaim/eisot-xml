@@ -30,7 +30,9 @@ final class Handler
                 $row['id'],
                 $row['name'],
                 $row['inn'],
-                $row['is_archived']
+                $row['status'],
+                (int)$row['workers_count'],
+                (int)$row['protocols_count']
             ),
             $rows,
         );
