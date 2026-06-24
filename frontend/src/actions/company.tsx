@@ -72,7 +72,21 @@ export async function fetchCompaniesAction(): Promise<ApiResponse<CompanyShort[]
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
-
+export async function fetchCompanyAction(id: string): Promise<ApiResponse<CompanyShort>> {
+  try{
+    const response = await apiFetch(API.company.get(id), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+    return await handleApiResponse<CompanyShort>(response);
+  }catch (error) {
+    console.error("fetchCompanyAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
 export async function archiveCompany(id: string): Promise<ApiResponse> {
   try {
       const response = await apiFetch(API.company.archive(id), {

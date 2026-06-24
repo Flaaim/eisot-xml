@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, GraduationCap, CheckCircle2 } from "lucide-react";
+import {Users, GraduationCap, CheckCircle2, Badge, Building2} from "lucide-react";
+import {fetchCompanyAction} from "@/actions/company";
 
 interface CompanyOverviewPageProps {
   params: Promise<{ companyId: string }>;
@@ -8,6 +9,15 @@ interface CompanyOverviewPageProps {
 export default async function CompanyOverviewPage({ params }: CompanyOverviewPageProps) {
   const { companyId } = await params;
 
+  const result = await fetchCompanyAction(companyId);
+  console.log(result);
+  if(!result.ok){
+    return (
+      <div>Ошибка загрузки данных. Ошибка: {result.error}</div>
+    );
+  }
+  const company = result.data;
+  const companyStatus = !company?.is_archived ? 'Активна' : 'В архиве';
   const stats = [
     {
       title: "Работники",
@@ -23,7 +33,7 @@ export default async function CompanyOverviewPage({ params }: CompanyOverviewPag
     },
     {
       title: "Статус",
-      value: "Активна",
+      value: companyStatus,
       description: "Текущий статус компании",
       icon: CheckCircle2,
     },
@@ -37,7 +47,18 @@ export default async function CompanyOverviewPage({ params }: CompanyOverviewPag
           Рабочее пространство компании
         </p>
       </div>
-
+      <Card>
+        <CardContent className="flex items-center justify-between p-6">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Building2 className="h-5 w-5 text-muted-foreground" />
+              <span className="text-sm font-medium text-muted-foreground">Компания</span>
+            </div>
+            <p className="text-xl font-bold">{company?.name}</p>
+            <p className="text-sm text-muted-foreground">ИНН: {company?.inn}</p>
+          </div>
+        </CardContent>
+      </Card>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {stats.map((stat) => (
           <Card key={stat.title}>

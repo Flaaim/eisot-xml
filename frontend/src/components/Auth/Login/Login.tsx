@@ -48,7 +48,7 @@ export default function Login() {
       return;
     }
 
-    router.push("/user/dashboard");
+    router.push("/user/company");
   }
 
   return (

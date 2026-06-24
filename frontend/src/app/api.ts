@@ -20,6 +20,7 @@ export const API = {
   company: {
     add: () => BASE_URL + `/v1/companies`,
     list: () => BASE_URL + `/v1/companies`,
-    archive: (id) => BASE_URL + `/v1/companies/${id}`
+    get: (id: string) => BASE_URL + `/v1/companies/${id}`,
+    archive: (id: string) => BASE_URL + `/v1/companies/${id}`
   },
 };
