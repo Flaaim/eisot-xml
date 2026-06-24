@@ -1,8 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, GraduationCap, CheckCircle2, Building2, AlertCircle, SearchX } from "lucide-react";
+import { Users, GraduationCap, CheckCircle2 } from "lucide-react";
 import { fetchCompanyAction } from "@/actions/company";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { WorkerRegistrationForm } from "@/components/User/Company/WorkerRegistrationForm";
 
 interface CompanyOverviewPageProps {
@@ -14,46 +12,13 @@ export default async function CompanyOverviewPage({ params }: CompanyOverviewPag
 
   const result = await fetchCompanyAction(companyId);
 
-  if (!result.ok) {
-    return (
-      <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center animate-fade-in">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-          <AlertCircle className="h-6 w-6 text-destructive" />
-        </div>
-        <h3 className="mt-4 text-lg font-semibold">Ошибка загрузки данных</h3>
-        <p className="mb-4 mt-2 text-sm text-muted-foreground max-w-sm">
-          Не удалось получить информацию о компании. {result.error}
-        </p>
-        <Link href="/user/company">
-          <Button variant="outline" size="sm">
-            Вернуться к списку
-          </Button>
-        </Link>
-      </div>
-    );
+  if (!result.ok || !result.data) {
+    return null; // Layout notFound() will execute
   }
 
   const company = result.data;
-  if (!company) {
-    return (
-      <div className="flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-          <SearchX className="h-6 w-6 text-muted-foreground" />
-        </div>
-        <h3 className="mt-4 text-lg font-semibold">Компания не найдена</h3>
-        <p className="mb-4 mt-2 text-sm text-muted-foreground max-w-sm">
-          Запрашиваемая компания не существует или была удалена.
-        </p>
-        <Link href="/user/company">
-          <Button size="sm">
-            К списку компаний
-          </Button>
-        </Link>
-      </div>
-    );
-  }
-
   const companyStatus = !company?.is_archived ? "Активна" : "В архиве";
+
   const stats = [
     {
       title: "Работники",
@@ -77,29 +42,10 @@ export default async function CompanyOverviewPage({ params }: CompanyOverviewPag
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Обзор компании</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          Рабочее пространство компании
-        </p>
-      </div>
-
-      <Card>
-        <CardContent className="flex items-center justify-between p-6">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <Building2 className="h-5 w-5 text-muted-foreground" />
-              <span className="text-sm font-medium text-muted-foreground">Компания</span>
-            </div>
-            <p className="text-xl font-bold">{company?.name}</p>
-            <p className="text-sm text-muted-foreground">ИНН: {company?.inn}</p>
-          </div>
-        </CardContent>
-      </Card>
-
+      {/* Stats Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {stats.map((stat) => (
-          <Card key={stat.title}>
+          <Card key={stat.title} className="shadow-none bg-muted/40 border">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 {stat.title}
@@ -114,11 +60,12 @@ export default async function CompanyOverviewPage({ params }: CompanyOverviewPag
         ))}
       </div>
 
-      <div className="pt-6 border-t space-y-4">
+      {/* Form Area */}
+      <div className="pt-4 border-t space-y-4">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight">Внесение данных о работниках</h2>
+          <h2 className="text-lg font-semibold tracking-tight">Регистрация работника</h2>
           <p className="text-sm text-muted-foreground">
-            Зарегистрируйте нового работника и добавьте его протоколы обучения.
+            Заполните данные сотрудника и его протоколы обучения.
           </p>
         </div>
         <WorkerRegistrationForm companyId={companyId} company={company} />
