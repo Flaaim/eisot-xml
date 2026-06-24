@@ -21,6 +21,14 @@ export const API = {
     add: () => BASE_URL + `/v1/companies`,
     list: () => BASE_URL + `/v1/companies`,
     get: (id: string) => BASE_URL + `/v1/companies/${id}`,
-    archive: (id: string) => BASE_URL + `/v1/companies/${id}`
+    archive: (id: string) => BASE_URL + `/v1/companies/${id}`,
+    trainingRecords: (id: string) => BASE_URL + `/v1/companies/${id}/training-records`,
   },
+  worker: {
+    register: (companyId: string) => BASE_URL + `/v1/companies/${companyId}/workers`,
+    recordTraining: (workerId: string) => BASE_URL + `/v1/workers/${workerId}/training-records`,
+  },
+  training: {
+    export: () => BASE_URL + `/v1/training/export`,
+  }
 };
