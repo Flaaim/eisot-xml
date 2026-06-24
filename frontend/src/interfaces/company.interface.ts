@@ -17,3 +17,9 @@ export interface CompanyShort {
   readonly inn: string;
   readonly is_archived: boolean
 }
+
+export interface CompanyStats {
+  readonly workersCount: number;
+  readonly protocolsCount: number;
+  readonly status: string;
+}

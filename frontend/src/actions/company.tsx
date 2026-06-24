@@ -1,6 +1,6 @@
 "use server";
 
-import { AddCompanyPayload, CompanyShort } from "@/interfaces/company.interface";
+import { AddCompanyPayload, CompanyShort, CompanyStats } from "@/interfaces/company.interface";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
@@ -104,5 +104,30 @@ export async function archiveCompany(id: string): Promise<ApiResponse> {
   }catch (error){
     console.error("archiveCompany Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function getCompanyStatsAction(companyId: string): Promise<CompanyStats> {
+  try {
+    const response = await apiFetch(API.company.stats(companyId), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    const parsed = await handleApiResponse<CompanyStats>(response);
+    if (!parsed.ok || !parsed.data) {
+      throw new Error(parsed.error || "Не удалось загрузить статистику компании.");
+    }
+    return parsed.data;
+  } catch (error) {
+    console.error("getCompanyStatsAction Fetch error:", error);
+    return {
+      workersCount: 0,
+      protocolsCount: 0,
+      status: "Ошибка",
+    };
   }
 }
