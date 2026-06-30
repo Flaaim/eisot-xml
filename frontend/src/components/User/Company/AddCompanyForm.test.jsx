@@ -18,6 +18,10 @@ jest.mock("sonner", () => ({
   },
 }));
 
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: jest.fn(), refresh: jest.fn() }),
+}));
+
 const mockAddCompanyAction = jest.mocked(addCompanyAction);
 
 describe("AddCompanyForm", () => {

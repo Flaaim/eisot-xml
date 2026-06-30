@@ -1,7 +1,21 @@
 import { render, screen } from "@testing-library/react";
-import { CompaniesList } from "./ActiveCompaniesList";
+import { ActiveCompaniesList as CompaniesList } from "./ActiveCompaniesList";
 
-// Mock next/link
+jest.mock("@/actions/company", () => ({
+  archiveCompanyAction: jest.fn(),
+}));
+
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: jest.fn(), refresh: jest.fn() }),
+}));
+
+jest.mock("sonner", () => ({
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
+}));
+
 jest.mock("next/link", () => {
   const MockLink = ({ children, href, ...rest }) => {
     return (
@@ -17,22 +31,30 @@ jest.mock("next/link", () => {
   };
 });
 
-// Mock lucide-react icons
 jest.mock("lucide-react", () => ({
   Building2: (props) => <svg data-testid="building-icon" {...props} />,
   PlusCircle: (props) => <svg data-testid="plus-icon" {...props} />,
+  Users: (props) => <svg data-testid="users-icon" {...props} />,
+  GraduationCap: (props) => <svg data-testid="graduation-icon" {...props} />,
+  Archive: (props) => <svg data-testid="archive-icon" {...props} />,
 }));
 
 const mockCompanies = [
   {
     id: "11111111-1111-1111-1111-111111111111",
-    name: "\u041e\u041e\u041e \u00ab\u0410\u043b\u044c\u0444\u0430\u00bb",
+    name: "ООО «Альфа»",
     inn: "7707083893",
+    status: "ACTIVE",
+    workersCount: 3,
+    protocolsCount: 5,
   },
   {
     id: "22222222-2222-2222-2222-222222222222",
-    name: "\u0418\u041f \u0418\u0432\u0430\u043d\u043e\u0432",
+    name: "ИП Иванов",
     inn: "771234567890",
+    status: "ACTIVE",
+    workersCount: 0,
+    protocolsCount: 0,
   },
 ];
 
@@ -56,8 +78,8 @@ describe("CompaniesList", () => {
     expect(screen.getByText(mockCompanies[0].name)).toBeInTheDocument();
     expect(screen.getByText(mockCompanies[1].name)).toBeInTheDocument();
 
-    expect(screen.getByText(`\u0418\u041d\u041d ${mockCompanies[0].inn}`)).toBeInTheDocument();
-    expect(screen.getByText(`\u0418\u041d\u041d ${mockCompanies[1].inn}`)).toBeInTheDocument();
+    expect(screen.getByText(`ИНН ${mockCompanies[0].inn}`)).toBeInTheDocument();
+    expect(screen.getByText(`ИНН ${mockCompanies[1].inn}`)).toBeInTheDocument();
   });
 
   it("wraps each card in a link to the company context", () => {
@@ -83,13 +105,13 @@ describe("CompaniesList", () => {
     render(<CompaniesList companies={[]} />);
 
     expect(screen.getByTestId("companies-empty")).toBeInTheDocument();
-    expect(screen.getByText(/\u041a\u043e\u043c\u043f\u0430\u043d\u0438\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b/)).toBeInTheDocument();
+    expect(screen.getByText(/Компании не найдены/)).toBeInTheDocument();
   });
 
   it("renders link to create company in empty state", () => {
     render(<CompaniesList companies={[]} />);
 
-    const createLink = screen.getByRole("link", { name: /\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044e/i });
+    const createLink = screen.getByRole("link", { name: /Добавить компанию/i });
     expect(createLink).toHaveAttribute("href", "/user/company/add");
   });
 });

@@ -66,6 +66,9 @@ describe("Login form", () => {
     await user.type(emailInput, "flaaim@list.ru");
     await user.type(passwordInput, "12345678");
     await user.click(submitButton);
-    expect(mockPush).toHaveBeenCalledWith("/user/dashboard");
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/user/company");
+    });
   });
 });
