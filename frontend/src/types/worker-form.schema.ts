@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { isValidSnils, SNILS_PATTERN } from "@/lib/snils";
+import { isValidSnils, normalizeSnils, SNILS_PATTERN } from "@/lib/snils";
 
 // ───────────────────────────────────────────────
 // Constants & Types
@@ -97,11 +97,28 @@ const WorkerBaseSchema = z.object({
 
 const CitizenWorkerSchema = WorkerBaseSchema.extend({
   isForeigner: z.literal(false),
-  snils: z
-    .string()
-    .min(1, "Укажите СНИЛС")
-    .regex(SNILS_PATTERN, "Формат СНИЛС: 111-222-333 45")
-    .refine(isValidSnils, "Неверная контрольная сумма СНИЛС"),
+  snils: z.preprocess(
+    (val) => (typeof val === "string" ? normalizeSnils(val) : val),
+    z
+      .string()
+      .min(1, "Укажите СНИЛС")
+      .superRefine((val, ctx) => {
+        if (!SNILS_PATTERN.test(val)) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Укажите СНИЛС полностью в формате 111-222-333 45",
+          });
+          return;
+        }
+
+        if (!isValidSnils(val)) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Неверная контрольная сумма СНИЛС",
+          });
+        }
+      })
+  ),
   citizenship: z.string().optional(),
   foreignSnils: z.string().optional(),
 });

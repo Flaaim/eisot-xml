@@ -41,11 +41,11 @@ export function normalizeSnils(value: string): string {
 }
 
 /**
- * Алгоритм контрольного числа ПФР.
+ * Алгоритм контрольного числа ПФР (по первым 9 цифрам).
  */
-export function calculateSnilsChecksum(digits: string): number {
-  const clean = digits.replace(/\D/g, "");
-  if (clean.length < 9) {
+export function calculateSnilsChecksum(nineDigits: string): number {
+  const clean = nineDigits.replace(/\D/g, "");
+  if (clean.length !== 9) {
     return -1;
   }
 
@@ -57,7 +57,7 @@ export function calculateSnilsChecksum(digits: string): number {
   if (sum < 100) {
     return sum;
   }
-  if (sum === 100 || sum === 200) {
+  if (sum === 100 || sum === 101) {
     return 0;
   }
 
@@ -83,7 +83,7 @@ export function isValidSnils(value: string): boolean {
     return true;
   }
 
-  return calculateSnilsChecksum(digits) === checksum;
+  return calculateSnilsChecksum(digits.slice(0, 9)) === checksum;
 }
 
 /**

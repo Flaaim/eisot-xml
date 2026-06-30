@@ -81,7 +81,7 @@ final readonly class SnilsInfo
                 throw new \DomainException('Foreign SNILS must be empty for a citizen of Russia.');
             }
 
-            return self::forCitizen(Snils::fromString(Snils::normalize($snils)));
+            return self::forCitizen(Snils::fromString($snils));
         }
 
         // Иностранец

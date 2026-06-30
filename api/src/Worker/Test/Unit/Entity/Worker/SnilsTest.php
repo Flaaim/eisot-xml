@@ -14,9 +14,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class SnilsTest extends TestCase
 {
-    public function testValidSnils(): void
+    public function testValidSnilsFromFormattedString(): void
     {
         $snils = Snils::fromString('112-233-445 95');
+
+        self::assertEquals('112-233-445 95', $snils->getValue());
+    }
+
+    public function testValidSnilsFromElevenDigits(): void
+    {
+        $snils = Snils::fromString('11223344595');
 
         self::assertEquals('112-233-445 95', $snils->getValue());
     }
@@ -35,6 +42,13 @@ final class SnilsTest extends TestCase
         self::assertEquals('001-001-001 00', $snils->getValue());
     }
 
+    public function testChecksumExemptUpperBound(): void
+    {
+        $snils = Snils::fromString('001-001-998 99');
+
+        self::assertEquals('001-001-998 99', $snils->getValue());
+    }
+
     public function testInvalidChecksumThrowsException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -43,24 +57,23 @@ final class SnilsTest extends TestCase
         Snils::fromString('112-233-445 99');
     }
 
-    public function testInvalidFormatThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        Snils::fromString('12345678901');
-    }
-
-    public function testTooShortThrowsException(): void
+    public function testTooFewDigitsThrowsException(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         Snils::fromString('112-233-445');
     }
 
-    public function testNormalizeFormatsDigits(): void
+    public function testNormalizeExtractsDigitsOnly(): void
     {
-        self::assertSame('112-233-445 95', Snils::normalize('11223344595'));
-        self::assertSame('112-233-445', Snils::normalize('112233445'));
+        self::assertSame('11223344595', Snils::normalize('112-233-445 95'));
+        self::assertSame('112233445', Snils::normalize('112-233-445'));
+        self::assertSame('', Snils::normalize(''));
+    }
+
+    public function testFormatProducesEisotRepresentation(): void
+    {
+        self::assertSame('112-233-445 95', Snils::format('11223344595'));
     }
 
     public function testCalculateChecksum(): void
@@ -68,10 +81,33 @@ final class SnilsTest extends TestCase
         self::assertSame(95, Snils::calculateChecksum('112233445'));
     }
 
+    public function testCalculateChecksumWhenSumIs100(): void
+    {
+        self::assertSame(0, Snils::calculateChecksum('322222223'));
+    }
+
+    public function testCalculateChecksumWhenSumIs101(): void
+    {
+        self::assertSame(0, Snils::calculateChecksum('322222224'));
+    }
+
+    public function testCalculateChecksumWhenSumExceeds101(): void
+    {
+        // 106 % 101 = 5
+        self::assertSame(5, Snils::calculateChecksum('322222229'));
+    }
+
+    public function testCalculateChecksumRequiresExactlyNineDigits(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Snils::calculateChecksum('11223344528');
+    }
+
     public function testEquality(): void
     {
         $a = Snils::fromString('112-233-445 95');
-        $b = Snils::fromString('112-233-445 95');
+        $b = Snils::fromString('11223344595');
 
         self::assertTrue($a->isEqualTo($b));
     }

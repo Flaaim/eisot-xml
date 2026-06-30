@@ -41,7 +41,7 @@ final class CommandValidator
         }
 
         try {
-            Snils::fromString(Snils::normalize($command->snils));
+            Snils::fromString($command->snils);
         } catch (InvalidArgumentException $e) {
             throw new \DomainException($e->getMessage());
         }
