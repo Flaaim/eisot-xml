@@ -21,12 +21,12 @@ final class SnilsInfoTest extends TestCase
 
     public function testCitizenWithSnils(): void
     {
-        $snils = Snils::fromString('644-670-185 07');
+        $snils = Snils::fromString('112-233-445 95');
         $info  = SnilsInfo::forCitizen($snils);
 
         self::assertFalse($info->isForeigner());
         self::assertNotNull($info->getSnils());
-        self::assertEquals('644-670-185 07', $info->getSnils()->getValue());
+        self::assertEquals('112-233-445 95', $info->getSnils()->getValue());
         self::assertNull($info->getCitizenship());
         self::assertNull($info->getForeignSnils());
     }
@@ -52,7 +52,7 @@ final class SnilsInfoTest extends TestCase
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('Citizenship must be empty for a citizen of Russia.');
 
-        SnilsInfo::fromPrimitives(false, '644-670-185 07', 'Узбекистан', null);
+        SnilsInfo::fromPrimitives(false, '112-233-445 95', 'Узбекистан', null);
     }
 
     public function testCitizenWithForeignSnilsThrowsException(): void
@@ -60,7 +60,7 @@ final class SnilsInfoTest extends TestCase
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('Foreign SNILS must be empty for a citizen of Russia.');
 
-        SnilsInfo::fromPrimitives(false, '644-670-185 07', null, 'ABC123');
+        SnilsInfo::fromPrimitives(false, '112-233-445 95', null, 'ABC123');
     }
 
     // -------------------------------------------------------------------------
@@ -100,7 +100,7 @@ final class SnilsInfoTest extends TestCase
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('Standard SNILS must be empty for a foreign worker.');
 
-        SnilsInfo::fromPrimitives(true, '644-670-185 07', 'Узбекистан', null);
+        SnilsInfo::fromPrimitives(true, '112-233-445 95', 'Узбекистан', null);
     }
 
     // -------------------------------------------------------------------------
@@ -109,10 +109,10 @@ final class SnilsInfoTest extends TestCase
 
     public function testFromPrimitivesCitizen(): void
     {
-        $info = SnilsInfo::fromPrimitives(false, '644-670-185 07', null, null);
+        $info = SnilsInfo::fromPrimitives(false, '112-233-445 95', null, null);
 
         self::assertFalse($info->isForeigner());
-        self::assertEquals('644-670-185 07', $info->getSnils()->getValue());
+        self::assertEquals('112-233-445 95', $info->getSnils()->getValue());
     }
 
     public function testFromPrimitivesForeigner(): void

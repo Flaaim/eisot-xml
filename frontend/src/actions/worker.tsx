@@ -4,9 +4,36 @@ import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { WorkerAndProtocolsFormData } from "@/types/worker-form.schema";
+import {
+  buildRegisterWorkerCommand,
+  RegisterWorkerCommand,
+} from "@/lib/register-worker.command";
 
 interface RegisterWorkerResponse {
   workerId: string;
+}
+
+function toApiPayload(command: RegisterWorkerCommand): Record<string, unknown> {
+  if (command.isForeigner) {
+    return {
+      lastName: command.lastName,
+      firstName: command.firstName,
+      middleName: command.middleName,
+      profession: command.profession,
+      isForeigner: true,
+      citizenship: command.citizenship,
+      ...(command.foreignSnils ? { foreignSnils: command.foreignSnils } : {}),
+    };
+  }
+
+  return {
+    lastName: command.lastName,
+    firstName: command.firstName,
+    middleName: command.middleName,
+    profession: command.profession,
+    isForeigner: false,
+    snils: command.snils,
+  };
 }
 
 export async function registerWorkerWithProtocolsAction(
@@ -14,27 +41,15 @@ export async function registerWorkerWithProtocolsAction(
   formData: WorkerAndProtocolsFormData
 ): Promise<ApiResponse<RegisterWorkerResponse>> {
   try {
-    // 1. Parse FIO
-    const parts = formData.fio.trim().split(/\s+/);
-    const lastName = parts[0] || "";
-    const firstName = parts[1] || "";
-    const middleName = parts.slice(2).join(" ") || null;
+    const command = buildRegisterWorkerCommand(formData);
 
-    // 2. Register worker
     const workerResponse = await apiFetch(API.worker.register(companyId), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({
-        lastName,
-        firstName,
-        middleName,
-        profession: formData.profession,
-        snils: formData.snils,
-        isForeigner: false,
-      }),
+      body: JSON.stringify(toApiPayload(command)),
     });
 
     const workerText = await workerResponse.text();
@@ -57,7 +72,6 @@ export async function registerWorkerWithProtocolsAction(
       return { ok: false, error: "Не удалось получить ID зарегистрированного работника." };
     }
 
-    // 3. Register protocols (training records) in parallel
     const records = formData.protocols.flatMap((p) => {
       const [year, month, day] = p.date.split("-");
       const formattedDate = `${day}.${month}.${year}`;

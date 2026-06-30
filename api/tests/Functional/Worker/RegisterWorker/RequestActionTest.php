@@ -57,7 +57,7 @@ final class RequestActionTest extends WebTestCase
                 'firstName'  => 'Иван',
                 'profession' => 'Слесарь',
                 'isForeigner' => false,
-                'snils' => '644-670-185 07',
+                'snils' => '112-233-445 95',
             ],
         );
 
@@ -78,7 +78,7 @@ final class RequestActionTest extends WebTestCase
                 'firstName'  => 'Иван',
                 'profession' => 'Слесарь',
                 'isForeigner' => false,
-                'snils' => '644-670-185 07',
+                'snils' => '112-233-445 95',
             ],
             $this->authHeaders($this->otherToken),
         );
@@ -103,7 +103,7 @@ final class RequestActionTest extends WebTestCase
                 'middleName'  => 'Иванович',
                 'profession'  => 'Слесарь',
                 'isForeigner' => false,
-                'snils'       => '644-670-185 07',
+                'snils'       => '112-233-445 95',
             ],
             $this->authHeaders($this->ownerToken),
         );
@@ -123,7 +123,7 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals('Иванович', $worker->getFullName()->getMiddleName());
         self::assertEquals('Слесарь', $worker->getProfession()->getValue());
         self::assertFalse($worker->getSnilsInfo()->isForeigner());
-        self::assertEquals('644-670-185 07', $worker->getSnilsInfo()->getSnils()->getValue());
+        self::assertEquals('112-233-445 95', $worker->getSnilsInfo()->getSnils()->getValue());
         self::assertEquals(RequestFixture::COMPANY_ID, $worker->getCompanyId()->getValue());
 
         // Событие WorkerRegistered отправлено в шину
@@ -193,7 +193,7 @@ final class RequestActionTest extends WebTestCase
                 'firstName'   => 'Мухаммед',
                 'profession'  => 'Электрик',
                 'isForeigner' => true,
-                'snils'       => '644-670-185 07',
+                'snils'       => '112-233-445 95',
                 'citizenship' => 'Узбекистан',
             ],
             $this->authHeaders($this->ownerToken),
@@ -207,7 +207,7 @@ final class RequestActionTest extends WebTestCase
     }
 
     // -------------------------------------------------------------------------
-    // Тест 5: Гражданин РФ без СНИЛС — нарушение инварианта (409)
+    // Тест 5: Гражданин РФ без СНИЛС — ошибка валидации команды (422)
     // -------------------------------------------------------------------------
 
     public function testCitizenWithoutSnilsThrowsDomainError(): void
@@ -224,11 +224,14 @@ final class RequestActionTest extends WebTestCase
             $this->authHeaders($this->ownerToken),
         );
 
-        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
+        self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 
         self::assertJson($body = $this->client->getResponse()->getContent());
         $data = Json::decode($body);
-        self::assertEquals(['message' => 'SNILS is required for a citizen of Russia.'], $data);
+        self::assertEquals(
+            ['errors' => ['snils' => 'SNILS is required for a citizen of Russia.']],
+            $data,
+        );
     }
 
     // -------------------------------------------------------------------------
@@ -245,7 +248,7 @@ final class RequestActionTest extends WebTestCase
                 'firstName'   => '',
                 'profession'  => 'Слесарь',
                 'isForeigner' => false,
-                'snils'       => '644-670-185 07',
+                'snils'       => '112-233-445 95',
             ],
             $this->authHeaders($this->ownerToken),
         );
@@ -267,7 +270,7 @@ final class RequestActionTest extends WebTestCase
                 'firstName'   => 'Иван',
                 'profession'  => 'Слесарь',
                 'isForeigner' => false,
-                'snils'       => '644-670-185 07',
+                'snils'       => '112-233-445 95',
             ],
             $this->authHeaders($this->ownerToken),
         );

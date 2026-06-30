@@ -29,9 +29,10 @@ use App\Worker\Exception\AccessDeniedException;
 final class Handler
 {
     public function __construct(
-        private readonly CompanyRepository $companies,
-        private readonly WorkerRepository  $workers,
-        private readonly Flusher           $flusher,
+        private readonly CompanyRepository  $companies,
+        private readonly WorkerRepository   $workers,
+        private readonly Flusher            $flusher,
+        private readonly CommandValidator   $commandValidator,
     ) {}
 
     public function handle(Command $command): void
@@ -44,7 +45,10 @@ final class Handler
             throw new AccessDeniedException();
         }
 
-        // 3. Создаём Value Objects (инварианты SnilsInfo проверяются автоматически)
+        // 3. Прикладная валидация команды (до создания агрегата и доменного события)
+        $this->commandValidator->validate($command);
+
+        // 4. Создаём Value Objects (инварианты SnilsInfo проверяются автоматически)
         $workerId   = new WorkerId($command->workerId);
         $companyId  = new CompanyId($command->companyId);
         $fullName   = FullName::create($command->lastName, $command->firstName, $command->middleName);
@@ -56,10 +60,10 @@ final class Handler
             $command->foreignSnils,
         );
 
-        // 4. Создаём агрегат
+        // 5. Создаём агрегат
         $worker = Worker::register($workerId, $companyId, $fullName, $profession, $snilsInfo);
 
-        // 5. Сохраняем
+        // 6. Сохраняем
         $this->workers->add($worker);
         $this->flusher->flush();
     }

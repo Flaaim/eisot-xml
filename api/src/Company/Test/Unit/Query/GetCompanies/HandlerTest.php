@@ -49,16 +49,20 @@ final class HandlerTest extends TestCase
 
         $rows = [
             [
-                'id'   => '11111111-1111-1111-1111-111111111111',
-                'name' => '\u041e\u041e\u041e \u00ab\u0410\u043b\u044c\u0444\u0430\u00bb',
-                'inn'  => '7707083893',
-                'is_archived' => false,
+                'id'               => '11111111-1111-1111-1111-111111111111',
+                'name'             => 'ООО «Альфа»',
+                'inn'              => '7707083893',
+                'status'           => 'ACTIVE',
+                'workers_count'    => 3,
+                'protocols_count'  => 5,
             ],
             [
-                'id'   => '22222222-2222-2222-2222-222222222222',
-                'name' => '\u0418\u041f \u0418\u0432\u0430\u043d\u043e\u0432',
-                'inn'  => '771234567890',
-                'is_archived' => false,
+                'id'               => '22222222-2222-2222-2222-222222222222',
+                'name'             => 'ИП Иванов',
+                'inn'              => '771234567890',
+                'status'           => 'ARCHIVED',
+                'workers_count'    => 0,
+                'protocols_count'  => 0,
             ],
         ];
 
@@ -76,12 +80,16 @@ final class HandlerTest extends TestCase
         self::assertInstanceOf(CompanyShortDTO::class, $result[0]);
         self::assertSame('11111111-1111-1111-1111-111111111111', $result[0]->id);
         self::assertSame('7707083893', $result[0]->inn);
-        self::assertFalse($result[0]->is_archived);
+        self::assertSame('ACTIVE', $result[0]->status);
+        self::assertSame(3, $result[0]->workersCount);
+        self::assertSame(5, $result[0]->protocolsCount);
 
         self::assertInstanceOf(CompanyShortDTO::class, $result[1]);
         self::assertSame('22222222-2222-2222-2222-222222222222', $result[1]->id);
         self::assertSame('771234567890', $result[1]->inn);
-        self::assertFalse($result[1]->is_archived);
+        self::assertSame('ARCHIVED', $result[1]->status);
+        self::assertSame(0, $result[1]->workersCount);
+        self::assertSame(0, $result[1]->protocolsCount);
     }
 
     public function testPassesCorrectUserIdToFetcher(): void

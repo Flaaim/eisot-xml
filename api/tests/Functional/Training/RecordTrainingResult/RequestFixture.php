@@ -65,7 +65,7 @@ final class RequestFixture extends AbstractFixture
             new WorkerCompanyId(self::COMPANY_ID),
             FullName::create('Иванов', 'Иван', 'Иванович'),
             Profession::fromString('Слесарь'),
-            SnilsInfo::forCitizen(Snils::fromString('644-670-185 07')),
+            SnilsInfo::forCitizen(Snils::fromString('112-233-445 95')),
         );
         $manager->persist($worker);
 

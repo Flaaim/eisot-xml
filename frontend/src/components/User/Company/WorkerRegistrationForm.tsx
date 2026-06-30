@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
@@ -19,6 +20,7 @@ import {
 } from "@/types/worker-form.schema";
 import { registerWorkerWithProtocolsAction } from "@/actions/worker";
 import { CompanyShort } from "@/interfaces/company.interface";
+import { SnilsInput } from "@/components/User/Company/SnilsInput";
 
 interface WorkerRegistrationFormProps {
   readonly companyId: string;
@@ -34,31 +36,13 @@ const EMPTY_PROTOCOL: ProtocolFormData = {
 
 const DEFAULT_VALUES: WorkerAndProtocolsFormData = {
   fio: "",
+  isForeigner: false,
   snils: "",
+  citizenship: "",
+  foreignSnils: "",
   profession: "",
   protocols: [{ ...EMPTY_PROTOCOL }],
 };
-
-/**
- * Auto-formatter for SNILS (111-222-333 45)
- */
-function formatSnils(value: string): string {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
-  let formatted = "";
-  if (digits.length > 0) {
-    formatted += digits.slice(0, 3);
-  }
-  if (digits.length > 3) {
-    formatted += "-" + digits.slice(3, 6);
-  }
-  if (digits.length > 6) {
-    formatted += "-" + digits.slice(6, 9);
-  }
-  if (digits.length > 9) {
-    formatted += " " + digits.slice(9, 11);
-  }
-  return formatted;
-}
 
 export function WorkerRegistrationForm({ companyId, company }: WorkerRegistrationFormProps) {
   const router = useRouter();
@@ -67,12 +51,16 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
     control,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<WorkerAndProtocolsFormData>({
     resolver: zodResolver(WorkerAndProtocolsSchema),
     defaultValues: DEFAULT_VALUES,
     mode: "onBlur",
   });
+
+  const isForeigner = watch("isForeigner");
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -130,7 +118,33 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
             <CardDescription>Введите персональные данные сотрудника</CardDescription>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <Controller
+            name="isForeigner"
+            control={control}
+            render={({ field }) => (
+              <Field orientation="horizontal">
+                <Checkbox
+                  id="worker-is-foreigner"
+                  checked={field.value}
+                  onCheckedChange={(checked) => {
+                    const nextValue = checked === true;
+                    field.onChange(nextValue);
+                    if (nextValue) {
+                      setValue("snils", "");
+                    } else {
+                      setValue("citizenship", "");
+                      setValue("foreignSnils", "");
+                    }
+                  }}
+                />
+                <FieldLabel htmlFor="worker-is-foreigner" className="font-normal">
+                  Иностранный гражданин (IsForeignSnils)
+                </FieldLabel>
+              </Field>
+            )}
+          />
+
           <FieldGroup className="grid gap-4 sm:grid-cols-3">
             <Controller
               name="fio"
@@ -150,32 +164,67 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
               )}
             />
 
-            <Controller
-              name="snils"
-              control={control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="worker-snils">СНИЛС</FieldLabel>
-                  <Input
-                    {...field}
-                    id="worker-snils"
-                    placeholder="111-222-333 45"
-                    value={field.value}
-                    onChange={(e) => {
-                      field.onChange(formatSnils(e.target.value));
-                    }}
-                    aria-invalid={fieldState.invalid}
-                  />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
+            {!isForeigner ? (
+              <Controller
+                name="snils"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="worker-snils">СНИЛС</FieldLabel>
+                    <SnilsInput
+                      id="worker-snils"
+                      value={field.value ?? ""}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+            ) : (
+              <>
+                <Controller
+                  name="citizenship"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="worker-citizenship">Гражданство</FieldLabel>
+                      <Input
+                        {...field}
+                        id="worker-citizenship"
+                        placeholder="Узбекистан"
+                        aria-invalid={fieldState.invalid}
+                      />
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+                <Controller
+                  name="foreignSnils"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor="worker-foreign-snils">СНИЛС иностранца</FieldLabel>
+                      <Input
+                        {...field}
+                        id="worker-foreign-snils"
+                        placeholder="Необязательно"
+                        aria-invalid={fieldState.invalid}
+                        maxLength={30}
+                      />
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              </>
+            )}
 
             <Controller
               name="profession"
               control={control}
               render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
+                <Field data-invalid={fieldState.invalid} className={isForeigner ? "sm:col-span-3" : undefined}>
                   <FieldLabel htmlFor="worker-profession">Профессия</FieldLabel>
                   <Input
                     {...field}
@@ -213,8 +262,6 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
           )}
 
           {fields.map((item, index) => {
-            const protocolErrors = errors.protocols?.[index];
-
             return (
               <div
                 key={item.id}
@@ -239,7 +286,6 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-                  {/* Программа обучения */}
                   <div className="md:col-span-2 xl:col-span-1">
                     <Controller
                       name={`protocols.${index}.programId`}
@@ -275,7 +321,6 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                     />
                   </div>
 
-                  {/* Результат */}
                   <Controller
                     name={`protocols.${index}.result`}
                     control={control}
@@ -298,7 +343,6 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                     )}
                   />
 
-                  {/* Дата */}
                   <Controller
                     name={`protocols.${index}.date`}
                     control={control}
@@ -316,7 +360,6 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                     )}
                   />
 
-                  {/* Номер протокола */}
                   <Controller
                     name={`protocols.${index}.protocolNumber`}
                     control={control}
@@ -351,7 +394,6 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
         </CardContent>
       </Card>
 
-      {/* Buttons */}
       <div className="flex items-center justify-end gap-3 pt-2">
         <Button
           type="button"

@@ -38,7 +38,7 @@ final class WorkerTest extends TestCase
         $companyId  = new CompanyId(Uuid::uuid4()->toString());
         $fullName   = FullName::create('Петров', 'Пётр', 'Петрович');
         $profession = Profession::fromString('Электрик');
-        $snilsInfo  = SnilsInfo::forCitizen(Snils::fromString('123-456-789 12'));
+        $snilsInfo  = SnilsInfo::forCitizen(Snils::fromString('112-233-445 95'));
 
         $worker = (new WorkerBuilder())
             ->withId($id)

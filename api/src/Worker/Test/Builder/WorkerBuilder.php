@@ -27,7 +27,7 @@ final class WorkerBuilder
         $this->companyId  = new CompanyId(Uuid::uuid4()->toString());
         $this->fullName   = FullName::create('Иванов', 'Иван', 'Иванович');
         $this->profession = Profession::fromString('Слесарь');
-        $this->snilsInfo  = SnilsInfo::forCitizen(Snils::fromString('644-670-185 07'));
+        $this->snilsInfo  = SnilsInfo::forCitizen(Snils::fromString('112-233-445 95'));
     }
 
     public function withId(WorkerId $id): self

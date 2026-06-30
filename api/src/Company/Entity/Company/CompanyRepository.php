@@ -59,7 +59,7 @@ final class CompanyRepository
     {
         return $this->repo->createQueryBuilder('c')
             ->andWhere('c.userId = :userId')
-            ->andWhere('c.isArchived = :archived')
+            ->andWhere('c.status = :archived')
             ->setParameter('userId', $userId->getValue())
             ->setParameter('archived', false)
             ->orderBy('c.name', 'ASC')

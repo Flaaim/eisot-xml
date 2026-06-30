@@ -52,8 +52,8 @@ final class RequestActionTest extends WebTestCase
     public function testUnauthenticatedReturns401(): void
     {
         $this->client->jsonRequest(
-            'DELETE',
-            '/v1/companies/' . RequestFixture::COMPANY_ID,
+            'POST',
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/archive',
         );
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
@@ -66,8 +66,8 @@ final class RequestActionTest extends WebTestCase
     public function testForbiddenForNonOwner(): void
     {
         $this->client->jsonRequest(
-            'DELETE',
-            '/v1/companies/' . RequestFixture::COMPANY_ID,
+            'POST',
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/archive',
             [],
             $this->authHeaders($this->otherToken),
         );
@@ -88,8 +88,8 @@ final class RequestActionTest extends WebTestCase
         $this->client->getContainer()->get('messenger.transport.async')->reset();
 
         $this->client->jsonRequest(
-            'DELETE',
-            '/v1/companies/' . RequestFixture::COMPANY_ID,
+            'POST',
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/archive',
             [],
             $this->authHeaders($this->ownerToken),
         );
@@ -124,8 +124,8 @@ final class RequestActionTest extends WebTestCase
 
         // Первый запрос — архивируем
         $this->client->jsonRequest(
-            'DELETE',
-            '/v1/companies/' . RequestFixture::COMPANY_ID,
+            'POST',
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/archive',
             [],
             $this->authHeaders($this->ownerToken),
         );
@@ -135,8 +135,8 @@ final class RequestActionTest extends WebTestCase
 
         // Второй запрос — агрегат защищает инвариант
         $this->client->jsonRequest(
-            'DELETE',
-            '/v1/companies/' . RequestFixture::COMPANY_ID,
+            'POST',
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/archive',
             [],
             $this->authHeaders($this->ownerToken),
         );
@@ -155,8 +155,8 @@ final class RequestActionTest extends WebTestCase
     public function testNotFoundReturnsError(): void
     {
         $this->client->jsonRequest(
-            'DELETE',
-            '/v1/companies/dd8b1f8d-3cca-40f2-b21d-81c81cbf9579',
+            'POST',
+            '/v1/companies/dd8b1f8d-3cca-40f2-b21d-81c81cbf9579/archive',
             [],
             $this->authHeaders($this->ownerToken),
         );
@@ -176,8 +176,8 @@ final class RequestActionTest extends WebTestCase
     {
         // Архивируем компанию
         $this->client->jsonRequest(
-            'DELETE',
-            '/v1/companies/' . RequestFixture::COMPANY_ID,
+            'POST',
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/archive',
             [],
             $this->authHeaders($this->ownerToken),
         );

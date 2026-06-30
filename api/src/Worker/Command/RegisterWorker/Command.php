@@ -35,8 +35,31 @@ final class Command
         #[Assert\Length(max: 200)]
         public readonly string $profession,
         public readonly bool $isForeigner,
+        #[Assert\When(
+            expression: 'this.isForeigner === false',
+            constraints: [
+                new Assert\NotBlank(message: 'SNILS is required for a citizen of Russia.'),
+                new Assert\Regex(
+                    pattern: '/^\d{3}-\d{3}-\d{3} \d{2}$/',
+                    message: 'SNILS must match format XXX-XXX-XXX XX.',
+                ),
+            ],
+        )]
         public readonly ?string $snils,
+        #[Assert\When(
+            expression: 'this.isForeigner === true',
+            constraints: [
+                new Assert\NotBlank(message: 'Citizenship is required for a foreign worker.'),
+                new Assert\Length(max: 100),
+            ],
+        )]
         public readonly ?string $citizenship,
+        #[Assert\When(
+            expression: 'this.isForeigner === true and this.foreignSnils !== null and this.foreignSnils !== ""',
+            constraints: [
+                new Assert\Length(max: 30),
+            ],
+        )]
         public readonly ?string $foreignSnils,
     ) {}
 }

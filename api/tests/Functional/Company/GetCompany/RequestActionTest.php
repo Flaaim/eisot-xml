@@ -67,7 +67,7 @@ final class RequestActionTest extends WebTestCase
             'id' => RequestFixture::COMPANY_ID,
             'name' => RequestFixture::COMPANY_NAME,
             'inn' => RequestFixture::COMPANY_INN,
-            'is_archived' => false,
+            'status' => 'ACTIVE',
         ], $data);
     }
     public function testNotFoundToNotOwner(): void

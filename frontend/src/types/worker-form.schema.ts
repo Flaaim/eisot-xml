@@ -1,11 +1,9 @@
 import { z } from "zod";
+import { isValidSnils, SNILS_PATTERN } from "@/lib/snils";
 
 // ───────────────────────────────────────────────
 // Constants & Types
 // ───────────────────────────────────────────────
-
-/** Format SNILS: 111-222-333 45 */
-const SNILS_REGEX = /^\d{3}-\d{3}-\d{3}\s\d{2}$/;
 
 /** Allowed training results */
 export const TRAINING_RESULTS = ["удовлетворительно", "неудовлетворительно"] as const;
@@ -79,11 +77,7 @@ const ProtocolSchema = z.object({
     .min(1, "Укажите номер протокола"),
 });
 
-// ───────────────────────────────────────────────
-// Main schema
-// ───────────────────────────────────────────────
-
-export const WorkerAndProtocolsSchema = z.object({
+const WorkerBaseSchema = z.object({
   fio: z
     .string()
     .min(1, "Укажите ФИО")
@@ -91,11 +85,6 @@ export const WorkerAndProtocolsSchema = z.object({
       (val) => val.trim().split(/\s+/).length >= 2,
       "ФИО должно содержать как минимум фамилию и имя"
     ),
-
-  snils: z
-    .string()
-    .min(1, "Укажите СНИЛС")
-    .regex(SNILS_REGEX, "Формат СНИЛС: 111-222-333 45"),
 
   profession: z
     .string()
@@ -105,6 +94,39 @@ export const WorkerAndProtocolsSchema = z.object({
     .array(ProtocolSchema)
     .min(1, "Добавьте хотя бы один протокол"),
 });
+
+const CitizenWorkerSchema = WorkerBaseSchema.extend({
+  isForeigner: z.literal(false),
+  snils: z
+    .string()
+    .min(1, "Укажите СНИЛС")
+    .regex(SNILS_PATTERN, "Формат СНИЛС: 111-222-333 45")
+    .refine(isValidSnils, "Неверная контрольная сумма СНИЛС"),
+  citizenship: z.string().optional(),
+  foreignSnils: z.string().optional(),
+});
+
+const ForeignWorkerSchema = WorkerBaseSchema.extend({
+  isForeigner: z.literal(true),
+  citizenship: z
+    .string()
+    .min(1, "Укажите гражданство")
+    .max(100, "Гражданство не должно превышать 100 символов"),
+  foreignSnils: z
+    .string()
+    .max(30, "СНИЛС иностранца не должен превышать 30 символов")
+    .optional(),
+  snils: z.string().optional(),
+});
+
+// ───────────────────────────────────────────────
+// Main schema
+// ───────────────────────────────────────────────
+
+export const WorkerAndProtocolsSchema = z.discriminatedUnion("isForeigner", [
+  CitizenWorkerSchema,
+  ForeignWorkerSchema,
+]);
 
 // ───────────────────────────────────────────────
 // Inferred types
