@@ -55,7 +55,7 @@ final class InnTest extends TestCase
     public function testIsEqualToDifferent(): void
     {
         $inn1 = Inn::fromString('7707083893');
-        $inn2 = Inn::fromString('7707083894');
+        $inn2 = Inn::fromString('0901046828');
 
         self::assertFalse($inn1->isEqualTo($inn2));
     }
@@ -95,5 +95,17 @@ final class InnTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         Inn::fromString('');
+    }
+
+    public function testInvalidChecksumLegalEntity(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Inn::fromString('1234567890');
+    }
+
+    public function testInvalidChecksumIndividual(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Inn::fromString('123456789012');
     }
 }

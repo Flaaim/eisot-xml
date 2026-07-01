@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { toast } from "sonner";
 import { addCompanyAction } from "@/actions/company";
+import { normalizeInn, validateInn } from "@/lib/inn";
 import {useRouter} from "next/navigation";
 
 const schema = z.object({
@@ -25,12 +26,16 @@ const schema = z.object({
     .max(255, "Название не должно превышать 255 символов."),
   inn: z
     .string()
-    .min(1, "ИНН обязателен для заполнения.")
-    .regex(/^\d+$/, "ИНН должен содержать только цифры.")
-    .refine(
-      (value) => value.length === 10 || value.length === 12,
-      "ИНН должен состоять из 10 или 12 цифр.",
-    ),
+    .transform(normalizeInn)
+    .superRefine((val, ctx) => {
+      const error = validateInn(val);
+      if (error) {
+        ctx.addIssue({
+          code: "custom",
+          message: error,
+        });
+      }
+    }),
 });
 
 type AddCompanyFormData = z.infer<typeof schema>;

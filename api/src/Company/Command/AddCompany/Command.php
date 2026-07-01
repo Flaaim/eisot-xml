@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Company\Command\AddCompany;
 
+use App\Company\Entity\Company\Inn;
+use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Команда: добавить нового контрагента за текущим пользователем.
@@ -30,4 +33,20 @@ final class Command
         #[Assert\Uuid]
         public string $userId,
     ) {}
+
+    #[Assert\Callback]
+    public function validateInnChecksum(ExecutionContextInterface $context): void
+    {
+        if ($this->inn === '' || !preg_match('/^\d{10}(\d{2})?$/', $this->inn)) {
+            return;
+        }
+
+        try {
+            Inn::fromString($this->inn);
+        } catch (InvalidArgumentException $exception) {
+            $context->buildViolation($exception->getMessage())
+                ->atPath('inn')
+                ->addViolation();
+        }
+    }
 }

@@ -126,6 +126,29 @@ final class RequestActionTest extends WebTestCase
     }
 
     // -------------------------------------------------------------------------
+    // Тест 2b: Ошибка валидации — неверная контрольная сумма (10 цифр)
+    // -------------------------------------------------------------------------
+
+    public function testInvalidInnChecksum(): void
+    {
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/companies',
+            ['name' => 'ООО Тест', 'inn' => '1234567890'],
+            $this->authHeaders($this->accessToken),
+        );
+
+        self::assertEquals(422, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+        $data = Json::decode($body);
+
+        self::assertArrayHasKey('errors', $data);
+        self::assertArrayHasKey('inn', $data['errors']);
+        self::assertEquals('INN checksum is invalid.', $data['errors']['inn']);
+    }
+
+    // -------------------------------------------------------------------------
     // Тест 3: Ошибка валидации — пустое название компании
     // -------------------------------------------------------------------------
 

@@ -50,13 +50,13 @@ describe("AddCompanyForm", () => {
     const submitButton = screen.getByRole("button", { name: "Добавить компанию" });
 
     await user.type(nameInput, "ООО Тест");
-    await user.type(innInput, "1234567890");
+    await user.type(innInput, "7707083893");
     await user.click(submitButton);
 
     await waitFor(() => {
       expect(mockAddCompanyAction).toHaveBeenCalledWith({
         name: "ООО Тест",
-        inn: "1234567890",
+        inn: "7707083893",
       });
     });
   });
@@ -72,7 +72,7 @@ describe("AddCompanyForm", () => {
     const submitButton = screen.getByRole("button", { name: "Добавить компанию" });
 
     await user.type(nameInput, "ООО Тест");
-    await user.type(innInput, "1234567890");
+    await user.type(innInput, "7707083893");
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -81,7 +81,7 @@ describe("AddCompanyForm", () => {
     });
   });
 
-  it("shows validation error for INN with letters", async () => {
+  it("shows validation error for INN with non-digit characters", async () => {
     const user = userEvent.setup();
 
     render(<AddCompanyForm />);
@@ -93,7 +93,25 @@ describe("AddCompanyForm", () => {
     await user.click(nameInput); // trigger onBlur
 
     expect(
-      await screen.findByText(/ИНН должен содержать только цифры/i),
+      await screen.findByText(/ИНН должен состоять из 10 или 12 цифр/i),
+    ).toBeInTheDocument();
+
+    expect(mockAddCompanyAction).not.toHaveBeenCalled();
+  });
+
+  it("shows validation error for INN with invalid checksum", async () => {
+    const user = userEvent.setup();
+
+    render(<AddCompanyForm />);
+
+    const innInput = screen.getByLabelText(/ИНН/i);
+    const nameInput = screen.getByLabelText(/Название организации/i);
+
+    await user.type(innInput, "1234567890");
+    await user.click(nameInput); // trigger onBlur
+
+    expect(
+      await screen.findByText(/Неверная контрольная сумма ИНН/i),
     ).toBeInTheDocument();
 
     expect(mockAddCompanyAction).not.toHaveBeenCalled();
@@ -149,7 +167,7 @@ describe("AddCompanyForm", () => {
     const submitButton = screen.getByRole("button", { name: "Добавить компанию" });
 
     await user.type(nameInput, "ООО Тест");
-    await user.type(innInput, "1234567890");
+    await user.type(innInput, "7707083893");
     await user.click(submitButton);
 
     expect(
@@ -168,13 +186,13 @@ describe("AddCompanyForm", () => {
     const submitButton = screen.getByRole("button", { name: "Добавить компанию" });
 
     await user.type(nameInput, "ИП Иванов");
-    await user.type(innInput, "123456789012");
+    await user.type(innInput, "500100732259");
     await user.click(submitButton);
 
     await waitFor(() => {
       expect(mockAddCompanyAction).toHaveBeenCalledWith({
         name: "ИП Иванов",
-        inn: "123456789012",
+        inn: "500100732259",
       });
     });
   });
