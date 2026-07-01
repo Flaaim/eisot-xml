@@ -66,7 +66,7 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
   return (
     <Card
       data-testid={`company-card-${company.id}`}
-      className="group transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:ring-2 hover:ring-primary/20 flex flex-col justify-between h-full"
+      className="h-full"
     >
       <Link
         href={`/user/company/${company.id}`}

@@ -36,7 +36,7 @@ export function ActiveCompaniesList({ companies }: CompaniesListProps) {
   }
 
   return (
-    <div data-testid="companies-grid" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div data-testid="companies-grid" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
       {companies.map((company) => (
         <ActiveCompanyCard key={company.id} company={company} />
       ))}
