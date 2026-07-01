@@ -59,25 +59,9 @@ final class CompanyRepository
     {
         return $this->repo->createQueryBuilder('c')
             ->andWhere('c.userId = :userId')
-            ->andWhere('c.status = :archived')
+            ->andWhere('c.status = :status')
             ->setParameter('userId', $userId->getValue())
-            ->setParameter('archived', false)
-            ->orderBy('c.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @deprecated Используйте findAllActiveByUser() для запросов с фильтрацией по владельцу.
-     * Оставлен для обратной совместимости на период миграции.
-     *
-     * @return Company[]
-     */
-    public function findAllActive(): array
-    {
-        return $this->repo->createQueryBuilder('c')
-            ->andWhere('c.isArchived = :archived')
-            ->setParameter('archived', false)
+            ->setParameter('status', CompanyStatus::ACTIVE)
             ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
