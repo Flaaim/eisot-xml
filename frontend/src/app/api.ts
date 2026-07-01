@@ -25,6 +25,8 @@ export const API = {
     restore: (id: string) => BASE_URL + `/v1/companies/${id}/restore`,
     trainingRecords: (id: string) => BASE_URL + `/v1/companies/${id}/training-records`,
     stats: (id: string) => BASE_URL + `/v1/companies/${id}/stats`,
+    rename: (id: string) => BASE_URL + `/v1/companies/${id}/name`,
+    changeInn: (id: string) => BASE_URL + `/v1/companies/${id}/inn`,
   },
   worker: {
     register: (companyId: string) => BASE_URL + `/v1/companies/${companyId}/workers`,

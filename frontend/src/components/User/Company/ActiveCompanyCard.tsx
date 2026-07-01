@@ -1,6 +1,7 @@
 "use client"
 
-import {Archive, Building2, Users, GraduationCap} from "lucide-react";
+import Link from "next/link";
+import {Archive, Building2, Users, GraduationCap, Settings} from "lucide-react";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import type { CompanyShort } from "@/interfaces/company.interface";
 import {archiveCompanyAction} from "@/actions/company";
@@ -65,9 +66,12 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
   return (
     <Card
       data-testid={`company-card-${company.id}`}
-      className="group cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:ring-2 hover:ring-primary/20 flex flex-col justify-between h-full"
+      className="group transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:ring-2 hover:ring-primary/20 flex flex-col justify-between h-full"
     >
-      <div>
+      <Link
+        href={`/user/company/${company.id}`}
+        className="block flex-1 rounded-t-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      >
         <CardHeader className="pb-2">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
@@ -83,7 +87,7 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
             ИНН {company.inn}
           </span>
         </CardContent>
-      </div>
+      </Link>
       <CardFooter className="flex items-center justify-between border-t bg-muted/20 px-6 py-3 mt-4">
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5" title="Количество работников">
@@ -98,17 +102,23 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
           </div>
         </div>
 
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            archive(company.id)
-          }}
-          className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-destructive transition-colors"
-        >
-          <Archive className="h-4 w-4" />
-          <span>В архив</span>
-        </button>
+        <div className="flex items-center gap-1">
+          <Link
+            href={`/user/company/${company.id}/settings`}
+            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-colors"
+          >
+            <Settings className="h-4 w-4" />
+            <span>Настройки</span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => archive(company.id)}
+            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-destructive transition-colors"
+          >
+            <Archive className="h-4 w-4" />
+            <span>В архив</span>
+          </button>
+        </div>
       </CardFooter>
     </Card>
   );

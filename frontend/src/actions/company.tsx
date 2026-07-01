@@ -1,9 +1,10 @@
 "use server";
 
-import { AddCompanyPayload, CompanyShort, CompanyStats } from "@/interfaces/company.interface";
+import { AddCompanyPayload, CompanyShort, CompanyStats, CompanyTitleByInnResponse } from "@/interfaces/company.interface";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
+import { FNS_TITLE_LOOKUP_ENABLED } from "@/lib/inn";
 import { revalidatePath } from "next/cache";
 
 interface AddCompanyResponseData {
@@ -157,4 +158,82 @@ export async function getCompanyStatsAction(companyId: string): Promise<CompanyS
       status: "Ошибка",
     };
   }
+}
+
+export async function renameCompanyAction(
+  companyId: string,
+  name: string,
+): Promise<ApiResponse<null>> {
+  try {
+    const response = await apiFetch(API.company.rename(companyId), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ name }),
+    });
+
+    const parsed = await handleApiResponse<null>(response);
+    if (!parsed.ok) {
+      return { ok: false, error: parsed.error };
+    }
+
+    revalidatePath("/user/company");
+    revalidatePath(`/user/company/${companyId}`);
+    revalidatePath(`/user/company/${companyId}/settings`);
+
+    return { ok: true, data: null };
+  } catch (error) {
+    console.error("renameCompanyAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function changeCompanyInnAction(
+  companyId: string,
+  inn: string,
+): Promise<ApiResponse<null>> {
+  try {
+    const response = await apiFetch(API.company.changeInn(companyId), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ inn }),
+    });
+
+    const parsed = await handleApiResponse<null>(response);
+    if (!parsed.ok) {
+      return { ok: false, error: parsed.error };
+    }
+
+    revalidatePath("/user/company");
+    revalidatePath(`/user/company/${companyId}`);
+    revalidatePath(`/user/company/${companyId}/settings`);
+
+    return { ok: true, data: null };
+  } catch (error) {
+    console.error("changeCompanyInnAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+/**
+ * Заглушка для интеграции с прокси ФНС (получение Title по Inn).
+ * Включить после появления эндпоинта на бэкенде.
+ */
+export async function fetchCompanyTitleByInnAction(
+  inn: string,
+): Promise<ApiResponse<CompanyTitleByInnResponse>> {
+  if (!FNS_TITLE_LOOKUP_ENABLED) {
+    return {
+      ok: false,
+      error: "Сервис получения наименования по ИНН будет доступен в следующей версии.",
+    };
+  }
+
+  void inn;
+  return { ok: false, error: "Эндпоинт прокси ФНС не настроен." };
 }

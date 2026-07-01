@@ -25,3 +25,7 @@ export interface CompanyStats {
   readonly protocolsCount: number;
   readonly status: string;
 }
+
+export interface CompanyTitleByInnResponse {
+  readonly title: string;
+}

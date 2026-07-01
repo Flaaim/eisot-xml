@@ -37,6 +37,7 @@ jest.mock("lucide-react", () => ({
   Users: (props) => <svg data-testid="users-icon" {...props} />,
   GraduationCap: (props) => <svg data-testid="graduation-icon" {...props} />,
   Archive: (props) => <svg data-testid="archive-icon" {...props} />,
+  Settings: (props) => <svg data-testid="settings-icon" {...props} />,
 }));
 
 const mockCompanies = [
@@ -82,22 +83,25 @@ describe("CompaniesList", () => {
     expect(screen.getByText(`ИНН ${mockCompanies[1].inn}`)).toBeInTheDocument();
   });
 
-  it("wraps each card in a link to the company context", () => {
+  it("links each card to the company workspace and settings", () => {
     render(<CompaniesList companies={mockCompanies} />);
 
     const links = screen.getAllByRole("link");
-    const companyLinks = links.filter((link) =>
-      link.getAttribute("href")?.startsWith("/user/company/"),
+    const workspaceLinks = links.filter((link) =>
+      link.getAttribute("href") === `/user/company/${mockCompanies[0].id}` ||
+      link.getAttribute("href") === `/user/company/${mockCompanies[1].id}`,
     );
+    expect(workspaceLinks).toHaveLength(2);
 
-    expect(companyLinks).toHaveLength(2);
-    expect(companyLinks[0]).toHaveAttribute(
+    const settingsLinks = screen.getAllByRole("link", { name: /Настройки/i });
+    expect(settingsLinks).toHaveLength(2);
+    expect(settingsLinks[0]).toHaveAttribute(
       "href",
-      `/user/company/${mockCompanies[0].id}`,
+      `/user/company/${mockCompanies[0].id}/settings`,
     );
-    expect(companyLinks[1]).toHaveAttribute(
+    expect(settingsLinks[1]).toHaveAttribute(
       "href",
-      `/user/company/${mockCompanies[1].id}`,
+      `/user/company/${mockCompanies[1].id}/settings`,
     );
   });
 

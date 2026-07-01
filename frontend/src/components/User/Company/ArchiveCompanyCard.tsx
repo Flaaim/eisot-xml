@@ -1,6 +1,7 @@
 "use client"
 
-import {Building2, Users, GraduationCap, RotateCcw} from "lucide-react";
+import Link from "next/link";
+import {Building2, Users, GraduationCap, RotateCcw, Settings} from "lucide-react";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import type { CompanyShort } from "@/interfaces/company.interface";
 import {unarchiveCompanyAction} from "@/actions/company";
@@ -65,9 +66,12 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
   return (
     <Card
       data-testid={`company-card-${company.id}`}
-      className="group cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:ring-2 hover:ring-primary/20 flex flex-col justify-between h-full opacity-75 grayscale-[20%]"
+      className="group transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:ring-2 hover:ring-primary/20 flex flex-col justify-between h-full opacity-75 grayscale-[20%]"
     >
-      <div>
+      <Link
+        href={`/user/company/${company.id}`}
+        className="block flex-1 rounded-t-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      >
         <CardHeader className="pb-2">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
@@ -86,7 +90,7 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
             В архиве
           </span>
         </CardContent>
-      </div>
+      </Link>
       <CardFooter className="flex items-center justify-between border-t bg-muted/20 px-6 py-3 mt-4">
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5" title="Количество работников">
@@ -101,17 +105,23 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
           </div>
         </div>
 
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            activate(company.id)
-          }}
-          className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-primary transition-colors"
-        >
-          <RotateCcw className="h-4 w-4" />
-          <span>Восстановить</span>
-        </button>
+        <div className="flex items-center gap-1">
+          <Link
+            href={`/user/company/${company.id}/settings`}
+            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-colors"
+          >
+            <Settings className="h-4 w-4" />
+            <span>Настройки</span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => activate(company.id)}
+            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-primary transition-colors"
+          >
+            <RotateCcw className="h-4 w-4" />
+            <span>Восстановить</span>
+          </button>
+        </div>
       </CardFooter>
     </Card>
   );
