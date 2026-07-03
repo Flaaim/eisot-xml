@@ -35,6 +35,7 @@ final class Handler
         private readonly CommandValidator $commandValidator,
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Command $command): void
     {
         // 1. Проверяем что компания существует

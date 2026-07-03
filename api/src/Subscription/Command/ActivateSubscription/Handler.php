@@ -25,6 +25,7 @@ final readonly class Handler
         private Flusher $flusher
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Command $command): Id
     {
         $userId = new UserId($command->userId);

@@ -23,6 +23,7 @@ final class Handler
         private Flusher $flusher,
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Command $command): void
     {
         $email = new Email($command->email);

@@ -16,6 +16,7 @@ final class Handler
         private readonly Flusher $flusher
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Command $command): void
     {
         if ($this->users->hasByNetwork($command->network, $command->identity)) {

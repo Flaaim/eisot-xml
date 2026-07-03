@@ -30,6 +30,7 @@ final class Handler
         private readonly Flusher $flusher,
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Command $command): void
     {
         $company = $this->companies->get(new Id($command->id));

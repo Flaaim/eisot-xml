@@ -18,6 +18,7 @@ final class Handler
         private readonly Flusher $flusher
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Command $command): void
     {
         if (!$user = $this->users->findByPasswordResetToken($command->token)) {

@@ -19,6 +19,7 @@ final class Handler
         private readonly RefreshTokenRepositoryInterface $refreshTokenRepository
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(string $token): void
     {
         try {
