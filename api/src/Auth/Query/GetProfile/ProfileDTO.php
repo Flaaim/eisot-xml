@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Auth\Query\GetProfile;
 
+/** @psalm-suppress PossiblyUnusedProperty */
 final class ProfileDTO
 {
     public function __construct(

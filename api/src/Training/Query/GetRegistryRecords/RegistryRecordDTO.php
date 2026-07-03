@@ -6,6 +6,8 @@ namespace App\Training\Query\GetRegistryRecords;
 
 /**
  * RegistryRecordDTO: элемент плоского списка реестра обучения.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final readonly class RegistryRecordDTO
 {

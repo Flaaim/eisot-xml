@@ -6,6 +6,8 @@ namespace App\Company\Query\GetCompanyStats;
 
 /**
  * DTO Ответа: Статистика компании.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final readonly class CompanyStatsDTO
 {

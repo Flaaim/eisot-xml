@@ -6,6 +6,8 @@ namespace App\Company\Query\GetCompanies;
 
 /**
  * Read-модель DTO для краткого представления компании в списке.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final readonly class CompanyShortDTO
 {
