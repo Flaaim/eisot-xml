@@ -49,6 +49,15 @@
                 <directory name="src/Company/Command/RenameCompany" />
                 <directory name="src/Company/Command/ArchiveCompany" />
                 <directory name="src/Company/Command/AddCompany" />
+                <directory name="src/Auth/Command/AttachNetwork" />
+                <directory name="src/Auth/Command/ChangeEmail" />
+                <directory name="src/Auth/Command/ChangePassword" />
+                <directory name="src/Auth/Command/ChangeRole" />
+                <directory name="src/Auth/Command/JoinByEmail" />
+                <directory name="src/Auth/Command/JoinByNetwork" />
+                <directory name="src/Auth/Command/Remove" />
+                <directory name="src/Auth/Command/ResetPassword" />
+                <directory name="src/Training/Command/RecordTrainingResult" />
             </errorLevel>
         </PossiblyUnusedMethod>
 
