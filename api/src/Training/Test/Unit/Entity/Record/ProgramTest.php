@@ -104,7 +104,7 @@ final class ProgramTest extends TestCase
     {
         $program = Program::fromId(29);
 
-        self::assertEquals('Безопасные методы и приемы работ в театрах', $program->getValue());
+        self::assertEquals('Безопасные методы и приемы работ в театрах', $program->getTitle());
     }
 
     public function testToStringReturnsTitle(): void

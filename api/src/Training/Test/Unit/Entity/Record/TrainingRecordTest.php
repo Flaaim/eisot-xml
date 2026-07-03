@@ -84,7 +84,7 @@ final class TrainingRecordTest extends TestCase
 
         self::assertSame($record->getId()->getValue(), $event->id->getValue());
         self::assertSame($record->getWorkerId()->getValue(), $event->workerId->getValue());
-        self::assertSame($record->getProgram()->getValue(), $event->program->getValue());
+        self::assertSame($record->getProgram()->getTitle(), $event->program->getTitle());
         self::assertSame($record->getResult()->getValue(), $event->result->getValue());
     }
 }
