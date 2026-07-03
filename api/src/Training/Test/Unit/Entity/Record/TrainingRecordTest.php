@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace App\Training\Test\Unit\Entity\Record;
 
+use App\Training\Entity\Record\Id;
+use App\Training\Entity\Record\Program;
+use App\Training\Entity\Record\ProtocolNumber;
 use App\Training\Entity\Record\RegistryNumber;
+use App\Training\Entity\Record\Result;
+use App\Training\Entity\Record\WorkerId;
 use App\Training\Event\RegistryNumberAttached;
 use App\Training\Event\TrainingResultRecorded;
 use App\Training\Test\Builder\TrainingRecordBuilder;
+use DateTimeImmutable;
 use DomainException;
 use PHPUnit\Framework\TestCase;
 
@@ -21,12 +27,12 @@ final class TrainingRecordTest extends TestCase
     {
         $record = (new TrainingRecordBuilder())->build();
 
-        self::assertNotNull($record->getId());
-        self::assertNotNull($record->getWorkerId());
-        self::assertNotNull($record->getProgram());
-        self::assertNotNull($record->getResult());
-        self::assertNotNull($record->getDate());
-        self::assertNotNull($record->getProtocolNumber());
+        self::assertInstanceOf(Id::class, $record->getId());
+        self::assertInstanceOf(WorkerId::class, $record->getWorkerId());
+        self::assertInstanceOf(Program::class, $record->getProgram());
+        self::assertInstanceOf(Result::class, $record->getResult());
+        self::assertInstanceOf(DateTimeImmutable::class, $record->getDate());
+        self::assertInstanceOf(ProtocolNumber::class, $record->getProtocolNumber());
         self::assertNull($record->getRegistryNumber());
     }
 

@@ -25,11 +25,11 @@ final class WorkerTest extends TestCase
     {
         $worker = (new WorkerBuilder())->build();
 
-        self::assertNotNull($worker->getId());
-        self::assertNotNull($worker->getCompanyId());
-        self::assertNotNull($worker->getFullName());
-        self::assertNotNull($worker->getProfession());
-        self::assertNotNull($worker->getSnilsInfo());
+        self::assertInstanceOf(WorkerId::class, $worker->getId());
+        self::assertInstanceOf(CompanyId::class, $worker->getCompanyId());
+        self::assertInstanceOf(FullName::class, $worker->getFullName());
+        self::assertInstanceOf(Profession::class, $worker->getProfession());
+        self::assertInstanceOf(SnilsInfo::class, $worker->getSnilsInfo());
     }
 
     public function testRegisterStoresCorrectValues(): void

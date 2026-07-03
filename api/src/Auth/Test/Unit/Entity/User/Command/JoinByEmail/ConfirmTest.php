@@ -26,9 +26,11 @@ final class ConfirmTest extends TestCase
         self::assertTrue($user->isWait());
         self::assertFalse($user->isActive());
 
+        $expiresAt = $token->getExpiresAt();
+        self::assertNotNull($expiresAt);
         $user->confirmJoin(
             $token->getValue(),
-            $token->getExpiresAt()->modify('-1 day')
+            $expiresAt->modify('-1 day')
         );
 
         self::assertFalse($user->isWait());
@@ -52,9 +54,11 @@ final class ConfirmTest extends TestCase
 
         $this->expectExceptionMessage('Token is invalid.');
 
+        $expiresAt = $token->getExpiresAt();
+        self::assertNotNull($expiresAt);
         $user->confirmJoin(
             Uuid::uuid4()->toString(),
-            $token->getExpiresAt()->modify('-1 day')
+            $expiresAt->modify('-1 day')
         );
     }
 
@@ -66,9 +70,11 @@ final class ConfirmTest extends TestCase
 
         $this->expectExceptionMessage('Token is expired.');
 
+        $expiresAt = $token->getExpiresAt();
+        self::assertNotNull($expiresAt);
         $user->confirmJoin(
             $token->getValue(),
-            $token->getExpiresAt()->modify('+1 day')
+            $expiresAt->modify('+1 day')
         );
     }
 
@@ -83,9 +89,11 @@ final class ConfirmTest extends TestCase
 
         $this->expectExceptionMessage('Confirmation is not required.');
 
+        $expiresAt = $token->getExpiresAt();
+        self::assertNotNull($expiresAt);
         $user->confirmJoin(
             $token->getValue(),
-            $token->getExpiresAt()->modify('-1 day')
+            $expiresAt->modify('-1 day')
         );
     }
 

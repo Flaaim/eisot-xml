@@ -69,7 +69,9 @@ final class RequestTest extends TestCase
 
         self::assertInstanceOf(PasswordResetRequested::class, $event);
         self::assertEquals($user->getEmail()->getValue(), $event->email);
-        self::assertEquals($user->getPasswordResetToken()->getValue(), $event->token);
+        $passwordResetToken = $user->getPasswordResetToken();
+        self::assertNotNull($passwordResetToken);
+        self::assertEquals($passwordResetToken->getValue(), $event->token);
     }
 
     public function testNotActive(): void

@@ -12,6 +12,7 @@ use App\Auth\Entity\User\User;
 use App\Auth\Service\PasswordHasher;
 use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 /** @psalm-api */
 final class UserBuilder
@@ -108,9 +109,11 @@ final class UserBuilder
         );
 
         if ($this->active) {
+            $expiresAt = $this->joinConfirmToken->getExpiresAt();
+            Assert::notNull($expiresAt);
             $user->confirmJoin(
                 $this->joinConfirmToken->getValue(),
-                $this->joinConfirmToken->getExpiresAt()->modify('-1 day')
+                $expiresAt->modify('-1 day')
             );
         }
 
@@ -123,9 +126,11 @@ final class UserBuilder
         }
 
         if (null !== $this->newEmailChangeToken && null !== $this->newEmail) {
+            $expiresAt = $this->newEmailChangeToken->getExpiresAt();
+            Assert::notNull($expiresAt);
             $user->requestEmailChanging(
                 $this->newEmailChangeToken,
-                $this->newEmailChangeToken->getExpiresAt()->modify('+1 day'),
+                $expiresAt->modify('+1 day'),
                 $this->newEmail
             );
         }

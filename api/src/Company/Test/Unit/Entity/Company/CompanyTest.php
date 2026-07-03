@@ -27,10 +27,10 @@ final class CompanyTest extends TestCase
     {
         $company = (new CompanyBuilder())->build();
 
-        self::assertNotNull($company->getId());
-        self::assertNotNull($company->getName());
-        self::assertNotNull($company->getInn());
-        self::assertNotNull($company->getUserId());
+        self::assertInstanceOf(Id::class, $company->getId());
+        self::assertInstanceOf(Name::class, $company->getName());
+        self::assertInstanceOf(Inn::class, $company->getInn());
+        self::assertInstanceOf(UserId::class, $company->getUserId());
     }
 
     public function testCreateStoresCorrectValues(): void

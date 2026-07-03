@@ -27,7 +27,8 @@ final class TrainingRecordRepository
      */
     public function get(Id $id): TrainingRecord
     {
-        if (!$record = $this->repo->find($id->getValue())) {
+        $record = $this->repo->find($id->getValue());
+        if (null === $record) {
             throw new DomainException('Training record is not found.');
         }
         /** @var TrainingRecord $record */

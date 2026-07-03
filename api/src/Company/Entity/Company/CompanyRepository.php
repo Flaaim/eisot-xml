@@ -35,7 +35,8 @@ final class CompanyRepository
      */
     public function get(Id $id): Company
     {
-        if (!$company = $this->repo->find($id->getValue())) {
+        $company = $this->repo->find($id->getValue());
+        if (null === $company) {
             throw new DomainException('Company is not found.');
         }
         /** @var Company $company */

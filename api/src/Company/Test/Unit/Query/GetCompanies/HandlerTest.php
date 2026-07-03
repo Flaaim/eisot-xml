@@ -39,7 +39,6 @@ final class HandlerTest extends TestCase
         $query = new Query($userId);
         $result = $this->handler->handle($query);
 
-        self::assertIsArray($result);
         self::assertCount(0, $result);
     }
 

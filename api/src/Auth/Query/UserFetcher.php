@@ -20,15 +20,14 @@ final class UserFetcher implements UserFetcherInterface
      */
     public function findDetail(string $id): ?array
     {
-        $qb = $this->connection->createQueryBuilder();
-        $qb->select('id, email')
+        $result = $this->connection->createQueryBuilder()
+            ->select('id, email')
             ->from('users')
             ->where('id = :id')
             ->setParameter('id', $id)
-            ->executeQuery();
+            ->executeQuery()
+            ->fetchAssociative();
 
-        $result = $qb->fetchAssociative();
-
-        return $result ?: null;
+        return false === $result ? null : $result;
     }
 }

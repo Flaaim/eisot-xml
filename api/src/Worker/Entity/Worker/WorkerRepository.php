@@ -27,7 +27,8 @@ final class WorkerRepository
      */
     public function get(WorkerId $id): Worker
     {
-        if (!$worker = $this->repo->find($id->getValue())) {
+        $worker = $this->repo->find($id->getValue());
+        if (null === $worker) {
             throw new DomainException('Worker is not found.');
         }
         /** @var Worker $worker */

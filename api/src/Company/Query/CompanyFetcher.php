@@ -61,11 +61,12 @@ final class CompanyFetcher implements CompanyFetcherInterface
             ->setParameter('userId', $userId)
             ->executeQuery();
 
-        $result = $result->fetchAssociative();
+        $row = $result->fetchAssociative();
 
-        if (!$result) {
+        if (false === $row) {
             return [];
         }
-        return $result;
+
+        return $row;
     }
 }

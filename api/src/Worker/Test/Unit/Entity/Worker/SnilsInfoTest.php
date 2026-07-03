@@ -112,7 +112,9 @@ final class SnilsInfoTest extends TestCase
         $info = SnilsInfo::fromPrimitives(false, '112-233-445 95', null, null);
 
         self::assertFalse($info->isForeigner());
-        self::assertEquals('112-233-445 95', $info->getSnils()->getValue());
+        $snils = $info->getSnils();
+        self::assertNotNull($snils);
+        self::assertEquals('112-233-445 95', $snils->getValue());
     }
 
     public function testFromPrimitivesForeigner(): void
