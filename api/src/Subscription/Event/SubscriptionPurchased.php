@@ -12,6 +12,8 @@ use DateTimeImmutable;
 
 /**
  * Доменное событие: User Subscription оформлена.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final class SubscriptionPurchased
 {

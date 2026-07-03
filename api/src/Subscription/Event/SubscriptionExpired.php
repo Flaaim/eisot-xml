@@ -10,6 +10,8 @@ use DateTimeImmutable;
 
 /**
  * Доменное событие: User Subscription истекла.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final class SubscriptionExpired
 {

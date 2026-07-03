@@ -9,6 +9,8 @@ use DateTimeImmutable;
 
 /**
  * Доменное событие: компания восстановлена из архива.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final class CompanyRestored
 {

@@ -13,6 +13,8 @@ use DateTimeImmutable;
  *
  * Имя отражает бизнес-факт (смена ИНН),
  * а не техническую CRUD-операцию.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final class CompanyInnChanged
 {

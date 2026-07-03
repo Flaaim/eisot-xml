@@ -13,6 +13,8 @@ use DateTimeImmutable;
  *
  * Имя отражает бизнес-факт (переименование),
  * а не техническую CRUD-операцию.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final class CompanyRenamed
 {

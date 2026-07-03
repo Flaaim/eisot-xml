@@ -10,6 +10,8 @@ use DateTimeImmutable;
 
 /**
  * Доменное событие: регистрационный номер прикреплён к записи об обучении.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final class RegistryNumberAttached
 {

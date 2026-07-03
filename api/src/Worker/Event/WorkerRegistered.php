@@ -13,6 +13,8 @@ use DateTimeImmutable;
 
 /**
  * Доменное событие: работник зарегистрирован в системе.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final class WorkerRegistered
 {

@@ -13,6 +13,8 @@ use DateTimeImmutable;
 
 /**
  * Доменное событие: результат обучения зафиксирован.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final class TrainingResultRecorded
 {

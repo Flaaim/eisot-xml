@@ -18,6 +18,8 @@ use DateTimeImmutable;
  *
  * Содержит $userId, чтобы подписчики (например, нотификации,
  * аудит, синхронизация) знали, кто стал владельцем компании.
+ *
+ * @psalm-suppress PossiblyUnusedProperty
  */
 final class CompanyAdded
 {
