@@ -23,7 +23,6 @@ final class AttachNetworkTest extends TestCase
         $user->attachNetwork($name = 'vk', $identity = '0000001');
 
         self::assertCount(1, $networks = $user->getNetworks());
-        /** @var array<Network> $networks */
         self::assertEquals($name, $networks[0]->getNetwork() ?? null);
         self::assertEquals($identity, $networks[0]->getIdentity() ?? null);
     }
