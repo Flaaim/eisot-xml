@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Throwable;
 
 final readonly class RequestAction
 {
@@ -34,13 +35,13 @@ final readonly class RequestAction
 
         try {
             $body = $request->toArray();
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return new JsonResponse(['message' => 'Invalid JSON body.'], Response::HTTP_BAD_REQUEST);
         }
 
         $command = new Command(
-            planId: (string) ($body['planId'] ?? ''),
-            durationDays: (int) ($body['durationDays'] ?? 0),
+            planId: (string)($body['planId'] ?? ''),
+            durationDays: (int)($body['durationDays'] ?? 0),
             userId: $userAdapter->getUserIdentifier(),
         );
 

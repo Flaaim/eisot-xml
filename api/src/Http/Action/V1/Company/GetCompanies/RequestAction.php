@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RequestAction
 {
     public function __construct(
-        private readonly Handler  $handler,
+        private readonly Handler $handler,
         private readonly Security $security,
     ) {}
 

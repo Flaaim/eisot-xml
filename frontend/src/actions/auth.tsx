@@ -1,11 +1,11 @@
 "use server";
 
-import {JoinData, LoginData, ProfileDTO} from "@/interfaces/auth.interface";
+import { JoinData, LoginData, ProfileDTO } from "@/interfaces/auth.interface";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
-import {apiFetch} from "@/lib/apiClient";
+import { apiFetch } from "@/lib/apiClient";
 
 interface TokenResponseData {
   access_token: string;
@@ -228,19 +228,19 @@ export async function passwordResetConfirm(token: string, password: string): Pro
 }
 
 export async function fetchUser(): Promise<ProfileDTO> {
-    const response = await apiFetch(API.user.profile(), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      }
-    });
-    console.log(response)
-    const parsed = await handleApiResponse<ProfileDTO>(response);
-    if(!parsed.ok || !parsed.data){
-      throw new Error(parsed.error || "Не удалось загрузить профиль");
-    }
-    return parsed.data;
+  const response = await apiFetch(API.user.profile(), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  console.log(response);
+  const parsed = await handleApiResponse<ProfileDTO>(response);
+  if (!parsed.ok || !parsed.data) {
+    throw new Error(parsed.error || "Не удалось загрузить профиль");
+  }
+  return parsed.data;
 }
 
 export default async function requestEmailChange(email: string, id: string): Promise<ApiResponse> {
@@ -251,17 +251,17 @@ export default async function requestEmailChange(email: string, id: string): Pro
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({email: email, userId: id}),
+      body: JSON.stringify({ email: email, userId: id }),
     });
-    console.log(response)
+    console.log(response);
     const parsed = await handleApiResponse(response);
 
     if (!parsed.ok) {
-      return {ok: false, error: parsed.error};
+      return { ok: false, error: parsed.error };
     }
-    return {ok: true};
+    return { ok: true };
   } catch (error) {
     console.error("Request email change error:", error);
-    return {ok: false, error: "Не удалось подключиться к серверу API."};
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

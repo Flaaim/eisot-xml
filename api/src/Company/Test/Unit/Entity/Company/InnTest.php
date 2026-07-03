@@ -64,7 +64,7 @@ final class InnTest extends TestCase
     {
         $inn = Inn::fromString($value = '7707083893');
 
-        self::assertSame($value, (string) $inn);
+        self::assertSame($value, (string)$inn);
     }
 
     public function testTooShort(): void

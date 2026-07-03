@@ -1,16 +1,16 @@
-import {AlertCircle, PlusCircle} from "lucide-react";
+import { AlertCircle, PlusCircle } from "lucide-react";
 import { fetchCompaniesAction } from "@/actions/company";
-import {ActiveCompaniesList, CompaniesList} from "@/components/User/Company/ActiveCompaniesList";
-import {ArchiveCompaniesList} from "@/components/User/Company/ArchiveCompanyLIst";
+import { ActiveCompaniesList, CompaniesList } from "@/components/User/Company/ActiveCompaniesList";
+import { ArchiveCompaniesList } from "@/components/User/Company/ArchiveCompanyLIst";
 import Link from "next/link";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 export default async function CompanyPage() {
   const result = await fetchCompaniesAction();
 
-  const archivedCompanies = result.data?.filter((company => company.status === "ARCHIVED"));
+  const archivedCompanies = result.data?.filter((company) => company.status === "ARCHIVED");
 
-  const activeCompanies = result.data?.filter((company => company.status === "ACTIVE"));
+  const activeCompanies = result.data?.filter((company) => company.status === "ACTIVE");
 
   const hasArchiveCompanies = archivedCompanies && archivedCompanies.length > 0;
 
@@ -40,7 +40,7 @@ export default async function CompanyPage() {
           </p>
         </div>
         {result.data.length > 0 && (
-          <Button >
+          <Button>
             <Link href="/user/company/add" className="flex items-center gap-2">
               <PlusCircle className="h-4 w-4" />
               Добавить
@@ -59,10 +59,12 @@ export default async function CompanyPage() {
                 Архив содержит компании, с которыми вы когда-то работали
               </p>
             </div>
-          </div><ArchiveCompaniesList companies={archivedCompanies} />
+          </div>
+          <ArchiveCompaniesList companies={archivedCompanies} />
         </div>
-
-      ) : ''}
+      ) : (
+        ""
+      )}
     </div>
   );
 }

@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Company\Query;
 
-use App\Company\Entity\Company\Company;
-use App\Company\Query\GetCompanies\CompanyShortDTO;
 use App\Company\ReadModel\CompanyFetcherInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\ParameterType;
 
 /**
  * DBAL-реализация CompanyFetcherInterface.
@@ -23,9 +20,8 @@ final class CompanyFetcher implements CompanyFetcherInterface
     ) {}
 
     /**
-     * @throws Exception
-     *
      * @return list<array{id: string, name: string, inn: string, status: string, workers_count: int, protocols_count: int}>
+     * @throws Exception
      */
     public function findAllByUserId(string $userId): array
     {
@@ -65,7 +61,9 @@ final class CompanyFetcher implements CompanyFetcherInterface
 
         $result = $result->fetchAssociative();
 
-        if(!$result) return [];
+        if (!$result) {
+            return [];
+        }
         return $result;
     }
 }

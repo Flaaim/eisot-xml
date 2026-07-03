@@ -23,9 +23,9 @@ final class Handler
 {
     public function __construct(
         private readonly TrainingRecordRepository $records,
-        private readonly WorkerRepository         $workers,
-        private readonly CompanyRepository        $companies,
-        private readonly Flusher                  $flusher,
+        private readonly WorkerRepository $workers,
+        private readonly CompanyRepository $companies,
+        private readonly Flusher $flusher,
     ) {}
 
     public function handle(Command $command): void

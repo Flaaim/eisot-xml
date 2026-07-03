@@ -65,12 +65,8 @@ describe("CompaniesList", () => {
 
     expect(screen.getByTestId("companies-grid")).toBeInTheDocument();
 
-    expect(
-      screen.getByTestId(`company-card-${mockCompanies[0].id}`),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByTestId(`company-card-${mockCompanies[1].id}`),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId(`company-card-${mockCompanies[0].id}`)).toBeInTheDocument();
+    expect(screen.getByTestId(`company-card-${mockCompanies[1].id}`)).toBeInTheDocument();
   });
 
   it("renders company names and INN badges", () => {
@@ -87,9 +83,10 @@ describe("CompaniesList", () => {
     render(<CompaniesList companies={mockCompanies} />);
 
     const links = screen.getAllByRole("link");
-    const workspaceLinks = links.filter((link) =>
-      link.getAttribute("href") === `/user/company/${mockCompanies[0].id}` ||
-      link.getAttribute("href") === `/user/company/${mockCompanies[1].id}`,
+    const workspaceLinks = links.filter(
+      (link) =>
+        link.getAttribute("href") === `/user/company/${mockCompanies[0].id}` ||
+        link.getAttribute("href") === `/user/company/${mockCompanies[1].id}`
     );
     expect(workspaceLinks).toHaveLength(2);
 
@@ -97,11 +94,11 @@ describe("CompaniesList", () => {
     expect(settingsLinks).toHaveLength(2);
     expect(settingsLinks[0]).toHaveAttribute(
       "href",
-      `/user/company/${mockCompanies[0].id}/settings`,
+      `/user/company/${mockCompanies[0].id}/settings`
     );
     expect(settingsLinks[1]).toHaveAttribute(
       "href",
-      `/user/company/${mockCompanies[1].id}/settings`,
+      `/user/company/${mockCompanies[1].id}/settings`
     );
   });
 

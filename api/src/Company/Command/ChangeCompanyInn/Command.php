@@ -34,7 +34,7 @@ final class Command
     #[Assert\Callback]
     public function validateInnChecksum(ExecutionContextInterface $context): void
     {
-        if ($this->inn === '' || !preg_match('/^\d{10}(\d{2})?$/', $this->inn)) {
+        if ('' === $this->inn || !preg_match('/^\d{10}(\d{2})?$/', $this->inn)) {
             return;
         }
 

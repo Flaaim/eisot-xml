@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Company\Query\GetCompany;
 
 use App\Company\ReadModel\CompanyFetcherInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use DomainException;
 
 final class Handler
 {
@@ -17,8 +17,8 @@ final class Handler
     {
         $row = $this->fetcher->findOneByUserId($query->id, $query->userId);
 
-        if(empty($row)) {
-            throw new \DomainException('Company not found.');
+        if (empty($row)) {
+            throw new DomainException('Company not found.');
         }
 
         return new CompanyShortDTO(

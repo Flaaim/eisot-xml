@@ -191,7 +191,7 @@ final class RequestActionTest extends WebTestCase
         // Проверяем, что в списке активных компании нет (фильтрация по userId)
         $activeCompanies = $this->companies->findAllActiveByUser(new UserId(RequestFixture::USER_ID));
         $ids = array_map(
-            static fn($c) => $c->getId()->getValue(),
+            static fn ($c) => $c->getId()->getValue(),
             $activeCompanies,
         );
 

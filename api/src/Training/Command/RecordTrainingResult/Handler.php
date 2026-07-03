@@ -17,6 +17,8 @@ use App\Training\Entity\Record\WorkerId;
 use App\Training\Exception\AccessDeniedException;
 use App\Worker\Entity\Worker\WorkerId as WorkerEntityId;
 use App\Worker\Entity\Worker\WorkerRepository;
+use DateTimeImmutable;
+use DomainException;
 
 /**
  * Обработчик: зафиксировать результат обучения.
@@ -30,8 +32,7 @@ final class Handler
         private readonly CompanyRepository $companies,
         private readonly TrainingRecordRepository $records,
         private readonly Flusher $flusher,
-    ) {
-    }
+    ) {}
 
     public function handle(Command $command): void
     {
@@ -48,9 +49,9 @@ final class Handler
         }
 
         // 3. Парсить дату
-        $date = \DateTimeImmutable::createFromFormat('d.m.Y', $command->date);
-        if ($date === false) {
-            throw new \DomainException('Invalid date format. Expected: d.m.Y (e.g. 28.09.2023).');
+        $date = DateTimeImmutable::createFromFormat('d.m.Y', $command->date);
+        if (false === $date) {
+            throw new DomainException('Invalid date format. Expected: d.m.Y (e.g. 28.09.2023).');
         }
 
         // 4. Создать Value Objects

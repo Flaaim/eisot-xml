@@ -9,21 +9,22 @@ use App\Worker\Entity\Worker\FullName;
 use App\Worker\Entity\Worker\Profession;
 use App\Worker\Entity\Worker\SnilsInfo;
 use App\Worker\Entity\Worker\WorkerId;
+use DateTimeImmutable;
 
 /**
  * Доменное событие: работник зарегистрирован в системе.
  */
 final class WorkerRegistered
 {
-    public readonly \DateTimeImmutable $occurredOn;
+    public readonly DateTimeImmutable $occurredOn;
 
     public function __construct(
-        public readonly WorkerId   $id,
-        public readonly CompanyId  $companyId,
-        public readonly FullName   $fullName,
+        public readonly WorkerId $id,
+        public readonly CompanyId $companyId,
+        public readonly FullName $fullName,
         public readonly Profession $profession,
-        public readonly SnilsInfo  $snilsInfo,
+        public readonly SnilsInfo $snilsInfo,
     ) {
-        $this->occurredOn = new \DateTimeImmutable();
+        $this->occurredOn = new DateTimeImmutable();
     }
 }

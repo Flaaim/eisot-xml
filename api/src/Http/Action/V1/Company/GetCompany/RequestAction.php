@@ -17,8 +17,7 @@ final class RequestAction
     public function __construct(
         private readonly Security $security,
         private readonly Handler $handler,
-    )
-    {}
+    ) {}
 
     #[Route('/v1/companies/{id}', name: 'company.get', methods: ['GET'])]
     public function __invoke(string $id): Response
@@ -38,6 +37,4 @@ final class RequestAction
 
         return new JsonResponse($company);
     }
-
-
 }

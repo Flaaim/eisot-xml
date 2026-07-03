@@ -1,20 +1,19 @@
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {KeyRound, Mail, Shield, UserIcon, Crown} from "lucide-react";
-import {Button} from "@base-ui/react";
-import {fetchUser} from "@/actions/auth";
-import {checkSubscriptionAccessAction} from "@/actions/subscription";
-import {SubscriptionStatusBadge} from "@/components/User/Subscription/SubscriptionStatusBadge";
-import {redirect} from "next/navigation";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { KeyRound, Mail, Shield, UserIcon, Crown } from "lucide-react";
+import { Button } from "@base-ui/react";
+import { fetchUser } from "@/actions/auth";
+import { checkSubscriptionAccessAction } from "@/actions/subscription";
+import { SubscriptionStatusBadge } from "@/components/User/Subscription/SubscriptionStatusBadge";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
-
-export default async function ProfilePage(){
+export default async function ProfilePage() {
   let profile;
-  try{
+  try {
     profile = await fetchUser();
-  }catch (error){
+  } catch (error) {
     console.error("Ошибка авторизации в лейауте, перенаправление...", error);
-    redirect('/join/login')
+    redirect("/join/login");
   }
 
   const accessResult = await checkSubscriptionAccessAction();
@@ -45,17 +44,19 @@ export default async function ProfilePage(){
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none text-muted-foreground">ID пользователя</p>
+              <p className="text-sm font-medium leading-none text-muted-foreground">
+                ID пользователя
+              </p>
               <p className="text-sm font-mono text-gray-600 bg-gray-50 p-2 rounded-md w-fit">
                 {profile.id}
               </p>
             </div>
 
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none text-muted-foreground">Имя и Фамилия</p>
-              <p className="text-base font-medium">
-                {profile.name || "Не указано"}
+              <p className="text-sm font-medium leading-none text-muted-foreground">
+                Имя и Фамилия
               </p>
+              <p className="text-base font-medium">{profile.name || "Не указано"}</p>
             </div>
             <div className="pt-2">
               <Button variant="outline" size="sm" disabled>
@@ -77,14 +78,14 @@ export default async function ProfilePage(){
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-muted-foreground" />
-                  <p className="text-sm font-medium leading-none text-muted-foreground">Email адрес</p>
+                  <p className="text-sm font-medium leading-none text-muted-foreground">
+                    Email адрес
+                  </p>
                 </div>
                 <p className="text-base font-medium pl-6">{profile.email}</p>
               </div>
               <Button variant="secondary" size="sm">
-                <Link href="/user/profile/change-email">
-                  Изменить email
-                </Link>
+                <Link href="/user/profile/change-email">Изменить email</Link>
               </Button>
             </div>
 
@@ -97,9 +98,7 @@ export default async function ProfilePage(){
                 <p className="text-base font-medium pl-6">••••••••••••</p>
               </div>
               <Button variant="secondary" size="sm">
-                <Link href="/user/dashboard/profile/change-password">
-                  Изменить пароль
-                </Link>
+                <Link href="/user/dashboard/profile/change-password">Изменить пароль</Link>
               </Button>
             </div>
           </CardContent>
@@ -122,7 +121,6 @@ export default async function ProfilePage(){
           </CardContent>
         </Card>
       </div>
-
     </div>
   );
 }

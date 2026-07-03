@@ -12,6 +12,7 @@ use App\Company\Event\CompanyRestored;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'companies')]
@@ -31,8 +32,7 @@ final class Company implements AggregateRoot
         private UserId $userId,
         #[ORM\Column(type: 'string', length: 16, enumType: CompanyStatus::class, options: ['default' => CompanyStatus::ACTIVE])]
         private CompanyStatus $status = CompanyStatus::ACTIVE,
-    ) {
-    }
+    ) {}
 
     /**
      * Фабричный метод: зарегистрировать нового контрагента за пользователем.
@@ -41,9 +41,9 @@ final class Company implements AggregateRoot
      * что позволяет в будущем защищать данные от чужих изменений.
      */
     public static function create(
-        Id     $id,
-        Name   $name,
-        Inn    $inn,
+        Id $id,
+        Name $name,
+        Inn $inn,
         UserId $userId,
     ): self {
         $company = new self($id, $name, $inn, $userId);
@@ -80,13 +80,13 @@ final class Company implements AggregateRoot
 
     public function isArchived(): bool
     {
-        return $this->status === CompanyStatus::ARCHIVED;
+        return CompanyStatus::ARCHIVED === $this->status;
     }
 
     public function rename(Name $newName): void
     {
         if ($this->name->isEqualTo($newName)) {
-            throw new \DomainException('Company already has this name.');
+            throw new DomainException('Company already has this name.');
         }
 
         $this->name = $newName;
@@ -97,7 +97,7 @@ final class Company implements AggregateRoot
     public function changeInn(Inn $newInn): void
     {
         if ($this->inn->isEqualTo($newInn)) {
-            throw new \DomainException('Company already has this INN.');
+            throw new DomainException('Company already has this INN.');
         }
 
         $this->inn = $newInn;
@@ -112,8 +112,8 @@ final class Company implements AggregateRoot
      */
     public function archive(): void
     {
-        if ($this->status === CompanyStatus::ARCHIVED) {
-            throw new \DomainException('Company is already archived.');
+        if (CompanyStatus::ARCHIVED === $this->status) {
+            throw new DomainException('Company is already archived.');
         }
 
         $this->status = CompanyStatus::ARCHIVED;
@@ -128,8 +128,8 @@ final class Company implements AggregateRoot
      */
     public function restore(): void
     {
-        if ($this->status === CompanyStatus::ACTIVE) {
-            throw new \DomainException('Company is already active.');
+        if (CompanyStatus::ACTIVE === $this->status) {
+            throw new DomainException('Company is already active.');
         }
 
         $this->status = CompanyStatus::ACTIVE;

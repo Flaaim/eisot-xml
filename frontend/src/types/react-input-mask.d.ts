@@ -26,9 +26,7 @@ declare module "react-input-mask" {
     maskChar?: string | null;
     formatChars?: Record<string, string>;
     alwaysShowMask?: boolean;
-    beforeMaskedValueChange?: (
-      states: BeforeMaskedStateChangeStates
-    ) => InputState;
+    beforeMaskedValueChange?: (states: BeforeMaskedStateChangeStates) => InputState;
   }
 
   export interface InputMaskProps extends MaskOptions {

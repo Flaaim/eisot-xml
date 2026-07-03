@@ -30,6 +30,11 @@ final readonly class Snils
         private string $value,
     ) {}
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     /**
      * Создаёт СНИЛС из форматированной строки или 11 цифр подряд.
      */
@@ -98,11 +103,6 @@ final readonly class Snils
         return $this->value === $other->value;
     }
 
-    public function __toString(): string
-    {
-        return $this->value;
-    }
-
     /**
      * Алгоритм контрольного числа ПФР по первым 9 цифрам номера.
      */
@@ -124,20 +124,20 @@ final readonly class Snils
 
         $sum = 0;
         for ($i = 0; $i < 9; ++$i) {
-            $sum += (int) $nineDigits[$i] * (9 - $i);
+            $sum += (int)$nineDigits[$i] * (9 - $i);
         }
 
         if ($sum < 100) {
             return $sum;
         }
 
-        if ($sum === 100 || $sum === 101) {
+        if (100 === $sum || 101 === $sum) {
             return 0;
         }
 
         $remainder = $sum % 101;
 
-        return $remainder === 100 ? 0 : $remainder;
+        return 100 === $remainder ? 0 : $remainder;
     }
 
     private static function assertValidChecksum(string $digits): void
@@ -148,8 +148,8 @@ final readonly class Snils
             'SNILS checksum validation requires exactly 11 digits.'
         );
 
-        $serial = (int) substr($digits, 0, 9);
-        $checksum = (int) substr($digits, 9, 2);
+        $serial = (int)substr($digits, 0, 9);
+        $checksum = (int)substr($digits, 9, 2);
 
         if ($serial <= self::CHECKSUM_EXEMPT_MAX) {
             return;
@@ -159,14 +159,14 @@ final readonly class Snils
 
         if ($checksum !== $expected) {
             throw new InvalidArgumentException(
-                sprintf('SNILS checksum is invalid. Expected %02d.', $expected)
+                \sprintf('SNILS checksum is invalid. Expected %02d.', $expected)
             );
         }
     }
 
     private static function toFormatted(string $digits): string
     {
-        return sprintf(
+        return \sprintf(
             '%s-%s-%s %s',
             substr($digits, 0, 3),
             substr($digits, 3, 3),

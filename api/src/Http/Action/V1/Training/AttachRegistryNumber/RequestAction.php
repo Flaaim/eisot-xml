@@ -17,9 +17,9 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RequestAction
 {
     public function __construct(
-        private readonly Handler   $handler,
+        private readonly Handler $handler,
         private readonly Validator $validator,
-        private readonly Security  $security,
+        private readonly Security $security,
     ) {}
 
     #[Route('/v1/training-records/{recordId}/registry-number', name: 'training.attach_registry_number', methods: ['PATCH'])]
@@ -36,8 +36,8 @@ final class RequestAction
         $body   = $request->toArray();
 
         $command = new Command(
-            recordId:       $recordId,
-            userId:         $userId,
+            recordId: $recordId,
+            userId: $userId,
             registryNumber: (string)($body['registryNumber'] ?? ''),
         );
 

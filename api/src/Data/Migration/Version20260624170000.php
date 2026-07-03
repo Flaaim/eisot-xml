@@ -26,18 +26,18 @@ final class Version20260624170000 extends AbstractMigration
         $this->addSql("UPDATE companies SET status = 'ARCHIVED' WHERE is_archived = TRUE");
 
         // 3. Удаляем старую колонку is_archived
-        $this->addSql("ALTER TABLE companies DROP COLUMN is_archived");
+        $this->addSql('ALTER TABLE companies DROP COLUMN is_archived');
     }
 
     public function down(Schema $schema): void
     {
         // 1. Восстанавливаем колонку is_archived
-        $this->addSql("ALTER TABLE companies ADD COLUMN is_archived BOOLEAN NOT NULL DEFAULT FALSE");
+        $this->addSql('ALTER TABLE companies ADD COLUMN is_archived BOOLEAN NOT NULL DEFAULT FALSE');
 
         // 2. Мигрируем данные назад
         $this->addSql("UPDATE companies SET is_archived = TRUE WHERE status = 'ARCHIVED'");
 
         // 3. Удаляем колонку status
-        $this->addSql("ALTER TABLE companies DROP COLUMN status");
+        $this->addSql('ALTER TABLE companies DROP COLUMN status');
     }
 }

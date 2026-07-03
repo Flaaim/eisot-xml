@@ -8,13 +8,14 @@ use App\Subscription\Entity\Subscription\Id;
 use App\Subscription\Entity\Subscription\Period;
 use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\UserId;
+use DateTimeImmutable;
 
 /**
  * Доменное событие: User Subscription оформлена.
  */
 final class SubscriptionPurchased
 {
-    public readonly \DateTimeImmutable $occurredOn;
+    public readonly DateTimeImmutable $occurredOn;
 
     public function __construct(
         public readonly Id $id,
@@ -22,6 +23,6 @@ final class SubscriptionPurchased
         public readonly Plan $plan,
         public readonly Period $period,
     ) {
-        $this->occurredOn = new \DateTimeImmutable();
+        $this->occurredOn = new DateTimeImmutable();
     }
 }

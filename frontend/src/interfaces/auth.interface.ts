@@ -9,6 +9,6 @@ export interface LoginData {
   password: string;
 }
 export interface ProfileDTO {
-  id: string
-  email: string
+  id: string;
+  email: string;
 }

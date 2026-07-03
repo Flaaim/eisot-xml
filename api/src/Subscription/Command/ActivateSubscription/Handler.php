@@ -11,7 +11,7 @@ use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\Subscription;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Entity\Subscription\UserId;
-use Psr\Log\LoggerInterface;
+use DomainException;
 
 /**
  * Обработчик команды ActivateSubscription (User Subscription).
@@ -30,7 +30,7 @@ final readonly class Handler
         $userId = new UserId($command->userId);
 
         if ($this->subscriptions->hasActiveByUserId($userId)) {
-            throw new \DomainException('User already has an active subscription.');
+            throw new DomainException('User already has an active subscription.');
         }
 
         $subscription = Subscription::activate(

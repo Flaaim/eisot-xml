@@ -18,9 +18,9 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RequestAction
 {
     public function __construct(
-        private readonly Handler   $handler,
+        private readonly Handler $handler,
         private readonly Validator $validator,
-        private readonly Security  $security,
+        private readonly Security $security,
     ) {}
 
     #[Route('/v1/workers/{workerId}/training-records', name: 'training.record', methods: ['POST'])]
@@ -39,12 +39,12 @@ final class RequestAction
         $id = Id::generate()->getValue();
 
         $command = new Command(
-            id:             $id,
-            workerId:       $workerId,
-            userId:         $userId,
-            program:        (int)($body['program'] ?? 0),
-            result:         (string)($body['result'] ?? ''),
-            date:           (string)($body['date'] ?? ''),
+            id: $id,
+            workerId: $workerId,
+            userId: $userId,
+            program: (int)($body['program'] ?? 0),
+            result: (string)($body['result'] ?? ''),
+            date: (string)($body['date'] ?? ''),
             protocolNumber: (string)($body['protocolNumber'] ?? ''),
         );
 

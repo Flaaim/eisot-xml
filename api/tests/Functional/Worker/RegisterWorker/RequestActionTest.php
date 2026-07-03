@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Worker\RegisterWorker;
 
+use App\Worker\Entity\Worker\WorkerId;
 use App\Worker\Entity\Worker\WorkerRepository;
 use App\Worker\Event\WorkerRegistered;
 use Doctrine\ORM\EntityManagerInterface;
@@ -117,7 +118,7 @@ final class RequestActionTest extends WebTestCase
         self::assertNotEmpty($data['id']);
 
         // Работник сохранён в БД
-        $worker = $this->workers->get(new \App\Worker\Entity\Worker\WorkerId($data['id']));
+        $worker = $this->workers->get(new WorkerId($data['id']));
         self::assertEquals('Иванов', $worker->getFullName()->getLastName());
         self::assertEquals('Иван', $worker->getFullName()->getFirstName());
         self::assertEquals('Иванович', $worker->getFullName()->getMiddleName());
@@ -163,7 +164,7 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         // Работник сохранён в БД
-        $worker = $this->workers->get(new \App\Worker\Entity\Worker\WorkerId($data['id']));
+        $worker = $this->workers->get(new WorkerId($data['id']));
         self::assertEquals('Алиев', $worker->getFullName()->getLastName());
         self::assertEquals('Мухаммед', $worker->getFullName()->getFirstName());
         self::assertNull($worker->getFullName()->getMiddleName());

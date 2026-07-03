@@ -20,6 +20,7 @@ final class IdType extends StringType
     {
         return !empty($value) ? new Id((string)$value) : null;
     }
+
     public function getName(): string
     {
         return self::NAME;

@@ -18,6 +18,11 @@ final class Profession
         Assert::maxLength($value, 200, 'Profession must not exceed 200 characters.');
     }
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     public static function fromString(string $value): self
     {
         return new self($value);
@@ -31,10 +36,5 @@ final class Profession
     public function isEqualTo(self $other): bool
     {
         return $this->value === $other->value;
-    }
-
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }

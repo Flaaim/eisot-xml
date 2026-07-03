@@ -21,10 +21,8 @@ export function SubscriptionStatusBadge({ access }: SubscriptionStatusBadgeProps
     );
   }
 
-  const planLabel = access.plan ? PLAN_LABELS[access.plan] ?? access.plan : "—";
-  const endDate = access.periodEnd
-    ? new Date(access.periodEnd).toLocaleDateString("ru-RU")
-    : null;
+  const planLabel = access.plan ? (PLAN_LABELS[access.plan] ?? access.plan) : "—";
+  const endDate = access.periodEnd ? new Date(access.periodEnd).toLocaleDateString("ru-RU") : null;
 
   return (
     <span className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">

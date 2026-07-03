@@ -7,6 +7,7 @@ namespace App\Http\Action\V1\Company\GetCompanyStats;
 use App\Company\Query\GetCompanyStats\Handler;
 use App\Company\Query\GetCompanyStats\Query;
 use App\OAuth\Entity\UserAdapter;
+use DomainException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +40,7 @@ final readonly class RequestAction
             $stats = $this->handler->handle($query);
 
             return new JsonResponse($stats);
-        } catch (\DomainException $e) {
+        } catch (DomainException $e) {
             return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }

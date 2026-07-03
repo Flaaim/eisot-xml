@@ -32,7 +32,7 @@ final class NameTest extends TestCase
     {
         $name = Name::fromString($value = 'Acme Corp');
 
-        self::assertSame($value, (string) $name);
+        self::assertSame($value, (string)$name);
     }
 
     public function testIsEqualToSame(): void
@@ -67,6 +67,6 @@ final class NameTest extends TestCase
     {
         $name = Name::fromString(str_repeat('a', 500));
 
-        self::assertSame(500, strlen($name->getValue()));
+        self::assertSame(500, \strlen($name->getValue()));
     }
 }

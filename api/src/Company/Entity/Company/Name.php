@@ -15,6 +15,11 @@ final class Name
         Assert::maxLength($value, 500, 'Company name cannot be longer than 500 characters.');
     }
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     public static function fromString(string $value): self
     {
         return new self($value);
@@ -28,10 +33,5 @@ final class Name
     public function isEqualTo(self $other): bool
     {
         return $this->value === $other->value;
-    }
-
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }

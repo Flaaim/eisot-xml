@@ -54,9 +54,7 @@ export function buildRegisterWorkerCommand(
       profession: formData.profession,
       isForeigner: true,
       citizenship: formData.citizenship.trim(),
-      ...(formData.foreignSnils?.trim()
-        ? { foreignSnils: formData.foreignSnils.trim() }
-        : {}),
+      ...(formData.foreignSnils?.trim() ? { foreignSnils: formData.foreignSnils.trim() } : {}),
     };
   }
 

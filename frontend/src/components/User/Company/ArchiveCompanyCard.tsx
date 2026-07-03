@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
 import Link from "next/link";
-import {Building2, Users, GraduationCap, RotateCcw, Settings} from "lucide-react";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import { Building2, Users, GraduationCap, RotateCcw, Settings } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CompanyShort } from "@/interfaces/company.interface";
-import {unarchiveCompanyAction} from "@/actions/company";
-import {useRouter} from "next/navigation";
-import {toast} from "sonner";
-import {useState} from "react";
+import { unarchiveCompanyAction } from "@/actions/company";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useState } from "react";
 
 interface CompanyCardProps {
   readonly company: CompanyShort;
@@ -19,24 +19,24 @@ interface CompanyCardProps {
  * Стилизована с faded эффектом и кнопкой восстановления.
  */
 export function ArchiveCompanyCard({ company }: CompanyCardProps) {
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const activate = async (id: string) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await unarchiveCompanyAction(id);
       if (response.ok) {
-        toast.success('Компания успешно восстановлена!')
+        toast.success("Компания успешно восстановлена!");
         router.refresh();
       }
     } catch (error) {
-      toast.success('Ошибка при восстановлении компании.')
+      toast.success("Ошибка при восстановлении компании.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  if(loading) {
+  if (loading) {
     return (
       <div className="pointer-events-none opacity-50">
         <Card className="group transition-all duration-200 flex flex-col justify-between h-full opacity-70">
@@ -126,4 +126,3 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
     </Card>
   );
 }
-

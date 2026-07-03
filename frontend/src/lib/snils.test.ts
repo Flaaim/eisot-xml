@@ -1,9 +1,4 @@
-import {
-  calculateSnilsChecksum,
-  isValidSnils,
-  normalizeSnils,
-  toSnilsApiValue,
-} from "@/lib/snils";
+import { calculateSnilsChecksum, isValidSnils, normalizeSnils, toSnilsApiValue } from "@/lib/snils";
 
 describe("snils", () => {
   it("normalizes digits to EISOT format", () => {

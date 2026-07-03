@@ -34,7 +34,7 @@ final class SnilsInfoType extends JsonType
     {
         $data = parent::convertToPHPValue($value, $platform);
 
-        if ($data === null) {
+        if (null === $data) {
             return null;
         }
 

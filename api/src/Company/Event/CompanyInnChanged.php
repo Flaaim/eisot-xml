@@ -6,6 +6,7 @@ namespace App\Company\Event;
 
 use App\Company\Entity\Company\Id;
 use App\Company\Entity\Company\Inn;
+use DateTimeImmutable;
 
 /**
  * Доменное событие: ИНН контрагента изменён.
@@ -15,12 +16,12 @@ use App\Company\Entity\Company\Inn;
  */
 final class CompanyInnChanged
 {
-    public readonly \DateTimeImmutable $occurredOn;
+    public readonly DateTimeImmutable $occurredOn;
 
     public function __construct(
-        public readonly Id  $id,
+        public readonly Id $id,
         public readonly Inn $inn,
     ) {
-        $this->occurredOn = new \DateTimeImmutable();
+        $this->occurredOn = new DateTimeImmutable();
     }
 }

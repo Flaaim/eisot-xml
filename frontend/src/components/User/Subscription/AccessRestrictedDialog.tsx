@@ -20,10 +20,7 @@ interface AccessRestrictedDialogProps {
  * Модальное окно «Доступ ограничен» (актуальная редакция, июнь 2026).
  * User Subscription разблокирует экспорт RegistrySet для всех компаний аккаунта.
  */
-export function AccessRestrictedDialog({
-  open,
-  onOpenChange,
-}: AccessRestrictedDialogProps) {
+export function AccessRestrictedDialog({ open, onOpenChange }: AccessRestrictedDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -33,15 +30,14 @@ export function AccessRestrictedDialog({
           </div>
           <DialogTitle>Доступ ограничен</DialogTitle>
           <DialogDescription className="leading-relaxed">
-            Формирование XML-файла реестра обученных лиц (<strong>RegistrySet</strong>)
-            для загрузки в федеральную систему ЕИСОТ доступно только при активной
-            User Subscription (Active Status) на выбранный тарифный Plan.
+            Формирование XML-файла реестра обученных лиц (<strong>RegistrySet</strong>) для загрузки
+            в федеральную систему ЕИСОТ доступно только при активной User Subscription (Active
+            Status) на выбранный тарифный Plan.
           </DialogDescription>
         </DialogHeader>
         <p className="text-sm text-muted-foreground">
-          Оформите подписку для вашего аккаунта — она разблокирует выгрузку протоколов
-          обучения во всех компаниях, которыми вы владеете, в формате schema.xsd
-          Минтруда России.
+          Оформите подписку для вашего аккаунта — она разблокирует выгрузку протоколов обучения во
+          всех компаниях, которыми вы владеете, в формате schema.xsd Минтруда России.
         </p>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} className="cursor-pointer">

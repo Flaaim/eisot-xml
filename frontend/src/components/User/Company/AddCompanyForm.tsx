@@ -17,7 +17,7 @@ import {
 import { toast } from "sonner";
 import { addCompanyAction } from "@/actions/company";
 import { normalizeInn, validateInn } from "@/lib/inn";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   name: z
@@ -63,18 +63,14 @@ export default function AddCompanyForm() {
 
     toast.success("Компания успешно добавлена!");
     form.reset();
-    router.push('/user/company');
+    router.push("/user/company");
   }
 
   return (
     <Card className="mx-auto w-full max-w-lg shadow-sm">
       <CardHeader className="space-y-2">
-        <CardTitle className="text-2xl font-semibold tracking-tight">
-          Добавить компанию
-        </CardTitle>
-        <CardDescription>
-          Укажите название и ИНН организации, проводившей обучение.
-        </CardDescription>
+        <CardTitle className="text-2xl font-semibold tracking-tight">Добавить компанию</CardTitle>
+        <CardDescription>Укажите название и ИНН организации, проводившей обучение.</CardDescription>
       </CardHeader>
       <CardContent>
         <form id="add-company-form" onSubmit={form.handleSubmit(onSubmit)} method="POST">

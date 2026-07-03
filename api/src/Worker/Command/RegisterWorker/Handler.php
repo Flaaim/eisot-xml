@@ -29,10 +29,10 @@ use App\Worker\Exception\AccessDeniedException;
 final class Handler
 {
     public function __construct(
-        private readonly CompanyRepository  $companies,
-        private readonly WorkerRepository   $workers,
-        private readonly Flusher            $flusher,
-        private readonly CommandValidator   $commandValidator,
+        private readonly CompanyRepository $companies,
+        private readonly WorkerRepository $workers,
+        private readonly Flusher $flusher,
+        private readonly CommandValidator $commandValidator,
     ) {}
 
     public function handle(Command $command): void

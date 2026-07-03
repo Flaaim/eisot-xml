@@ -1,9 +1,4 @@
-import {
-  isValidInn,
-  isValidInnChecksum,
-  normalizeInn,
-  validateInn,
-} from "./inn";
+import { isValidInn, isValidInnChecksum, normalizeInn, validateInn } from "./inn";
 
 describe("inn", () => {
   it("normalizes non-digit characters", () => {
@@ -27,9 +22,7 @@ describe("inn", () => {
 
   it("returns validation messages", () => {
     expect(validateInn("")).toBe("ИНН обязателен для заполнения.");
-    expect(validateInn("123456789")).toBe(
-      "ИНН должен состоять из 10 или 12 цифр.",
-    );
+    expect(validateInn("123456789")).toBe("ИНН должен состоять из 10 или 12 цифр.");
     expect(validateInn("1234567890")).toBe("Неверная контрольная сумма ИНН.");
   });
 });

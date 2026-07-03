@@ -12,10 +12,10 @@ export const API = {
     joinConfirm: () => BASE_URL + `/v1/auth/join/confirm`,
     passwordResetRequest: () => BASE_URL + `/v1/auth/password/reset/request`,
     passwordResetConfirm: () => BASE_URL + `/v1/auth/password/reset`,
-    requestEmailChange: () => BASE_URL + `/v1/auth/email/change/request`
+    requestEmailChange: () => BASE_URL + `/v1/auth/email/change/request`,
   },
   user: {
-    profile: () => BASE_URL + `/v1/user/profile`
+    profile: () => BASE_URL + `/v1/user/profile`,
   },
   company: {
     add: () => BASE_URL + `/v1/companies`,

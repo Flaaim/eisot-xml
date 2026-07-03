@@ -18,7 +18,7 @@ final class ProgramType extends StringType
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?Program
     {
-        return $value !== null ? Program::fromId((int)$value) : null;
+        return null !== $value ? Program::fromId((int)$value) : null;
     }
 
     public function getName(): string

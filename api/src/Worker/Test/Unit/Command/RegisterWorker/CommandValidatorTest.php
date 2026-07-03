@@ -6,6 +6,7 @@ namespace App\Worker\Test\Unit\Command\RegisterWorker;
 
 use App\Worker\Command\RegisterWorker\Command;
 use App\Worker\Command\RegisterWorker\CommandValidator;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,7 +45,7 @@ final class CommandValidatorTest extends TestCase
 
     public function testCitizenWithoutSnilsThrowsException(): void
     {
-        $this->expectException(\DomainException::class);
+        $this->expectException(DomainException::class);
         $this->expectExceptionMessage('SNILS is required for a citizen of Russia.');
 
         $command = new Command(
@@ -66,7 +67,7 @@ final class CommandValidatorTest extends TestCase
 
     public function testCitizenWithInvalidChecksumThrowsException(): void
     {
-        $this->expectException(\DomainException::class);
+        $this->expectException(DomainException::class);
         $this->expectExceptionMessage('SNILS checksum is invalid');
 
         $command = new Command(
@@ -109,7 +110,7 @@ final class CommandValidatorTest extends TestCase
 
     public function testForeignerWithStandardSnilsThrowsException(): void
     {
-        $this->expectException(\DomainException::class);
+        $this->expectException(DomainException::class);
         $this->expectExceptionMessage('Standard SNILS must be empty for a foreign worker.');
 
         $command = new Command(

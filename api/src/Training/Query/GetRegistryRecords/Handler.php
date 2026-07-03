@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Training\Query\GetRegistryRecords;
 
 use App\Training\Entity\Record\Program;
+use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -50,7 +51,7 @@ final readonly class Handler
         return array_map(
             static function (array $row): RegistryRecordDTO {
                 $fullName = json_decode((string)($row['full_name'] ?? '{}'), true) ?? [];
-                $workerFullName = trim(sprintf(
+                $workerFullName = trim(\sprintf(
                     '%s %s %s',
                     $fullName['last'] ?? '',
                     $fullName['first'] ?? '',
@@ -63,7 +64,7 @@ final readonly class Handler
                 $programId = (int)$row['program'];
                 $programTitle = Program::catalog()[$programId] ?? 'Неизвестная программа';
 
-                $date = new \DateTimeImmutable((string)$row['date']);
+                $date = new DateTimeImmutable((string)$row['date']);
 
                 return new RegistryRecordDTO(
                     id: (string)$row['id'],

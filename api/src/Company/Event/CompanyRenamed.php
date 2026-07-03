@@ -6,6 +6,7 @@ namespace App\Company\Event;
 
 use App\Company\Entity\Company\Id;
 use App\Company\Entity\Company\Name;
+use DateTimeImmutable;
 
 /**
  * Доменное событие: контрагент переименован.
@@ -15,12 +16,12 @@ use App\Company\Entity\Company\Name;
  */
 final class CompanyRenamed
 {
-    public readonly \DateTimeImmutable $occurredOn;
+    public readonly DateTimeImmutable $occurredOn;
 
     public function __construct(
-        public readonly Id   $id,
+        public readonly Id $id,
         public readonly Name $name,
     ) {
-        $this->occurredOn = new \DateTimeImmutable();
+        $this->occurredOn = new DateTimeImmutable();
     }
 }

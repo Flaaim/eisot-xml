@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Subscription\Entity\Subscription;
 
+use DateTimeImmutable;
 use InvalidArgumentException;
 
 /**
@@ -12,8 +13,8 @@ use InvalidArgumentException;
 final class Period
 {
     public function __construct(
-        private \DateTimeImmutable $startDate,
-        private \DateTimeImmutable $endDate,
+        private DateTimeImmutable $startDate,
+        private DateTimeImmutable $endDate,
     ) {
         $startDate = $startDate->setTime(0, 0);
         $endDate = $endDate->setTime(0, 0);
@@ -26,31 +27,31 @@ final class Period
         $this->endDate = $endDate;
     }
 
-    public static function fromDurationDays(int $durationDays, ?\DateTimeImmutable $startDate = null): self
+    public static function fromDurationDays(int $durationDays, ?DateTimeImmutable $startDate = null): self
     {
         if ($durationDays < 1) {
             throw new InvalidArgumentException('Subscription Period duration must be at least one day.');
         }
 
-        $start = ($startDate ?? new \DateTimeImmutable('today'))->setTime(0, 0);
-        $end = $start->modify(sprintf('+%d days', $durationDays));
+        $start = ($startDate ?? new DateTimeImmutable('today'))->setTime(0, 0);
+        $end = $start->modify(\sprintf('+%d days', $durationDays));
 
         self::assertEndDateNotInPast($end);
 
         return new self($start, $end);
     }
 
-    public function getStartDate(): \DateTimeImmutable
+    public function getStartDate(): DateTimeImmutable
     {
         return $this->startDate;
     }
 
-    public function getEndDate(): \DateTimeImmutable
+    public function getEndDate(): DateTimeImmutable
     {
         return $this->endDate;
     }
 
-    public function isActiveAt(\DateTimeImmutable $moment): bool
+    public function isActiveAt(DateTimeImmutable $moment): bool
     {
         $day = $moment->setTime(0, 0);
 
@@ -65,13 +66,13 @@ final class Period
 
         return new self(
             $this->startDate,
-            $this->endDate->modify(sprintf('+%d days', $additionalDays)),
+            $this->endDate->modify(\sprintf('+%d days', $additionalDays)),
         );
     }
 
-    private static function assertEndDateNotInPast(\DateTimeImmutable $endDate): void
+    private static function assertEndDateNotInPast(DateTimeImmutable $endDate): void
     {
-        $today = new \DateTimeImmutable('today');
+        $today = new DateTimeImmutable('today');
 
         if ($endDate < $today) {
             throw new InvalidArgumentException('Subscription Period cannot end in the past.');

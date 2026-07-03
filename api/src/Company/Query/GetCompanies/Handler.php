@@ -26,7 +26,7 @@ final class Handler
         $rows = $this->fetcher->findAllByUserId($query->userId);
 
         return array_map(
-            static fn(array $row): CompanyShortDTO => new CompanyShortDTO(
+            static fn (array $row): CompanyShortDTO => new CompanyShortDTO(
                 $row['id'],
                 $row['name'],
                 $row['inn'],

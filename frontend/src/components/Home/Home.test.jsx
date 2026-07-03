@@ -20,7 +20,7 @@ describe("Home landing page", () => {
       screen.getByRole("heading", {
         level: 1,
         name: /Подготовка реестров для ЕИСОТ без ошибок/i,
-      }),
+      })
     ).toBeInTheDocument();
   });
 

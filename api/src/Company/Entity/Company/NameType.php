@@ -20,6 +20,7 @@ final class NameType extends StringType
     {
         return !empty($value) ? new Name((string)$value) : null;
     }
+
     public function getName(): string
     {
         return self::NAME;

@@ -18,9 +18,9 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RequestAction
 {
     public function __construct(
-        private readonly Handler   $handler,
+        private readonly Handler $handler,
         private readonly Validator $validator,
-        private readonly Security  $security,
+        private readonly Security $security,
     ) {}
 
     #[Route('/v1/companies/{companyId}/workers', name: 'worker.register', methods: ['POST'])]
@@ -40,16 +40,16 @@ final class RequestAction
         $workerId = WorkerId::generate()->getValue();
 
         $command = new Command(
-            workerId:     $workerId,
-            companyId:    $companyId,
-            userId:       $userId,
-            lastName:     (string)($body['lastName'] ?? ''),
-            firstName:    (string)($body['firstName'] ?? ''),
-            middleName:   isset($body['middleName']) ? (string)$body['middleName'] : null,
-            profession:   (string)($body['profession'] ?? ''),
-            isForeigner:  (bool)($body['isForeigner'] ?? false),
-            snils:        isset($body['snils']) ? (string)$body['snils'] : null,
-            citizenship:  isset($body['citizenship']) ? (string)$body['citizenship'] : null,
+            workerId: $workerId,
+            companyId: $companyId,
+            userId: $userId,
+            lastName: (string)($body['lastName'] ?? ''),
+            firstName: (string)($body['firstName'] ?? ''),
+            middleName: isset($body['middleName']) ? (string)$body['middleName'] : null,
+            profession: (string)($body['profession'] ?? ''),
+            isForeigner: (bool)($body['isForeigner'] ?? false),
+            snils: isset($body['snils']) ? (string)$body['snils'] : null,
+            citizenship: isset($body['citizenship']) ? (string)$body['citizenship'] : null,
             foreignSnils: isset($body['foreignSnils']) ? (string)$body['foreignSnils'] : null,
         );
 

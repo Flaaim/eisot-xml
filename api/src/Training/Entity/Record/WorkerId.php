@@ -20,12 +20,12 @@ final class WorkerId
         $this->value = mb_strtolower($value);
     }
 
-    public function getValue(): string
+    public function __toString(): string
     {
         return $this->value;
     }
 
-    public function __toString(): string
+    public function getValue(): string
     {
         return $this->value;
     }

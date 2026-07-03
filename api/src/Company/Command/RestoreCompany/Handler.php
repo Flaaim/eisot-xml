@@ -9,7 +9,6 @@ use App\Company\Entity\Company\Id;
 use App\Company\Entity\Company\UserId;
 use App\Company\Exception\AccessDeniedException;
 use App\Infrastructure\Doctrine\Flusher;
-use Psr\Log\LoggerInterface;
 
 /**
  * Обработчик команды RestoreCompany.
@@ -18,7 +17,7 @@ final readonly class Handler
 {
     public function __construct(
         private CompanyRepository $companies,
-        private Flusher           $flusher
+        private Flusher $flusher
     ) {}
 
     public function handle(Command $command): void

@@ -24,17 +24,9 @@ import {
 } from "@/components/ui/card";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { FNS_TITLE_LOOKUP_ENABLED, normalizeInn, validateInn } from "@/lib/inn";
-import {
-  CompanySettingsFormData,
-  CompanySettingsSchema,
-} from "@/types/company-settings.schema";
+import { CompanySettingsFormData, CompanySettingsSchema } from "@/types/company-settings.schema";
 
 interface CompanySettingsFormProps {
   readonly companyId: string;
@@ -132,8 +124,8 @@ export function CompanySettingsForm({
             <div>
               <CardTitle className="text-xl">Настройки Company</CardTitle>
               <CardDescription>
-                Редактирование Title и Inn организации для элементов Organization в
-                RegistrySet (XSD 1.0.9).
+                Редактирование Title и Inn организации для элементов Organization в RegistrySet (XSD
+                1.0.9).
               </CardDescription>
             </div>
           </div>
@@ -196,8 +188,7 @@ export function CompanySettingsForm({
                       </Tooltip>
                     </div>
                     <FieldDescription>
-                      xs:string · 10 цифр (юрлицо) или 12 цифр (ИП), с проверкой контрольной
-                      суммы.
+                      xs:string · 10 цифр (юрлицо) или 12 цифр (ИП), с проверкой контрольной суммы.
                     </FieldDescription>
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
@@ -209,13 +200,11 @@ export function CompanySettingsForm({
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="company-title-settings">
-                      Наименование (Title)
-                    </FieldLabel>
+                    <FieldLabel htmlFor="company-title-settings">Наименование (Title)</FieldLabel>
                     <Input
                       {...field}
                       id="company-title-settings"
-                      placeholder='ООО «Пример»'
+                      placeholder="ООО «Пример»"
                       disabled={isArchived || form.formState.isSubmitting}
                       aria-invalid={fieldState.invalid}
                       autoComplete="organization"

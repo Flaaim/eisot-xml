@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Worker\Entity\Worker;
 
+use DomainException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -22,8 +23,7 @@ final readonly class SnilsInfo
         private ?Snils $snils,
         private ?string $citizenship,
         private ?string $foreignSnils,
-    ) {
-    }
+    ) {}
 
     /**
      * Гражданин РФ: стандартный СНИЛС обязателен.
@@ -46,7 +46,7 @@ final readonly class SnilsInfo
         Assert::notEmpty($citizenship, 'Citizenship is required for a foreign worker.');
         Assert::maxLength($citizenship, 100, 'Citizenship must not exceed 100 characters.');
 
-        if ($foreignSnils !== null) {
+        if (null !== $foreignSnils) {
             Assert::notEmpty($foreignSnils, 'Foreign SNILS must not be empty if provided.');
             Assert::maxLength($foreignSnils, 30, 'Foreign SNILS must not exceed 30 characters.');
         }
@@ -62,7 +62,7 @@ final readonly class SnilsInfo
     /**
      * Фабричный метод из примитивов (используется Handler'ом).
      *
-     * @throws \DomainException при нарушении инварианта
+     * @throws DomainException при нарушении инварианта
      */
     public static function fromPrimitives(
         bool $isForeigner,
@@ -71,30 +71,30 @@ final readonly class SnilsInfo
         ?string $foreignSnils,
     ): self {
         if (!$isForeigner) {
-            if ($snils === null || $snils === '') {
-                throw new \DomainException('SNILS is required for a citizen of Russia.');
+            if (null === $snils || '' === $snils) {
+                throw new DomainException('SNILS is required for a citizen of Russia.');
             }
-            if ($citizenship !== null && $citizenship !== '') {
-                throw new \DomainException('Citizenship must be empty for a citizen of Russia.');
+            if (null !== $citizenship && '' !== $citizenship) {
+                throw new DomainException('Citizenship must be empty for a citizen of Russia.');
             }
-            if ($foreignSnils !== null && $foreignSnils !== '') {
-                throw new \DomainException('Foreign SNILS must be empty for a citizen of Russia.');
+            if (null !== $foreignSnils && '' !== $foreignSnils) {
+                throw new DomainException('Foreign SNILS must be empty for a citizen of Russia.');
             }
 
             return self::forCitizen(Snils::fromString($snils));
         }
 
         // Иностранец
-        if ($snils !== null && $snils !== '') {
-            throw new \DomainException('Standard SNILS must be empty for a foreign worker.');
+        if (null !== $snils && '' !== $snils) {
+            throw new DomainException('Standard SNILS must be empty for a foreign worker.');
         }
-        if ($citizenship === null || $citizenship === '') {
-            throw new \DomainException('Citizenship is required for a foreign worker.');
+        if (null === $citizenship || '' === $citizenship) {
+            throw new DomainException('Citizenship is required for a foreign worker.');
         }
 
         return self::forForeigner(
             $citizenship,
-            ($foreignSnils !== null && $foreignSnils !== '') ? $foreignSnils : null,
+            (null !== $foreignSnils && '' !== $foreignSnils) ? $foreignSnils : null,
         );
     }
 

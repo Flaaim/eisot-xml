@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Company\Event;
 
 use App\Company\Entity\Company\Id;
+use DateTimeImmutable;
 
 /**
  * Доменное событие: компания переведена в архив.
@@ -13,11 +14,11 @@ use App\Company\Entity\Company\Id;
  */
 final class CompanyArchived
 {
-    public readonly \DateTimeImmutable $occurredOn;
+    public readonly DateTimeImmutable $occurredOn;
 
     public function __construct(
         public readonly Id $id,
     ) {
-        $this->occurredOn = new \DateTimeImmutable();
+        $this->occurredOn = new DateTimeImmutable();
     }
 }

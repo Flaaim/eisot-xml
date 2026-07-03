@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\EventSubscriber;
 
 use App\Company\Exception\AccessDeniedException as CompanyAccessDenied;
-use App\Worker\Exception\AccessDeniedException as WorkerAccessDenied;
 use App\Training\Exception\AccessDeniedException as TrainingAccessDenied;
+use App\Worker\Exception\AccessDeniedException as WorkerAccessDenied;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

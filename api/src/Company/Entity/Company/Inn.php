@@ -28,6 +28,11 @@ final class Inn
         self::assertValidChecksum($value);
     }
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     public static function fromString(string $value): self
     {
         return new self($value);
@@ -40,12 +45,12 @@ final class Inn
 
     public function isLegal(): bool
     {
-        return strlen($this->value) === self::LENGTH_10;
+        return self::LENGTH_10 === \strlen($this->value);
     }
 
     public function isIndividual(): bool
     {
-        return strlen($this->value) === self::LENGTH_12;
+        return self::LENGTH_12 === \strlen($this->value);
     }
 
     public function isEqualTo(self $other): bool
@@ -53,28 +58,23 @@ final class Inn
         return $this->value === $other->value;
     }
 
-    public function __toString(): string
-    {
-        return $this->value;
-    }
-
     private static function assertValidChecksum(string $value): void
     {
-        if (strlen($value) === self::LENGTH_10) {
+        if (self::LENGTH_10 === \strlen($value)) {
             $expected = self::calculateCheckDigit($value, self::CHECKSUM_COEF_10);
 
-            if ($expected !== (int) $value[9]) {
+            if ($expected !== (int)$value[9]) {
                 throw new InvalidArgumentException('INN checksum is invalid.');
             }
 
             return;
         }
 
-        if (strlen($value) === self::LENGTH_12) {
+        if (self::LENGTH_12 === \strlen($value)) {
             $firstExpected = self::calculateCheckDigit($value, self::CHECKSUM_COEF_12_FIRST);
             $secondExpected = self::calculateCheckDigit($value, self::CHECKSUM_COEF_12_SECOND);
 
-            if ($firstExpected !== (int) $value[10] || $secondExpected !== (int) $value[11]) {
+            if ($firstExpected !== (int)$value[10] || $secondExpected !== (int)$value[11]) {
                 throw new InvalidArgumentException('INN checksum is invalid.');
             }
         }
@@ -88,7 +88,7 @@ final class Inn
         $sum = 0;
 
         foreach ($coefficients as $index => $coefficient) {
-            $sum += (int) $digits[$index] * $coefficient;
+            $sum += (int)$digits[$index] * $coefficient;
         }
 
         return ($sum % 11) % 10;

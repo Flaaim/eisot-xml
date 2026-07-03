@@ -21,6 +21,11 @@ final class RegistryNumber
         Assert::maxLength($value, 100, 'Registry number must not exceed 100 characters.');
     }
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     public static function fromString(string $value): self
     {
         return new self($value);
@@ -34,10 +39,5 @@ final class RegistryNumber
     public function isEqualTo(self $other): bool
     {
         return $this->value === $other->value;
-    }
-
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }

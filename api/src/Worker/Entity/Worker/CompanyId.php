@@ -21,6 +21,11 @@ final class CompanyId
         $this->value = mb_strtolower($value);
     }
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     public function getValue(): string
     {
         return $this->value;
@@ -29,10 +34,5 @@ final class CompanyId
     public function isEqualTo(self $other): bool
     {
         return $this->value === $other->value;
-    }
-
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }

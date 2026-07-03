@@ -16,10 +16,10 @@ trait OAuthTokenTrait
      */
     private function getAccessToken(
         KernelBrowser $client,
-        string        $email,
-        string        $password,
-        string        $clientId     = 'frontend',
-        string        $clientSecret = 'my-super-secret-123',
+        string $email,
+        string $password,
+        string $clientId     = 'frontend',
+        string $clientSecret = 'my-super-secret-123',
     ): string {
         $client->request('POST', '/token', [
             'grant_type'    => 'password',

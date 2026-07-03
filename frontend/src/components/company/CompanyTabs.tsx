@@ -3,12 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 /** Способ №2: «Добавление автоматически» — включить, когда будет готов импорт Excel. */
@@ -38,7 +33,7 @@ function CompanyTabItem({ tab }: CompanyTabItemProps) {
       <span
         className={cn(
           "flex items-center justify-center gap-2 text-sm font-semibold tracking-wide",
-          tab.isActive && !tab.disabled ? "font-bold text-foreground" : "",
+          tab.isActive && !tab.disabled ? "font-bold text-foreground" : ""
         )}
       >
         {tab.title}
@@ -56,14 +51,12 @@ function CompanyTabItem({ tab }: CompanyTabItemProps) {
 
   const tabClassName = cn(
     "flex flex-1 flex-col items-center justify-center rounded-lg px-4 py-3 text-center transition-all duration-200 select-none",
-    tab.disabled
-      ? "cursor-not-allowed opacity-50"
-      : "cursor-pointer",
+    tab.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
     tab.isActive && !tab.disabled
       ? "bg-background text-primary shadow-sm"
       : tab.disabled
         ? "text-muted-foreground/80"
-        : "text-muted-foreground/80 hover:bg-background/40 hover:text-foreground/90",
+        : "text-muted-foreground/80 hover:bg-background/40 hover:text-foreground/90"
   );
 
   if (tab.disabled) {
@@ -94,12 +87,7 @@ function CompanyTabItem({ tab }: CompanyTabItemProps) {
   }
 
   return (
-    <Link
-      href={tab.href}
-      role="tab"
-      aria-selected={tab.isActive}
-      className={tabClassName}
-    >
+    <Link href={tab.href} role="tab" aria-selected={tab.isActive} className={tabClassName}>
       {content}
     </Link>
   );

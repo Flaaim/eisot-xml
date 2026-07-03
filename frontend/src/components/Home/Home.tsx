@@ -12,13 +12,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const BENEFITS = [
   {
@@ -84,16 +78,17 @@ function HeroSection() {
           Подготовка реестров для ЕИСОТ без ошибок
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          Больше не нужно вручную собирать XML-файлы и переживать из-за ошибок при загрузке.
-          Просто заполните данные о сотрудниках, а система сама сформирует правильный документ
-          для Минтруда. Специалисты по охране труда уже экономят часы работы с нашим сервисом.
+          Больше не нужно вручную собирать XML-файлы и переживать из-за ошибок при загрузке. Просто
+          заполните данные о сотрудниках, а система сама сформирует правильный документ для
+          Минтруда. Специалисты по охране труда уже экономят часы работы с нашим сервисом.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button
             nativeButton={false}
             render={<Link href="/user/company" />}
             size="lg"
-            className="min-w-[220px]">
+            className="min-w-[220px]"
+          >
             Создать реестр
             <ArrowRight className="size-4" />
           </Button>
@@ -125,7 +120,10 @@ function BenefitsSection() {
       </div>
       <div className="grid gap-6 md:grid-cols-3">
         {BENEFITS.map(({ icon: Icon, title, description }) => (
-          <Card key={title} className="border-border/80 shadow-sm transition-shadow hover:shadow-md">
+          <Card
+            key={title}
+            className="border-border/80 shadow-sm transition-shadow hover:shadow-md"
+          >
             <CardHeader>
               <div className="mb-2 flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <Icon className="size-5" />
@@ -192,8 +190,8 @@ function TechnicalSection() {
             <CardDescription className="mt-2 text-base leading-relaxed text-muted-foreground">
               Мы тщательно следим за всеми изменениями в требованиях Минтруда и обновляем сервис.
               Каждый созданный файл проходит многоступенчатую проверку: контрольные суммы СНИЛС,
-              соответствие формату ЕИСОТ, корректность данных для иностранных сотрудников.
-              Вы получаете готовый документ, который гарантированно загрузится с первого раза.
+              соответствие формату ЕИСОТ, корректность данных для иностранных сотрудников. Вы
+              получаете готовый документ, который гарантированно загрузится с первого раза.
             </CardDescription>
           </div>
         </CardHeader>

@@ -8,8 +8,8 @@ use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id as UserId;
 use App\Auth\Test\Builder\UserBuilder;
 use App\Company\Entity\Company\Inn;
-use App\Company\Test\Builder\CompanyBuilder;
 use App\Company\Entity\Company\UserId as CompanyUserId;
+use App\Company\Test\Builder\CompanyBuilder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 

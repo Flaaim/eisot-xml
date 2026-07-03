@@ -31,7 +31,7 @@ final class FullNameType extends JsonType
     {
         $data = parent::convertToPHPValue($value, $platform);
 
-        if ($data === null) {
+        if (null === $data) {
             return null;
         }
 

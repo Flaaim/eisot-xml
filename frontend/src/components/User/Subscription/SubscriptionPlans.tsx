@@ -77,9 +77,7 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
         plan: plan.id,
         status: "active",
         periodStart: new Date().toISOString().slice(0, 10),
-        periodEnd: new Date(Date.now() + plan.durationDays * 86400000)
-          .toISOString()
-          .slice(0, 10),
+        periodEnd: new Date(Date.now() + plan.durationDays * 86400000).toISOString().slice(0, 10),
       });
     } finally {
       setLoadingPlan(null);
@@ -97,17 +95,15 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
               <>
                 {" "}
                 · Subscription Period до{" "}
-                <strong>
-                  {new Date(access.periodEnd).toLocaleDateString("ru-RU")}
-                </strong>
+                <strong>{new Date(access.periodEnd).toLocaleDateString("ru-RU")}</strong>
               </>
             )}
             . Подписка действует для всех компаний вашего аккаунта.
           </p>
         ) : (
           <p>
-            User Subscription разблокирует выгрузку реестра обученных лиц (RegistrySet) в
-            ЕИСОТ для всех ваших компаний. Выберите тарифный Plan ниже.
+            User Subscription разблокирует выгрузку реестра обученных лиц (RegistrySet) в ЕИСОТ для
+            всех ваших компаний. Выберите тарифный Plan ниже.
           </p>
         )}
       </div>
@@ -163,8 +159,8 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Актуальная редакция требований к XML-реестру — июнь 2026 года. Оплата будет
-        подключена на следующем этапе; сейчас подписка активируется в демо-режиме.
+        Актуальная редакция требований к XML-реестру — июнь 2026 года. Оплата будет подключена на
+        следующем этапе; сейчас подписка активируется в демо-режиме.
       </p>
 
       <div>

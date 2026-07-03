@@ -27,18 +27,17 @@ final class Worker implements AggregateRoot
         private Profession $profession,
         #[ORM\Column(name: 'snils_info', type: 'worker_snils_info')]
         private SnilsInfo $snilsInfo,
-    ) {
-    }
+    ) {}
 
     /**
      * Фабричный метод: зарегистрировать нового работника за компанией.
      */
     public static function register(
-        WorkerId   $id,
-        CompanyId  $companyId,
-        FullName   $fullName,
+        WorkerId $id,
+        CompanyId $companyId,
+        FullName $fullName,
         Profession $profession,
-        SnilsInfo  $snilsInfo,
+        SnilsInfo $snilsInfo,
     ): self {
         $worker = new self($id, $companyId, $fullName, $profession, $snilsInfo);
 

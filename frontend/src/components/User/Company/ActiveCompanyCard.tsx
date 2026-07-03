@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
 import Link from "next/link";
-import {Archive, Building2, Users, GraduationCap, Settings} from "lucide-react";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import { Archive, Building2, Users, GraduationCap, Settings } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CompanyShort } from "@/interfaces/company.interface";
-import {archiveCompanyAction} from "@/actions/company";
-import {useRouter} from "next/navigation";
-import {toast} from "sonner";
-import {useState} from "react";
+import { archiveCompanyAction } from "@/actions/company";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useState } from "react";
 
 interface CompanyCardProps {
   readonly company: CompanyShort;
@@ -19,24 +19,24 @@ interface CompanyCardProps {
  * Стилизована с hover-эффектами.
  */
 export function ActiveCompanyCard({ company }: CompanyCardProps) {
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const archive = async (id: string) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await archiveCompanyAction(id);
       if (response.ok) {
-        toast.success('Компания успешно перенесена в архив!')
+        toast.success("Компания успешно перенесена в архив!");
         router.refresh();
       }
     } catch (error) {
-      toast.success('Ошибка при удалении компании.')
+      toast.success("Ошибка при удалении компании.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  if(loading) {
+  if (loading) {
     return (
       <div className="pointer-events-none opacity-50">
         <Card className="group transition-all duration-200 flex flex-col justify-between h-full">
@@ -64,10 +64,7 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
   }
 
   return (
-    <Card
-      data-testid={`company-card-${company.id}`}
-      className="h-full"
-    >
+    <Card data-testid={`company-card-${company.id}`} className="h-full">
       <Link
         href={`/user/company/${company.id}`}
         className="block flex-1 rounded-t-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -123,4 +120,3 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
     </Card>
   );
 }
-

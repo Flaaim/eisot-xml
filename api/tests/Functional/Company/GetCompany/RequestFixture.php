@@ -29,6 +29,7 @@ final class RequestFixture extends AbstractFixture
     public const string COMPANY_INN  = '7707083893';
 
     public const string COMPANY_NOT_FOUND_ID  = 'c87916aa-2edf-4eb8-9dda-37b711bdb17f';
+
     public function load(ObjectManager $manager): void
     {
         $owner = new UserBuilder()
@@ -54,7 +55,6 @@ final class RequestFixture extends AbstractFixture
             ->withUserId(new CompanyUserId(self::USER_ID))
             ->build();
         $manager->persist($company);
-
 
         $manager->flush();
     }

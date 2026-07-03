@@ -8,6 +8,7 @@ use App\Company\Entity\Company\Id;
 use App\Company\Entity\Company\Inn;
 use App\Company\Entity\Company\Name;
 use App\Company\Entity\Company\UserId;
+use DateTimeImmutable;
 
 /**
  * Доменное событие: контрагент добавлен в систему.
@@ -20,14 +21,14 @@ use App\Company\Entity\Company\UserId;
  */
 final class CompanyAdded
 {
-    public readonly \DateTimeImmutable $occurredOn;
+    public readonly DateTimeImmutable $occurredOn;
 
     public function __construct(
-        public readonly Id     $id,
-        public readonly Name   $name,
-        public readonly Inn    $inn,
+        public readonly Id $id,
+        public readonly Name $name,
+        public readonly Inn $inn,
         public readonly UserId $userId,
     ) {
-        $this->occurredOn = new \DateTimeImmutable();
+        $this->occurredOn = new DateTimeImmutable();
     }
 }

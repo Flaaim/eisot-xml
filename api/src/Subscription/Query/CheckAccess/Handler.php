@@ -24,7 +24,7 @@ final readonly class Handler
             new UserId($query->userId),
         );
 
-        if ($subscription === null) {
+        if (null === $subscription) {
             $this->flusher->flush();
 
             return new AccessDTO(

@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\StringType;
 final class InnType extends StringType
 {
     public const string NAME = 'company_inn';
+
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         return $value instanceof Inn ? $value->getValue() : $value;
@@ -19,6 +20,7 @@ final class InnType extends StringType
     {
         return !empty($value) ? new Inn((string)$value) : null;
     }
+
     public function getName(): string
     {
         return self::NAME;

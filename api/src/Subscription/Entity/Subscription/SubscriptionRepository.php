@@ -6,6 +6,7 @@ namespace App\Subscription\Entity\Subscription;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use DomainException;
 
 final class SubscriptionRepository
 {
@@ -28,7 +29,7 @@ final class SubscriptionRepository
         $subscription = $this->repository->find($id->getValue());
 
         if (!$subscription instanceof Subscription) {
-            throw new \DomainException('Subscription is not found.');
+            throw new DomainException('Subscription is not found.');
         }
 
         return $subscription;

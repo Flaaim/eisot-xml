@@ -15,11 +15,11 @@ use Ramsey\Uuid\Uuid;
 
 final class WorkerBuilder
 {
-    private WorkerId   $id;
-    private CompanyId  $companyId;
-    private FullName   $fullName;
+    private WorkerId $id;
+    private CompanyId $companyId;
+    private FullName $fullName;
     private Profession $profession;
-    private SnilsInfo  $snilsInfo;
+    private SnilsInfo $snilsInfo;
 
     public function __construct()
     {

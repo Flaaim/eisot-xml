@@ -1,7 +1,6 @@
 import RequestChangePassword from "@/components/Auth/Email/ChangeEmailForm";
-import {fetchUser} from "@/actions/auth";
-import {redirect} from "next/navigation";
-
+import { fetchUser } from "@/actions/auth";
+import { redirect } from "next/navigation";
 
 export default async function changeEmailPage() {
   let profile;
@@ -9,9 +8,7 @@ export default async function changeEmailPage() {
     profile = await fetchUser();
   } catch (error) {
     console.error("Ошибка авторизации в лейауте, перенаправление...", error);
-    redirect('/join/login')
+    redirect("/join/login");
   }
-  return (
-    <RequestChangePassword profile={profile}/>
-  )
+  return <RequestChangePassword profile={profile} />;
 }

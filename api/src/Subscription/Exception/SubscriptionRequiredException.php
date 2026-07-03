@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Subscription\Exception;
 
+use DomainException;
+
 /**
  * Подписка требуется для формирования RegistrySet XML.
  */
-final class SubscriptionRequiredException extends \DomainException
+final class SubscriptionRequiredException extends DomainException
 {
     public function __construct()
     {

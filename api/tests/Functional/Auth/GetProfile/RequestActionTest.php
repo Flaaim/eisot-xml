@@ -8,20 +8,23 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
-use Tests\Functional\OAuth\AuthorizeFixture;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private KernelBrowser $client;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->client = RequestActionTest::createClient();
+        $this->client = self::createClient();
         $container = $this->client->getContainer();
 
         $fixturesLoader = new FixturesLoader($container);
         $fixturesLoader->loadFixtures([RequestFixture::class]);
-
     }
 
     public function testUnloggedUser(): void
@@ -67,7 +70,7 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
         self::assertEquals([
             'id' => RequestFixture::ID,
-            'email' => RequestFixture::EMAIL
+            'email' => RequestFixture::EMAIL,
         ], $data);
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Training\Entity\Record;
 
+use DomainException;
+
 /**
  * Программа обучения из перечня Минтруда.
  *
@@ -47,7 +49,11 @@ final class Program
     private function __construct(
         private int $id,
         private string $title,
-    ) {
+    ) {}
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 
     /**
@@ -56,7 +62,7 @@ final class Program
     public static function fromId(int $id): self
     {
         if (!isset(self::CATALOG[$id])) {
-            throw new \DomainException(sprintf('Unknown training program ID: %d.', $id));
+            throw new DomainException(\sprintf('Unknown training program ID: %d.', $id));
         }
 
         return new self($id, self::CATALOG[$id]);
@@ -71,8 +77,8 @@ final class Program
     {
         $id = array_search($title, self::CATALOG, true);
 
-        if ($id === false) {
-            throw new \DomainException(sprintf('Unknown training program: "%s".', $title));
+        if (false === $id) {
+            throw new DomainException(\sprintf('Unknown training program: "%s".', $title));
         }
 
         return new self($id, $title);
@@ -119,10 +125,5 @@ final class Program
     public function isEqualTo(self $other): bool
     {
         return $this->id === $other->id;
-    }
-
-    public function __toString(): string
-    {
-        return $this->title;
     }
 }

@@ -13,9 +13,9 @@ use Ramsey\Uuid\Uuid;
 
 final class CompanyBuilder
 {
-    private Id     $id;
-    private Name   $name;
-    private Inn    $inn;
+    private Id $id;
+    private Name $name;
+    private Inn $inn;
     private UserId $userId;
 
     public function __construct()

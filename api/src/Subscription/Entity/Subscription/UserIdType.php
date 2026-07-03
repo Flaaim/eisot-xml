@@ -18,7 +18,7 @@ final class UserIdType extends StringType
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?UserId
     {
-        return !empty($value) ? new UserId((string) $value) : null;
+        return !empty($value) ? new UserId((string)$value) : null;
     }
 
     public function getName(): string

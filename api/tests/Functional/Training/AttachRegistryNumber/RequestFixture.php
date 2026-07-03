@@ -24,6 +24,7 @@ use App\Worker\Entity\Worker\Snils;
 use App\Worker\Entity\Worker\SnilsInfo;
 use App\Worker\Entity\Worker\Worker;
 use App\Worker\Entity\Worker\WorkerId;
+use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -67,7 +68,7 @@ final class RequestFixture extends AbstractFixture
             new TrainingWorkerId(self::WORKER_ID),
             Program::fromId(1),
             Result::satisfactory(),
-            new \DateTimeImmutable('2023-09-28 16:56:01'),
+            new DateTimeImmutable('2023-09-28 16:56:01'),
             ProtocolNumber::fromString('ПР-001/2023'),
         );
         $manager->persist($record);

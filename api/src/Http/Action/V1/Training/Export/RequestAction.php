@@ -7,11 +7,13 @@ namespace App\Http\Action\V1\Training\Export;
 use App\OAuth\Entity\UserAdapter;
 use App\Training\Query\ExportRegistryToXml\Handler;
 use App\Training\Query\ExportRegistryToXml\Query;
+use DomainException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Throwable;
 
 #[Route('/v1/training/export', name: 'training.export', methods: ['POST'])]
 final readonly class RequestAction
@@ -34,7 +36,7 @@ final readonly class RequestAction
 
         try {
             $body = $request->toArray();
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return new JsonResponse(['message' => 'Invalid JSON body.'], Response::HTTP_BAD_REQUEST);
         }
 
@@ -53,9 +55,9 @@ final readonly class RequestAction
                 'Content-Type' => 'application/xml; charset=utf-8',
                 'Content-Disposition' => 'attachment; filename="eisot-export.xml"',
             ]);
-        } catch (\DomainException $e) {
+        } catch (DomainException $e) {
             return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return new JsonResponse(['message' => 'Internal server error: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

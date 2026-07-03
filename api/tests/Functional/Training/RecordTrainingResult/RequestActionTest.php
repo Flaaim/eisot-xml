@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Training\RecordTrainingResult;
 
+use App\Training\Entity\Record\Id;
 use App\Training\Entity\Record\TrainingRecordRepository;
 use App\Training\Event\TrainingResultRecorded;
 use Doctrine\ORM\EntityManagerInterface;
@@ -111,7 +112,7 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('id', $data);
 
         // Запись сохранена в БД
-        $record = $this->records->get(new \App\Training\Entity\Record\Id($data['id']));
+        $record = $this->records->get(new Id($data['id']));
         self::assertEquals(1, $record->getProgram()->getId());
         self::assertEquals('Оказание первой помощи пострадавшим', $record->getProgram()->getTitle());
         self::assertTrue($record->getResult()->isSatisfactory());
@@ -147,7 +148,7 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals(201, $this->client->getResponse()->getStatusCode());
 
         $data   = Json::decode($this->client->getResponse()->getContent());
-        $record = $this->records->get(new \App\Training\Entity\Record\Id($data['id']));
+        $record = $this->records->get(new Id($data['id']));
         self::assertFalse($record->getResult()->isSatisfactory());
     }
 

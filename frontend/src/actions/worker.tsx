@@ -4,10 +4,7 @@ import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { WorkerAndProtocolsFormData } from "@/types/worker-form.schema";
-import {
-  buildRegisterWorkerCommand,
-  RegisterWorkerCommand,
-} from "@/lib/register-worker.command";
+import { buildRegisterWorkerCommand, RegisterWorkerCommand } from "@/lib/register-worker.command";
 
 interface RegisterWorkerResponse {
   workerId: string;
@@ -63,7 +60,9 @@ export async function registerWorkerWithProtocolsAction(
 
     if (!workerResponse.ok) {
       const errorMessage =
-        workerData.error_description || workerData.message || "Не удалось зарегистрировать работника.";
+        workerData.error_description ||
+        workerData.message ||
+        "Не удалось зарегистрировать работника.";
       return { ok: false, error: errorMessage };
     }
 
@@ -112,7 +111,10 @@ export async function registerWorkerWithProtocolsAction(
       );
     } catch (recordError) {
       console.error("Ошибка при регистрации протоколов:", recordError);
-      const msg = recordError instanceof Error ? recordError.message : "Не удалось зарегистрировать некоторые протоколы.";
+      const msg =
+        recordError instanceof Error
+          ? recordError.message
+          : "Не удалось зарегистрировать некоторые протоколы.";
       return { ok: false, error: msg };
     }
 

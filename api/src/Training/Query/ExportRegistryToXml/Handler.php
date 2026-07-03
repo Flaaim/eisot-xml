@@ -6,8 +6,11 @@ namespace App\Training\Query\ExportRegistryToXml;
 
 use App\Subscription\Service\SubscriptionAccessGuard;
 use App\Training\Entity\Record\Program;
-use Doctrine\DBAL\Connection;
+use DateTimeImmutable;
 use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Connection;
+use DomainException;
+use DOMDocument;
 
 /**
  * Обработчик запроса ExportRegistryToXml.
@@ -24,7 +27,7 @@ final readonly class Handler
     public function handle(Query $query): string
     {
         if (empty($query->recordIds)) {
-            throw new \DomainException('No records selected for export.');
+            throw new DomainException('No records selected for export.');
         }
 
         $qb = $this->connection->createQueryBuilder();
@@ -54,12 +57,12 @@ final readonly class Handler
             ->fetchAllAssociative();
 
         if (empty($rows)) {
-            throw new \DomainException('No matching records found.');
+            throw new DomainException('No matching records found.');
         }
 
         $this->subscriptionAccessGuard->assertUserHasAccess($query->userId);
 
-        $dom = new \DOMDocument('1.0', 'utf-8');
+        $dom = new DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = true;
 
         $registrySet = $dom->createElement('RegistrySet');
@@ -86,14 +89,14 @@ final readonly class Handler
                 $workerNode->appendChild($dom->createElement('IsForeignSnils', '0'));
             } else {
                 $workerNode->appendChild($dom->createElement('IsForeignSnils', '1'));
-                
+
                 $foreignSnils = (string)($snilsInfo['foreignSnils'] ?? '');
-                if ($foreignSnils !== '') {
+                if ('' !== $foreignSnils) {
                     $workerNode->appendChild($dom->createElement('ForeignSnils', $foreignSnils));
                 }
-                
+
                 $citizenship = (string)($snilsInfo['citizenship'] ?? '');
-                if ($citizenship !== '') {
+                if ('' !== $citizenship) {
                     $workerNode->appendChild($dom->createElement('Citizenship', $citizenship));
                 }
             }
@@ -112,16 +115,16 @@ final readonly class Handler
 
             // 3. Test
             $testNode = $dom->createElement('Test');
-            
-            $dateTime = new \DateTimeImmutable((string)$row['date']);
+
+            $dateTime = new DateTimeImmutable((string)$row['date']);
             $testNode->appendChild($dom->createElement('Date', $dateTime->format('Y-m-d')));
             $testNode->appendChild($dom->createElement('ProtocolNumber', (string)($row['protocol_number'] ?? '')));
-            
+
             $programId = (int)$row['program'];
             $programTitle = Program::catalog()[$programId] ?? 'Неизвестная программа';
             $testNode->appendChild($dom->createElement('LearnProgramTitle', $programTitle));
 
-            $isPassed = ($row['result'] === 'удовлетворительно') ? '1' : '0';
+            $isPassed = ('удовлетворительно' === $row['result']) ? '1' : '0';
             $testNode->setAttribute('isPassed', $isPassed);
             $testNode->setAttribute('learnProgramId', (string)$programId);
 

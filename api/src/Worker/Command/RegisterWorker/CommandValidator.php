@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Worker\Command\RegisterWorker;
 
 use App\Worker\Entity\Worker\Snils;
+use DomainException;
 use InvalidArgumentException;
 
 /**
@@ -28,38 +29,38 @@ final class CommandValidator
 
     private function validateCitizen(Command $command): void
     {
-        if ($command->snils === null || trim($command->snils) === '') {
-            throw new \DomainException('SNILS is required for a citizen of Russia.');
+        if (null === $command->snils || '' === trim($command->snils)) {
+            throw new DomainException('SNILS is required for a citizen of Russia.');
         }
 
-        if ($command->citizenship !== null && trim($command->citizenship) !== '') {
-            throw new \DomainException('Citizenship must be empty for a citizen of Russia.');
+        if (null !== $command->citizenship && '' !== trim($command->citizenship)) {
+            throw new DomainException('Citizenship must be empty for a citizen of Russia.');
         }
 
-        if ($command->foreignSnils !== null && trim($command->foreignSnils) !== '') {
-            throw new \DomainException('Foreign SNILS must be empty for a citizen of Russia.');
+        if (null !== $command->foreignSnils && '' !== trim($command->foreignSnils)) {
+            throw new DomainException('Foreign SNILS must be empty for a citizen of Russia.');
         }
 
         try {
             Snils::fromString($command->snils);
         } catch (InvalidArgumentException $e) {
-            throw new \DomainException($e->getMessage());
+            throw new DomainException($e->getMessage());
         }
     }
 
     private function validateForeigner(Command $command): void
     {
-        if ($command->snils !== null && trim($command->snils) !== '') {
-            throw new \DomainException('Standard SNILS must be empty for a foreign worker.');
+        if (null !== $command->snils && '' !== trim($command->snils)) {
+            throw new DomainException('Standard SNILS must be empty for a foreign worker.');
         }
 
-        if ($command->citizenship === null || trim($command->citizenship) === '') {
-            throw new \DomainException('Citizenship is required for a foreign worker.');
+        if (null === $command->citizenship || '' === trim($command->citizenship)) {
+            throw new DomainException('Citizenship is required for a foreign worker.');
         }
 
-        if ($command->foreignSnils !== null && trim($command->foreignSnils) !== '') {
-            if (strlen($command->foreignSnils) > 30) {
-                throw new \DomainException('Foreign SNILS must not exceed 30 characters.');
+        if (null !== $command->foreignSnils && '' !== trim($command->foreignSnils)) {
+            if (\strlen($command->foreignSnils) > 30) {
+                throw new DomainException('Foreign SNILS must not exceed 30 characters.');
             }
         }
     }

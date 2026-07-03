@@ -24,9 +24,9 @@ use Symfony\Component\Routing\Attribute\Route;
 final readonly class RequestAction
 {
     public function __construct(
-        private Handler   $handler,
+        private Handler $handler,
         private Validator $validator,
-        private Security  $security,
+        private Security $security,
     ) {}
 
     #[Route('/v1/companies/{companyId}/restore', name: 'company.restore', methods: ['POST'])]
@@ -40,7 +40,7 @@ final readonly class RequestAction
         }
 
         $command = new Command(
-            id:     $companyId,
+            id: $companyId,
             userId: $userAdapter->getUserIdentifier(),
         );
 

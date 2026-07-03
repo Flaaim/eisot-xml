@@ -1,7 +1,7 @@
-import {Archive, Building2, PlusCircle} from "lucide-react";
+import { Archive, Building2, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { CompanyShort } from "@/interfaces/company.interface";
-import {ArchiveCompanyCard} from "@/components/User/Company/ArchiveCompanyCard";
+import { ArchiveCompanyCard } from "@/components/User/Company/ArchiveCompanyCard";
 
 interface CompaniesListProps {
   readonly companies: CompanyShort[];
@@ -21,9 +21,7 @@ export function ArchiveCompaniesList({ companies }: CompaniesListProps) {
           <Archive className="h-10 w-10" />
         </div>
         <h2 className="text-2xl font-bold tracking-tight">Архив пуст...</h2>
-        <p className="text-muted-foreground">
-          Но это пока ненадолго ;)
-        </p>
+        <p className="text-muted-foreground">Но это пока ненадолго ;)</p>
       </div>
     );
   }

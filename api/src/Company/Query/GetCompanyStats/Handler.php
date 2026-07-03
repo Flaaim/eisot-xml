@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Company\Query\GetCompanyStats;
 
 use Doctrine\DBAL\Connection;
+use DomainException;
 
 /**
  * Обработчик запроса GetCompanyStats.
@@ -30,11 +31,11 @@ final readonly class Handler
             ->executeQuery()
             ->fetchAssociative();
 
-        if ($companyRow === false) {
-            throw new \DomainException('Company not found.');
+        if (false === $companyRow) {
+            throw new DomainException('Company not found.');
         }
 
-        $status = $companyRow['status'] === 'ARCHIVED' ? 'В архиве' : 'Активна';
+        $status = 'ARCHIVED' === $companyRow['status'] ? 'В архиве' : 'Активна';
 
         // 1. SELECT COUNT(w.id) FROM workers w JOIN companies c ON w.company_id = c.id WHERE w.company_id = :companyId AND c.user_id = :userId
         $workersCount = (int)$this->connection->createQueryBuilder()

@@ -38,4 +38,3 @@ export default async function CompanyOverviewPage({ params }: CompanyOverviewPag
     </div>
   );
 }
-

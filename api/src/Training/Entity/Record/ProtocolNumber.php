@@ -18,6 +18,11 @@ final class ProtocolNumber
         Assert::maxLength($value, 100, 'Protocol number must not exceed 100 characters.');
     }
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     public static function fromString(string $value): self
     {
         return new self($value);
@@ -31,10 +36,5 @@ final class ProtocolNumber
     public function isEqualTo(self $other): bool
     {
         return $this->value === $other->value;
-    }
-
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }

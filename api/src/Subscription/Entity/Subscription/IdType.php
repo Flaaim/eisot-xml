@@ -18,7 +18,7 @@ final class IdType extends StringType
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?Id
     {
-        return !empty($value) ? new Id((string) $value) : null;
+        return !empty($value) ? new Id((string)$value) : null;
     }
 
     public function getName(): string

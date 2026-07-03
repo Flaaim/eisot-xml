@@ -99,9 +99,7 @@ final class HandlerTest extends TestCase
         $this->fetcher
             ->expects(self::once())
             ->method('findAllByUserId')
-            ->with(self::callback(static function (string $passedId) use ($userId): bool {
-                return $passedId === $userId;
-            }))
+            ->with(self::callback(static fn (string $passedId): bool => $passedId === $userId))
             ->willReturn([]);
 
         $this->handler->handle(new Query($userId));

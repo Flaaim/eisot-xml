@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Training\Entity\Record;
 
-use Webmozart\Assert\Assert;
+use DomainException;
 
 /**
  * Результат проверки знаний: «удовлетворительно» или «неудовлетворительно».
@@ -21,7 +21,11 @@ final class Result
 
     private function __construct(
         private string $value
-    ) {
+    ) {}
+
+    public function __toString(): string
+    {
+        return $this->value;
     }
 
     public static function satisfactory(): self
@@ -36,8 +40,8 @@ final class Result
 
     public static function fromString(string $value): self
     {
-        if (!in_array($value, self::ALLOWED, true)) {
-            throw new \DomainException(sprintf('Invalid result: "%s". Allowed: удовлетворительно, неудовлетворительно.', $value));
+        if (!\in_array($value, self::ALLOWED, true)) {
+            throw new DomainException(\sprintf('Invalid result: "%s". Allowed: удовлетворительно, неудовлетворительно.', $value));
         }
 
         return new self($value);
@@ -50,16 +54,11 @@ final class Result
 
     public function isSatisfactory(): bool
     {
-        return $this->value === self::SATISFACTORY;
+        return self::SATISFACTORY === $this->value;
     }
 
     public function isEqualTo(self $other): bool
     {
         return $this->value === $other->value;
-    }
-
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }

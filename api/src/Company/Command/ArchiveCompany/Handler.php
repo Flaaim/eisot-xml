@@ -23,7 +23,7 @@ final class Handler
 {
     public function __construct(
         private readonly CompanyRepository $companies,
-        private readonly Flusher           $flusher,
+        private readonly Flusher $flusher,
     ) {}
 
     public function handle(Command $command): void

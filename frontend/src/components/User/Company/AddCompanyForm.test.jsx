@@ -32,9 +32,7 @@ describe("AddCompanyForm", () => {
   it("renders all fields and the submit button", () => {
     render(<AddCompanyForm />);
 
-    expect(
-      screen.getByRole("button", { name: "Добавить компанию" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Добавить компанию" })).toBeInTheDocument();
     expect(screen.getByLabelText(/Название организации/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/ИНН/i)).toBeInTheDocument();
   });
@@ -92,9 +90,7 @@ describe("AddCompanyForm", () => {
     await user.type(innInput, "12345abcde");
     await user.click(nameInput); // trigger onBlur
 
-    expect(
-      await screen.findByText(/ИНН должен состоять из 10 или 12 цифр/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/ИНН должен состоять из 10 или 12 цифр/i)).toBeInTheDocument();
 
     expect(mockAddCompanyAction).not.toHaveBeenCalled();
   });
@@ -110,9 +106,7 @@ describe("AddCompanyForm", () => {
     await user.type(innInput, "1234567890");
     await user.click(nameInput); // trigger onBlur
 
-    expect(
-      await screen.findByText(/Неверная контрольная сумма ИНН/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/Неверная контрольная сумма ИНН/i)).toBeInTheDocument();
 
     expect(mockAddCompanyAction).not.toHaveBeenCalled();
   });
@@ -128,9 +122,7 @@ describe("AddCompanyForm", () => {
     await user.type(innInput, "123456789");
     await user.click(nameInput); // trigger onBlur
 
-    expect(
-      await screen.findByText(/ИНН должен состоять из 10 или 12 цифр/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/ИНН должен состоять из 10 или 12 цифр/i)).toBeInTheDocument();
 
     expect(mockAddCompanyAction).not.toHaveBeenCalled();
   });
@@ -147,7 +139,7 @@ describe("AddCompanyForm", () => {
     await user.click(innInput); // trigger onBlur on name
 
     expect(
-      await screen.findByText(/Название организации обязательно для заполнения/i),
+      await screen.findByText(/Название организации обязательно для заполнения/i)
     ).toBeInTheDocument();
 
     expect(mockAddCompanyAction).not.toHaveBeenCalled();
@@ -170,9 +162,7 @@ describe("AddCompanyForm", () => {
     await user.type(innInput, "7707083893");
     await user.click(submitButton);
 
-    expect(
-      await screen.findByText(/Компания с таким ИНН уже существует/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/Компания с таким ИНН уже существует/i)).toBeInTheDocument();
   });
 
   it("accepts a valid 12-digit INN", async () => {

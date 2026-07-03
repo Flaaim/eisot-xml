@@ -12,6 +12,10 @@ use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 use Tests\Functional\OAuthTokenTrait;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     use OAuthTokenTrait;
@@ -19,9 +23,10 @@ final class RequestActionTest extends WebTestCase
     private CompanyRepository $companies;
     private string $ownerToken;
     private string $otherToken;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         $container    = $this->client->getContainer();
 
         $fixturesLoader = new FixturesLoader($container);
@@ -42,13 +47,12 @@ final class RequestActionTest extends WebTestCase
     public function testUnauthenticatedReturns401(): void
     {
         $this->client->jsonRequest(
-          'GET',
-          '/v1/companies/' . RequestFixture::COMPANY_ID
+            'GET',
+            '/v1/companies/' . RequestFixture::COMPANY_ID
         );
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
     }
-
 
     public function testSuccess(): void
     {
@@ -70,6 +74,7 @@ final class RequestActionTest extends WebTestCase
             'status' => 'ACTIVE',
         ], $data);
     }
+
     public function testNotFoundToNotOwner(): void
     {
         $this->client->jsonRequest(

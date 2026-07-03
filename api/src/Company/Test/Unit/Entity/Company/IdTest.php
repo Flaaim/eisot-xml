@@ -54,7 +54,7 @@ final class IdTest extends TestCase
     {
         $id = new Id($value = Uuid::uuid4()->toString());
 
-        self::assertSame($value, (string) $id);
+        self::assertSame($value, (string)$id);
     }
 
     public function testIncorrectValue(): void

@@ -33,7 +33,7 @@ export async function checkSubscriptionAccessAction(): Promise<ApiResponse<Subsc
 }
 
 export async function activateSubscriptionAction(
-  payload: ActivateSubscriptionPayload,
+  payload: ActivateSubscriptionPayload
 ): Promise<ApiResponse<{ id: string }>> {
   try {
     const response = await apiFetch(API.subscription.activate(), {

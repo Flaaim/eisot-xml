@@ -99,7 +99,7 @@ final class SnilsTest extends TestCase
 
     public function testCalculateChecksumRequiresExactlyNineDigits(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         Snils::calculateChecksum('11223344528');
     }

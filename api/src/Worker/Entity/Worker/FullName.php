@@ -17,8 +17,7 @@ final readonly class FullName
         private string $lastName,
         private string $firstName,
         private ?string $middleName,
-    ) {
-    }
+    ) {}
 
     public static function create(string $lastName, string $firstName, ?string $middleName = null): self
     {
@@ -28,7 +27,7 @@ final readonly class FullName
         Assert::notEmpty($firstName, 'First name must not be empty.');
         Assert::maxLength($firstName, 100, 'First name must not exceed 100 characters.');
 
-        if ($middleName !== null && $middleName !== '') {
+        if (null !== $middleName && '' !== $middleName) {
             Assert::maxLength($middleName, 100, 'Middle name must not exceed 100 characters.');
         } else {
             $middleName = null;
@@ -59,7 +58,7 @@ final readonly class FullName
     {
         $parts = [$this->lastName, $this->firstName];
 
-        if ($this->middleName !== null) {
+        if (null !== $this->middleName) {
             $parts[] = $this->middleName;
         }
 

@@ -30,7 +30,7 @@ export const InnInput = forwardRef<HTMLInputElement, InnInputProps>(function Inn
     placeholder = "7707083893",
     className,
   },
-  ref,
+  ref
 ) {
   return (
     <PatternFormat

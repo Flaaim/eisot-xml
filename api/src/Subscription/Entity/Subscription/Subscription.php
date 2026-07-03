@@ -8,7 +8,9 @@ use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use App\Subscription\Event\SubscriptionExpired;
 use App\Subscription\Event\SubscriptionPurchased;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'subscriptions')]
@@ -27,11 +29,10 @@ final class Subscription implements AggregateRoot
         #[ORM\Column(type: 'string', length: 16, enumType: SubscriptionStatus::class, options: ['default' => SubscriptionStatus::ACTIVE])]
         private SubscriptionStatus $status,
         #[ORM\Column(name: 'period_start', type: 'date_immutable')]
-        private \DateTimeImmutable $periodStart,
+        private DateTimeImmutable $periodStart,
         #[ORM\Column(name: 'period_end', type: 'date_immutable')]
-        private \DateTimeImmutable $periodEnd,
-    ) {
-    }
+        private DateTimeImmutable $periodEnd,
+    ) {}
 
     /**
      * Активирует User Subscription.
@@ -93,11 +94,11 @@ final class Subscription implements AggregateRoot
      */
     public function isActive(): bool
     {
-        if ($this->status !== SubscriptionStatus::ACTIVE) {
+        if (SubscriptionStatus::ACTIVE !== $this->status) {
             return false;
         }
 
-        return $this->getPeriod()->isActiveAt(new \DateTimeImmutable('today'));
+        return $this->getPeriod()->isActiveAt(new DateTimeImmutable('today'));
     }
 
     /**
@@ -105,14 +106,14 @@ final class Subscription implements AggregateRoot
      */
     public function extend(int $additionalDays): void
     {
-        if ($this->status === SubscriptionStatus::CANCELLED) {
-            throw new \DomainException('Cancelled User Subscription cannot be extended.');
+        if (SubscriptionStatus::CANCELLED === $this->status) {
+            throw new DomainException('Cancelled User Subscription cannot be extended.');
         }
 
         $extendedPeriod = $this->getPeriod()->extend($additionalDays);
         $this->periodEnd = $extendedPeriod->getEndDate();
 
-        if ($this->status === SubscriptionStatus::EXPIRED && $this->isActive()) {
+        if (SubscriptionStatus::EXPIRED === $this->status && $this->isActive()) {
             $this->status = SubscriptionStatus::ACTIVE;
         }
     }
@@ -122,12 +123,12 @@ final class Subscription implements AggregateRoot
      */
     public function expire(): void
     {
-        if ($this->status === SubscriptionStatus::EXPIRED) {
+        if (SubscriptionStatus::EXPIRED === $this->status) {
             return;
         }
 
-        if ($this->status === SubscriptionStatus::CANCELLED) {
-            throw new \DomainException('Cancelled User Subscription cannot expire.');
+        if (SubscriptionStatus::CANCELLED === $this->status) {
+            throw new DomainException('Cancelled User Subscription cannot expire.');
         }
 
         $this->status = SubscriptionStatus::EXPIRED;
@@ -137,8 +138,8 @@ final class Subscription implements AggregateRoot
 
     public function cancel(): void
     {
-        if ($this->status === SubscriptionStatus::CANCELLED) {
-            throw new \DomainException('User Subscription is already cancelled.');
+        if (SubscriptionStatus::CANCELLED === $this->status) {
+            throw new DomainException('User Subscription is already cancelled.');
         }
 
         $this->status = SubscriptionStatus::CANCELLED;

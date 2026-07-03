@@ -7,7 +7,7 @@ import { fetchUser } from "@/actions/auth";
 import { checkSubscriptionAccessAction } from "@/actions/subscription";
 import { SubscriptionStatusBadge } from "@/components/User/Subscription/SubscriptionStatusBadge";
 import Link from "next/link";
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Панель пользователя",
@@ -20,11 +20,11 @@ export default async function UserDashboardLayout({
   children: React.ReactNode;
 }>) {
   let profile;
-  try{
+  try {
     profile = await fetchUser();
-  }catch (error){
+  } catch (error) {
     console.error("Ошибка авторизации в лейауте, перенаправление...", error);
-    redirect('/join/login')
+    redirect("/join/login");
   }
 
   const accessResult = await checkSubscriptionAccessAction();

@@ -1,6 +1,11 @@
 "use server";
 
-import { AddCompanyPayload, CompanyShort, CompanyStats, CompanyTitleByInnResponse } from "@/interfaces/company.interface";
+import {
+  AddCompanyPayload,
+  CompanyShort,
+  CompanyStats,
+  CompanyTitleByInnResponse,
+} from "@/interfaces/company.interface";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
@@ -32,7 +37,7 @@ async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>>
 }
 
 export async function addCompanyAction(
-  payload: AddCompanyPayload,
+  payload: AddCompanyPayload
 ): Promise<ApiResponse<AddCompanyResponseData>> {
   try {
     const response = await apiFetch(API.company.add(), {
@@ -75,16 +80,16 @@ export async function fetchCompaniesAction(): Promise<ApiResponse<CompanyShort[]
   }
 }
 export async function fetchCompanyAction(id: string): Promise<ApiResponse<CompanyShort>> {
-  try{
+  try {
     const response = await apiFetch(API.company.get(id), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-    })
+    });
     return await handleApiResponse<CompanyShort>(response);
-  }catch (error) {
+  } catch (error) {
     console.error("fetchCompanyAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
@@ -162,7 +167,7 @@ export async function getCompanyStatsAction(companyId: string): Promise<CompanyS
 
 export async function renameCompanyAction(
   companyId: string,
-  name: string,
+  name: string
 ): Promise<ApiResponse<null>> {
   try {
     const response = await apiFetch(API.company.rename(companyId), {
@@ -192,7 +197,7 @@ export async function renameCompanyAction(
 
 export async function changeCompanyInnAction(
   companyId: string,
-  inn: string,
+  inn: string
 ): Promise<ApiResponse<null>> {
   try {
     const response = await apiFetch(API.company.changeInn(companyId), {
@@ -225,7 +230,7 @@ export async function changeCompanyInnAction(
  * Включить после появления эндпоинта на бэкенде.
  */
 export async function fetchCompanyTitleByInnAction(
-  inn: string,
+  inn: string
 ): Promise<ApiResponse<CompanyTitleByInnResponse>> {
   if (!FNS_TITLE_LOOKUP_ENABLED) {
     return {

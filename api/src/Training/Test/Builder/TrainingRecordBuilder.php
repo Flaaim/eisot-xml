@@ -10,15 +10,16 @@ use App\Training\Entity\Record\ProtocolNumber;
 use App\Training\Entity\Record\Result;
 use App\Training\Entity\Record\TrainingRecord;
 use App\Training\Entity\Record\WorkerId;
+use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 
 final class TrainingRecordBuilder
 {
-    private Id             $id;
-    private WorkerId       $workerId;
-    private Program        $program;
-    private Result         $result;
-    private \DateTimeImmutable $date;
+    private Id $id;
+    private WorkerId $workerId;
+    private Program $program;
+    private Result $result;
+    private DateTimeImmutable $date;
     private ProtocolNumber $protocolNumber;
 
     public function __construct()
@@ -27,7 +28,7 @@ final class TrainingRecordBuilder
         $this->workerId       = new WorkerId(Uuid::uuid4()->toString());
         $this->program        = Program::fromId(1);
         $this->result         = Result::satisfactory();
-        $this->date           = new \DateTimeImmutable('2023-09-28 16:56:01');
+        $this->date           = new DateTimeImmutable('2023-09-28 16:56:01');
         $this->protocolNumber = ProtocolNumber::fromString('ПР-001/2023');
     }
 
@@ -59,7 +60,7 @@ final class TrainingRecordBuilder
         return $clone;
     }
 
-    public function withDate(\DateTimeImmutable $date): self
+    public function withDate(DateTimeImmutable $date): self
     {
         $clone = clone $this;
         $clone->date = $date;

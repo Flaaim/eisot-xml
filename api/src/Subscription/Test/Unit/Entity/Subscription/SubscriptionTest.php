@@ -10,6 +10,7 @@ use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\Subscription;
 use App\Subscription\Entity\Subscription\SubscriptionStatus;
 use App\Subscription\Entity\Subscription\UserId;
+use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -42,8 +43,8 @@ final class SubscriptionTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new Period(
-            new \DateTimeImmutable('today'),
-            new \DateTimeImmutable('yesterday'),
+            new DateTimeImmutable('today'),
+            new DateTimeImmutable('yesterday'),
         );
     }
 

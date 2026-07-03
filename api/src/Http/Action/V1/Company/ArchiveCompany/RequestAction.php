@@ -24,9 +24,9 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RequestAction
 {
     public function __construct(
-        private readonly Handler   $handler,
+        private readonly Handler $handler,
         private readonly Validator $validator,
-        private readonly Security  $security,
+        private readonly Security $security,
     ) {}
 
     #[Route('/v1/companies/{companyId}/archive', name: 'company.archive', methods: ['POST'])]
@@ -40,7 +40,7 @@ final class RequestAction
         }
 
         $command = new Command(
-            id:     $companyId,
+            id: $companyId,
             userId: $userAdapter->getUserIdentifier(),
         );
 

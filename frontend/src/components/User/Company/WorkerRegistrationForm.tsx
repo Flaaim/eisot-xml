@@ -9,14 +9,21 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
   WorkerAndProtocolsSchema,
   WorkerAndProtocolsFormData,
   TRAINING_PROGRAMS,
   TRAINING_RESULTS,
-  ProtocolFormData
+  ProtocolFormData,
 } from "@/types/worker-form.schema";
 import { registerWorkerWithProtocolsAction } from "@/actions/worker";
 import { CompanyShort } from "@/interfaces/company.interface";
@@ -97,11 +104,21 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
           <FieldGroup className="grid gap-4 sm:grid-cols-2">
             <Field>
               <FieldLabel htmlFor="company-name-ro">Место работы</FieldLabel>
-              <Input id="company-name-ro" value={company.name} disabled className="bg-muted/50 cursor-not-allowed" />
+              <Input
+                id="company-name-ro"
+                value={company.name}
+                disabled
+                className="bg-muted/50 cursor-not-allowed"
+              />
             </Field>
             <Field>
               <FieldLabel htmlFor="company-inn-ro">ИНН организации работодателя</FieldLabel>
-              <Input id="company-inn-ro" value={company.inn} disabled className="bg-muted/50 cursor-not-allowed" />
+              <Input
+                id="company-inn-ro"
+                value={company.inn}
+                disabled
+                className="bg-muted/50 cursor-not-allowed"
+              />
             </Field>
           </FieldGroup>
         </CardContent>
@@ -224,7 +241,10 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
               name="profession"
               control={control}
               render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid} className={isForeigner ? "sm:col-span-3" : undefined}>
+                <Field
+                  data-invalid={fieldState.invalid}
+                  className={isForeigner ? "sm:col-span-3" : undefined}
+                >
                   <FieldLabel htmlFor="worker-profession">Профессия</FieldLabel>
                   <Input
                     {...field}
@@ -298,9 +318,8 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                             multiple
                             value={controllerField.value.map(String)}
                             onChange={(e) => {
-                              const selected = Array.from(
-                                e.target.selectedOptions,
-                                (opt) => Number(opt.value)
+                              const selected = Array.from(e.target.selectedOptions, (opt) =>
+                                Number(opt.value)
                               );
                               controllerField.onChange(selected);
                             }}

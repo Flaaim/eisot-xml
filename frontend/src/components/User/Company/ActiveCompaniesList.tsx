@@ -22,10 +22,8 @@ export function ActiveCompaniesList({ companies }: CompaniesListProps) {
           <Building2 className="h-10 w-10" />
         </div>
         <h2 className="text-2xl font-bold tracking-tight">Компании не найдены</h2>
-        <p className="text-muted-foreground">
-          Добавьте вашу первую компанию, чтобы начать работу
-        </p>
-        <Button  className="mt-2">
+        <p className="text-muted-foreground">Добавьте вашу первую компанию, чтобы начать работу</p>
+        <Button className="mt-2">
           <Link href="/user/company/add" className="flex items-center gap-2">
             <PlusCircle className="h-4 w-4" />
             Добавить компанию

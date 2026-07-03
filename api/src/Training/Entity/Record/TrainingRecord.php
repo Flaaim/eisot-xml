@@ -8,7 +8,9 @@ use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use App\Training\Event\RegistryNumberAttached;
 use App\Training\Event\TrainingResultRecorded;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'training_records')]
@@ -27,29 +29,33 @@ final class TrainingRecord implements AggregateRoot
         #[ORM\Column(type: 'training_result')]
         private Result $result,
         #[ORM\Column(type: 'datetime_immutable')]
-        private \DateTimeImmutable $date,
+        private DateTimeImmutable $date,
         #[ORM\Column(name: 'protocol_number', type: 'training_protocol_number')]
         private ProtocolNumber $protocolNumber,
         #[ORM\Column(name: 'registry_number', type: 'training_registry_number', nullable: true)]
         private ?RegistryNumber $registryNumber = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Фабричный метод: зафиксировать результат обучения.
      */
     public static function record(
-        Id                 $id,
-        WorkerId           $workerId,
-        Program            $program,
-        Result             $result,
-        \DateTimeImmutable $date,
-        ProtocolNumber     $protocolNumber,
+        Id $id,
+        WorkerId $workerId,
+        Program $program,
+        Result $result,
+        DateTimeImmutable $date,
+        ProtocolNumber $protocolNumber,
     ): self {
         $record = new self($id, $workerId, $program, $result, $date, $protocolNumber);
 
         $record->recordEvent(new TrainingResultRecorded(
-            $id, $workerId, $program, $result, $date, $protocolNumber,
+            $id,
+            $workerId,
+            $program,
+            $result,
+            $date,
+            $protocolNumber,
         ));
 
         return $record;
@@ -62,8 +68,8 @@ final class TrainingRecord implements AggregateRoot
      */
     public function attachRegistryNumber(RegistryNumber $registryNumber): void
     {
-        if ($this->registryNumber !== null) {
-            throw new \DomainException('Registry number is already attached.');
+        if (null !== $this->registryNumber) {
+            throw new DomainException('Registry number is already attached.');
         }
 
         $this->registryNumber = $registryNumber;
@@ -91,7 +97,7 @@ final class TrainingRecord implements AggregateRoot
         return $this->result;
     }
 
-    public function getDate(): \DateTimeImmutable
+    public function getDate(): DateTimeImmutable
     {
         return $this->date;
     }
