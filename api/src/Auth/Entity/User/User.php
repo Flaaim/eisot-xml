@@ -83,7 +83,7 @@ final class User implements AggregateRoot
         Email $email,
         string $network,
         string $identity
-    ) {
+    ): self {
         $user = new self($id, $date, $email, Status::active());
         $user->networks->add(new Network($user, $network, $identity));
 
