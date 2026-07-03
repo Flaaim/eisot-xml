@@ -7,6 +7,7 @@ namespace App\OAuth\Test\Builder;
 use App\OAuth\Entity\Client;
 use Ramsey\Uuid\Uuid;
 
+/** @psalm-api */
 final class ClientBuilder
 {
     private string $identifier;

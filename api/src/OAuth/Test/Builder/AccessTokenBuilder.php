@@ -8,6 +8,7 @@ use App\OAuth\Entity\AccessToken;
 use App\OAuth\Entity\Client;
 use App\OAuth\Entity\Scope;
 
+/** @psalm-api */
 final class AccessTokenBuilder
 {
     /** @var array<Scope> */

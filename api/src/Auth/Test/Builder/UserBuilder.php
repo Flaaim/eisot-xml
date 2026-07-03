@@ -13,6 +13,7 @@ use App\Auth\Service\PasswordHasher;
 use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 
+/** @psalm-api */
 final class UserBuilder
 {
     private Id $id;

@@ -28,6 +28,16 @@
             </errorLevel>
         </MissingOverrideAttribute>
 
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <directory name="src/Auth/Test/Builder" />
+                <directory name="src/Company/Test/Builder" />
+                <directory name="src/OAuth/Test/Builder" />
+                <directory name="src/Training/Test/Builder" />
+                <directory name="src/Worker/Test/Builder" />
+            </errorLevel>
+        </PossiblyUnusedMethod>
+
     </issueHandlers>
 
     <plugins>

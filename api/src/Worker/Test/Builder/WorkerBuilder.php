@@ -13,6 +13,7 @@ use App\Worker\Entity\Worker\Worker;
 use App\Worker\Entity\Worker\WorkerId;
 use Ramsey\Uuid\Uuid;
 
+/** @psalm-api */
 final class WorkerBuilder
 {
     private WorkerId $id;

@@ -13,6 +13,7 @@ use App\Training\Entity\Record\WorkerId;
 use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 
+/** @psalm-api */
 final class TrainingRecordBuilder
 {
     private Id $id;

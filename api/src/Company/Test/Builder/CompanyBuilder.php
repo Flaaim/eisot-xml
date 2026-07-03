@@ -11,6 +11,7 @@ use App\Company\Entity\Company\Name;
 use App\Company\Entity\Company\UserId;
 use Ramsey\Uuid\Uuid;
 
+/** @psalm-api */
 final class CompanyBuilder
 {
     private Id $id;
