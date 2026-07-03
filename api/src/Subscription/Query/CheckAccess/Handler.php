@@ -17,7 +17,7 @@ final readonly class Handler
         private SubscriptionRepository $subscriptions,
         private Flusher $flusher,
     ) {}
-    /** @psalm-suppress PossiblyUnusedMethod */
+
     public function handle(Query $query): AccessDTO
     {
         $subscription = $this->subscriptions->findActiveByUserId(

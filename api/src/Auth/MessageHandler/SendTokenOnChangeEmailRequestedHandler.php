@@ -9,6 +9,7 @@ use App\Auth\Event\ChangeEmailRequested;
 use App\Auth\Service\NewEmailConfirmTokenSender;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
 final class SendTokenOnChangeEmailRequestedHandler
 {

@@ -135,7 +135,7 @@ final class Subscription implements AggregateRoot
 
         $this->recordEvent(new SubscriptionExpired($this->id, $this->userId));
     }
-    /** @psalm-suppress PossiblyUnusedMethod */
+
     public function cancel(): void
     {
         if (SubscriptionStatus::CANCELLED === $this->status) {

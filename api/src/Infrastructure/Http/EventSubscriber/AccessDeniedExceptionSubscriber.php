@@ -18,6 +18,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * Выполняется с более высоким приоритетом (20), чем DomainExceptionSubscriber (10),
  * чтобы AccessDeniedException не был захвачен как обычный DomainException.
+ *
+ * @psalm-suppress UnusedClass
  */
 final class AccessDeniedExceptionSubscriber implements EventSubscriberInterface
 {

@@ -7,6 +7,7 @@ namespace App\Auth\Entity\User;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
+/** @psalm-suppress UnusedClass */
 final class IdType extends StringType
 {
     public const NAME = 'auth_user_id';

@@ -21,6 +21,17 @@ use Ramsey\Uuid\Uuid;
  */
 final class WorkerTest extends TestCase
 {
+    public function testRegister(): void
+    {
+        $worker = (new WorkerBuilder())->build();
+
+        self::assertNotNull($worker->getId());
+        self::assertNotNull($worker->getCompanyId());
+        self::assertNotNull($worker->getFullName());
+        self::assertNotNull($worker->getProfession());
+        self::assertNotNull($worker->getSnilsInfo());
+    }
+
     public function testRegisterStoresCorrectValues(): void
     {
         $id         = WorkerId::generate();

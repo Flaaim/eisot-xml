@@ -9,6 +9,7 @@ use App\Auth\Event\JoinByEmailRequested;
 use App\Auth\Service\JoinConfirmationSender;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
 final class SendTokenOnJoinByEmailRequestedHandler
 {

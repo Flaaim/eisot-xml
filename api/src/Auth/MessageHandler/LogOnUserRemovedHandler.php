@@ -8,6 +8,7 @@ use App\Auth\Event\UserRemoved;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
 final class LogOnUserRemovedHandler
 {

@@ -7,6 +7,7 @@ namespace App\Training\Entity\Record;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
+/** @psalm-suppress UnusedClass */
 final class ProgramType extends StringType
 {
     public const string NAME = 'training_program';

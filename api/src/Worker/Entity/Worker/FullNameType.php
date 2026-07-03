@@ -9,6 +9,8 @@ use Doctrine\DBAL\Types\JsonType;
 
 /**
  * Хранит FullName как JSON: {"last":"...","first":"...","middle":"..."|null}.
+ *
+ * @psalm-suppress UnusedClass
  */
 final class FullNameType extends JsonType
 {

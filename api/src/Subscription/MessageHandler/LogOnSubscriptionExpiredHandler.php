@@ -8,6 +8,7 @@ use App\Subscription\Event\SubscriptionExpired;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
 final readonly class LogOnSubscriptionExpiredHandler
 {

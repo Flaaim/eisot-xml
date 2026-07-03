@@ -12,6 +12,8 @@ use Doctrine\DBAL\Types\StringType;
  *
  * Сохраняет UUID пользователя как строку VARCHAR(36) в БД,
  * преобразует обратно в UserId при чтении.
+ *
+ * @psalm-suppress UnusedClass
  */
 final class UserIdType extends StringType
 {

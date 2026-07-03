@@ -12,6 +12,8 @@ use Doctrine\DBAL\Exception;
  * DBAL-реализация CompanyFetcherInterface.
  *
  * Обращается напрямую к таблице `companies` без загрузки агрегатов (CQRS read-side).
+ *
+ * @psalm-suppress UnusedClass
  */
 final class CompanyFetcher implements CompanyFetcherInterface
 {

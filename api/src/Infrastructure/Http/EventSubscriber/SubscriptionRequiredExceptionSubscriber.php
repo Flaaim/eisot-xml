@@ -12,6 +12,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * Возвращает HTTP 403 при попытке сформировать RegistrySet XML без подписки.
+ *
+ * @psalm-suppress UnusedClass
  */
 final class SubscriptionRequiredExceptionSubscriber implements EventSubscriberInterface
 {

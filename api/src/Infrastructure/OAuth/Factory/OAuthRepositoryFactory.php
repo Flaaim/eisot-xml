@@ -9,6 +9,7 @@ use App\OAuth\Entity\ClientRepository;
 use App\OAuth\Entity\Scope;
 use App\OAuth\Entity\ScopeRepository;
 
+/** @psalm-suppress UnusedClass */
 final class OAuthRepositoryFactory
 {
     /**

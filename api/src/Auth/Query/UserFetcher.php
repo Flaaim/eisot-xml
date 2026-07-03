@@ -8,6 +8,7 @@ use App\Auth\ReadModel\UserFetcherInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
+/** @psalm-suppress UnusedClass */
 final class UserFetcher implements UserFetcherInterface
 {
     public function __construct(

@@ -11,6 +11,8 @@ use Doctrine\DBAL\Types\JsonType;
  * Хранит SnilsInfo как JSON:
  *   {"isForeigner":false,"snils":"112-233-445 95","citizenship":null,"foreignSnils":null}
  *   {"isForeigner":true,"snils":null,"citizenship":"Узбекистан","foreignSnils":"ABC123"}
+ *
+ * @psalm-suppress UnusedClass
  */
 final class SnilsInfoType extends JsonType
 {

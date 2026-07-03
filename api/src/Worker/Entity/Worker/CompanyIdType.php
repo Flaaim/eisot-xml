@@ -7,6 +7,7 @@ namespace App\Worker\Entity\Worker;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
+/** @psalm-suppress UnusedClass */
 final class CompanyIdType extends StringType
 {
     public const string NAME = 'worker_company_id';

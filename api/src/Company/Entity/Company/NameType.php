@@ -7,6 +7,7 @@ namespace App\Company\Entity\Company;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
+/** @psalm-suppress UnusedClass */
 final class NameType extends StringType
 {
     public const string NAME = 'company_name';

@@ -8,6 +8,7 @@ use App\Auth\Event\UserJoinConfirmed;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
 final class LogOnUserJoinConfirmedHandler
 {

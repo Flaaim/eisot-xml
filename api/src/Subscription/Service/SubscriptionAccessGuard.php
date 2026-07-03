@@ -13,7 +13,6 @@ use App\Subscription\Query\CheckAccess\Query;
  */
 final readonly class SubscriptionAccessGuard
 {
-    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private CheckAccessHandler $checkAccessHandler,
     ) {}
