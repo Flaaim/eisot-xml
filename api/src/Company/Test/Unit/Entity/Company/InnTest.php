@@ -55,7 +55,7 @@ final class InnTest extends TestCase
     public function testIsEqualToDifferent(): void
     {
         $inn1 = Inn::fromString('7707083893');
-        $inn2 = Inn::fromString('0901046828');
+        $inn2 = Inn::fromString('7736050003');
 
         self::assertFalse($inn1->isEqualTo($inn2));
     }
