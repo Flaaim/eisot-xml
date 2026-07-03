@@ -89,11 +89,16 @@ function HeroSection() {
           для Минтруда. Специалисты по охране труда уже экономят часы работы с нашим сервисом.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Button render={<Link href="/user/company" />} size="lg" className="min-w-[220px]">
+          <Button
+            nativeButton={false}
+            render={<Link href="/user/company" />}
+            size="lg"
+            className="min-w-[220px]">
             Создать реестр
             <ArrowRight className="size-4" />
           </Button>
           <Button
+            nativeButton={false}
             render={<Link href="/join/login" />}
             variant="outline"
             size="lg"

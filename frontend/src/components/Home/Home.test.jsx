@@ -27,7 +27,7 @@ describe("Home landing page", () => {
   it("renders primary call to action", () => {
     render(<Home />);
 
-    const cta = screen.getByRole("link", { name: /Создать реестр/i });
+    const cta = screen.getByRole("button", { name: /Создать реестр/i });
     expect(cta).toHaveAttribute("href", "/user/company");
   });
 
