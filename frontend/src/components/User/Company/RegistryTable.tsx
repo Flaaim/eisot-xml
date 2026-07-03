@@ -16,14 +16,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { RegistryRecordDto, exportRegistryToXmlAction } from "@/actions/registry";
+import { AccessRestrictedDialog } from "@/components/User/Subscription/AccessRestrictedDialog";
 
 interface RegistryTableProps {
   readonly records: RegistryRecordDto[];
+  readonly hasSubscriptionAccess: boolean;
 }
 
-export function RegistryTable({ records }: RegistryTableProps) {
+export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableProps) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isExporting, setIsExporting] = useState(false);
+  const [accessDialogOpen, setAccessDialogOpen] = useState(false);
 
   const isAllSelected = records.length > 0 && selectedIds.size === records.length;
   const isSomeSelected = selectedIds.size > 0 && selectedIds.size < records.length;
@@ -54,11 +57,20 @@ export function RegistryTable({ records }: RegistryTableProps) {
       return;
     }
 
+    if (!hasSubscriptionAccess) {
+      setAccessDialogOpen(true);
+      return;
+    }
+
     setIsExporting(true);
     try {
       const result = await exportRegistryToXmlAction(Array.from(selectedIds));
       
       if (!result.ok) {
+        if (result.error === "subscription_required") {
+          setAccessDialogOpen(true);
+          return;
+        }
         toast.error(result.error || "Не удалось экспортировать данные в XML.");
         return;
       }
@@ -90,7 +102,12 @@ export function RegistryTable({ records }: RegistryTableProps) {
   };
 
   return (
-    <Card className="shadow-sm">
+    <>
+      <AccessRestrictedDialog
+        open={accessDialogOpen}
+        onOpenChange={setAccessDialogOpen}
+      />
+      <Card className="shadow-sm">
       <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-4">
         <div>
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
@@ -205,5 +222,6 @@ export function RegistryTable({ records }: RegistryTableProps) {
         )}
       </CardContent>
     </Card>
+    </>
   );
 }

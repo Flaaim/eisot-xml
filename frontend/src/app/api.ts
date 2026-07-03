@@ -34,5 +34,9 @@ export const API = {
   },
   training: {
     export: () => BASE_URL + `/v1/training/export`,
-  }
+  },
+  subscription: {
+    access: () => BASE_URL + `/v1/user/subscription/access`,
+    activate: () => BASE_URL + `/v1/user/subscription/activate`,
+  },
 };

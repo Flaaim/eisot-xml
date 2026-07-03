@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Training\Query\ExportRegistryToXml;
 
+use App\Subscription\Service\SubscriptionAccessGuard;
 use App\Training\Entity\Record\Program;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ArrayParameterType;
@@ -17,6 +18,7 @@ final readonly class Handler
 {
     public function __construct(
         private Connection $connection,
+        private SubscriptionAccessGuard $subscriptionAccessGuard,
     ) {}
 
     public function handle(Query $query): string
@@ -54,6 +56,8 @@ final readonly class Handler
         if (empty($rows)) {
             throw new \DomainException('No matching records found.');
         }
+
+        $this->subscriptionAccessGuard->assertUserHasAccess($query->userId);
 
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = true;

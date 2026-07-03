@@ -3,6 +3,7 @@ import { AlertCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { getRegistryRecordsAction } from "@/actions/registry";
+import { checkSubscriptionAccessAction } from "@/actions/subscription";
 import { RegistryTable } from "@/components/User/Company/RegistryTable";
 
 interface CompanyRegistryPageProps {
@@ -35,9 +36,15 @@ export default async function CompanyRegistryPage({ params }: CompanyRegistryPag
 
   const records = registryResult.data ?? [];
 
+  const accessResult = await checkSubscriptionAccessAction();
+  const hasSubscriptionAccess = accessResult.data?.hasAccess ?? false;
+
   return (
     <div className="space-y-4">
-      <RegistryTable records={records} />
+      <RegistryTable
+        records={records}
+        hasSubscriptionAccess={hasSubscriptionAccess}
+      />
     </div>
   );
 }

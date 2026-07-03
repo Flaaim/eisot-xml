@@ -1,7 +1,9 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {KeyRound, Mail, Shield, UserIcon} from "lucide-react";
+import {KeyRound, Mail, Shield, UserIcon, Crown} from "lucide-react";
 import {Button} from "@base-ui/react";
 import {fetchUser} from "@/actions/auth";
+import {checkSubscriptionAccessAction} from "@/actions/subscription";
+import {SubscriptionStatusBadge} from "@/components/User/Subscription/SubscriptionStatusBadge";
 import {redirect} from "next/navigation";
 import Link from "next/link";
 
@@ -14,6 +16,16 @@ export default async function ProfilePage(){
     console.error("Ошибка авторизации в лейауте, перенаправление...", error);
     redirect('/join/login')
   }
+
+  const accessResult = await checkSubscriptionAccessAction();
+  const subscriptionAccess = accessResult.data ?? {
+    hasAccess: false,
+    plan: null,
+    status: null,
+    periodStart: null,
+    periodEnd: null,
+  };
+
   return (
     <div className="mx-auto max-w-4xl space-y-6 p-4 md:p-8">
       <div>
@@ -90,6 +102,23 @@ export default async function ProfilePage(){
                 </Link>
               </Button>
             </div>
+          </CardContent>
+        </Card>
+        <Card className="shadow-sm md:col-span-2">
+          <CardHeader>
+            <div className="flex items-center gap-2 mb-1">
+              <Crown className="h-5 w-5 text-primary" />
+              <CardTitle className="text-xl">User Subscription</CardTitle>
+            </div>
+            <CardDescription>
+              Подписка аккаунта для формирования RegistrySet XML во всех ваших компаниях.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <SubscriptionStatusBadge access={subscriptionAccess} />
+            <Button variant="secondary" size="sm">
+              <Link href="/user/subscription">Управление подпиской</Link>
+            </Button>
           </CardContent>
         </Card>
       </div>

@@ -67,6 +67,9 @@ export async function exportRegistryToXmlAction(
       let errorMessage = "Не удалось экспортировать реестр в XML.";
       try {
         const data = JSON.parse(text);
+        if (data.code === "subscription_required") {
+          return { ok: false, error: "subscription_required" };
+        }
         errorMessage = data.message || data.error_description || errorMessage;
       } catch {
         if (text) {

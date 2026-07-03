@@ -4,6 +4,9 @@ import { Toaster } from "sonner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/User/Dashboard/DashboardSidebar";
 import { fetchUser } from "@/actions/auth";
+import { checkSubscriptionAccessAction } from "@/actions/subscription";
+import { SubscriptionStatusBadge } from "@/components/User/Subscription/SubscriptionStatusBadge";
+import Link from "next/link";
 import {redirect} from "next/navigation";
 
 export const metadata: Metadata = {
@@ -23,6 +26,16 @@ export default async function UserDashboardLayout({
     console.error("Ошибка авторизации в лейауте, перенаправление...", error);
     redirect('/join/login')
   }
+
+  const accessResult = await checkSubscriptionAccessAction();
+  const subscriptionAccess = accessResult.data ?? {
+    hasAccess: false,
+    plan: null,
+    status: null,
+    periodStart: null,
+    periodEnd: null,
+  };
+
   return (
     <SidebarProvider>
       <div className="grid min-h-screen w-full grid-cols-[auto_1fr] max-[765px]:grid-cols-1">
@@ -32,6 +45,11 @@ export default async function UserDashboardLayout({
             <SidebarTrigger className="-ml-1" />
             <div className="bg-border mx-2 my-auto h-4 w-px" />
             <span className="font-medium">Панель пользователя</span>
+            <div className="ml-auto flex items-center gap-3">
+              <Link href="/user/subscription">
+                <SubscriptionStatusBadge access={subscriptionAccess} />
+              </Link>
+            </div>
           </header>
           <main className="flex-1 p-6 max-[765px]:p-2.5">{children}</main>
           <footer className="text-muted-foreground border-t p-4 text-sm">Footer</footer>

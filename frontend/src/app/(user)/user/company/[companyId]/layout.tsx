@@ -24,7 +24,6 @@ export default async function CompanyLayout({ children, params }: CompanyLayoutP
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto py-6">
-      {/* Back link and Header card */}
       <div className="space-y-4">
         <div>
           <Link
@@ -52,16 +51,14 @@ export default async function CompanyLayout({ children, params }: CompanyLayoutP
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <CompanyStatusToggle companyId={companyId} status={company.status} />
           </div>
         </div>
       </div>
 
-      {/* Tabs navigation */}
       <CompanyTabs companyId={companyId} />
 
-      {/* Main Content Card Wrapper */}
       <div className="rounded-2xl border bg-card p-6 shadow-sm">
         {children}
       </div>
