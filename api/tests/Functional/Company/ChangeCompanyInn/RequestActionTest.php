@@ -68,7 +68,7 @@ final class RequestActionTest extends WebTestCase
         $this->client->jsonRequest(
             'PATCH',
             '/v1/companies/' . RequestFixture::COMPANY_ID . '/inn',
-            ['inn' => '0901046828'],
+            ['inn' => '7736050003'],
             $this->authHeaders($this->otherToken),
         );
 
@@ -87,7 +87,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->getContainer()->get('messenger.transport.async')->reset();
 
-        $newInn = '0901046828';
+        $newInn = '7736050003';
 
         $this->client->jsonRequest(
             'PATCH',
@@ -188,7 +188,7 @@ final class RequestActionTest extends WebTestCase
         $this->client->jsonRequest(
             'PATCH',
             '/v1/companies/7d8a7fb1-35c5-443a-af1e-9b9ed80c563f/inn',
-            ['inn' => '0901046828'],
+            ['inn' => '7736050003'],
             $this->authHeaders($this->ownerToken),
         );
 

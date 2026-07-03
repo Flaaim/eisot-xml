@@ -72,7 +72,7 @@ final class RequestActionTest extends WebTestCase
         $this->client->jsonRequest(
             'POST',
             '/v1/companies',
-            ['name' => 'ООО Ромашка', 'inn' => '0901046828'],
+            ['name' => 'ООО Ромашка', 'inn' => '7736050003'],
             $this->authHeaders($this->accessToken),
         );
 
@@ -87,7 +87,7 @@ final class RequestActionTest extends WebTestCase
         // Компания сохранена в БД
         $company = $this->companies->get(new Id($data['id']));
         self::assertEquals('ООО Ромашка', $company->getName()->getValue());
-        self::assertEquals('0901046828', $company->getInn()->getValue());
+        self::assertEquals('7736050003', $company->getInn()->getValue());
         // userId привязан к текущему пользователю
         self::assertEquals(RequestFixture::USER_ID, $company->getUserId()->getValue());
 
@@ -99,7 +99,7 @@ final class RequestActionTest extends WebTestCase
         $event = $sent[0]->getMessage();
         self::assertInstanceOf(CompanyAdded::class, $event);
         self::assertEquals('ООО Ромашка', $event->name->getValue());
-        self::assertEquals('0901046828', $event->inn->getValue());
+        self::assertEquals('7736050003', $event->inn->getValue());
         self::assertEquals(RequestFixture::USER_ID, $event->userId->getValue());
     }
 
