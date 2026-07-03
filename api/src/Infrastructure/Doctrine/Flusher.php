@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class Flusher
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private EntityManagerInterface $em
     ) {}

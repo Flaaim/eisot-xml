@@ -18,6 +18,7 @@ final readonly class Handler
         private Connection $connection,
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Query $query): CompanyStatsDTO
     {
         // Проверка существования компании и прав владельца

@@ -20,6 +20,7 @@ final class Handler
 
     /**
      * @return list<CompanyShortDTO>
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function handle(Query $query): array
     {

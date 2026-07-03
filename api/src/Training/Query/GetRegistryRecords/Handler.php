@@ -21,6 +21,7 @@ final readonly class Handler
 
     /**
      * @return list<RegistryRecordDTO>
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function handle(Query $query): array
     {

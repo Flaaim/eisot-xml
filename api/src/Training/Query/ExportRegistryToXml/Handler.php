@@ -24,6 +24,7 @@ final readonly class Handler
         private SubscriptionAccessGuard $subscriptionAccessGuard,
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Query $query): string
     {
         if (empty($query->recordIds)) {

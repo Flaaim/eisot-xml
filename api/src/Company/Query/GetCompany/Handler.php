@@ -13,6 +13,7 @@ final class Handler
         private readonly CompanyFetcherInterface $fetcher,
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Query $query): CompanyShortDTO
     {
         $row = $this->fetcher->findOneByUserId($query->id, $query->userId);

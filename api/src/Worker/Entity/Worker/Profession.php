@@ -32,7 +32,7 @@ final class Profession
     {
         return $this->value;
     }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function isEqualTo(self $other): bool
     {
         return $this->value === $other->value;

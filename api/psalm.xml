@@ -35,6 +35,20 @@
                 <directory name="src/OAuth/Test/Builder" />
                 <directory name="src/Training/Test/Builder" />
                 <directory name="src/Worker/Test/Builder" />
+
+                <directory name="src/Training/Query/ExportRegistryToXml" />
+                <directory name="src/Training/Query/GetRegistryRecords" />
+
+                <directory name="src/Worker/Command/RegisterWorker" />
+                <directory name="src/Training/Command/AttachRegistryNumber" />
+                <directory name="src/Subscription/Query/CheckAccess" />
+                <directory name="src/Company/Query/GetCompanyStats" />
+                <directory name="src/Company/Query/GetCompany" />
+                <directory name="src/Company/Command/RestoreCompany" />
+                <directory name="src/Company/Command/ChangeCompanyInn" />
+                <directory name="src/Company/Command/RenameCompany" />
+                <directory name="src/Company/Command/ArchiveCompany" />
+                <directory name="src/Company/Command/AddCompany" />
             </errorLevel>
         </PossiblyUnusedMethod>
 

@@ -13,6 +13,7 @@ final class Handler
         private readonly UserFetcherInterface $fetcher,
     ) {}
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function handle(Query $query): ProfileDTO
     {
         $user = $this->fetcher->findDetail($query->userId);

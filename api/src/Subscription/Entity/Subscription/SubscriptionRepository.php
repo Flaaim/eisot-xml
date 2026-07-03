@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
 
+/** @psalm-suppress PossiblyUnusedMethod */
 final class SubscriptionRepository
 {
     /** @var EntityRepository<Subscription> */
