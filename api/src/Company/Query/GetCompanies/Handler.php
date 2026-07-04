@@ -32,8 +32,8 @@ final class Handler
                 $row['name'],
                 $row['inn'],
                 $row['status'],
-                (int)$row['workers_count'],
-                (int)$row['protocols_count']
+                $row['workers_count'],
+                $row['protocols_count']
             ),
             $rows,
         );
