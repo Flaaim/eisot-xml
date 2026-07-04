@@ -1,6 +1,6 @@
 services:
   gateway:
-    image: ${REGISTRY}/rtn-tests-gateway:${IMAGE_TAG}
+    image: ${REGISTRY}/eisot-xml-gateway:${IMAGE_TAG}
     restart: always
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
@@ -13,7 +13,7 @@ services:
       - api
 
   frontend-node:
-    image: ${REGISTRY}/rtn-tests-frontend-node:${IMAGE_TAG}
+    image: ${REGISTRY}/eisot-xml-frontend-node:${IMAGE_TAG}
     restart: always
     environment:
       - NODE_ENV=production
@@ -26,13 +26,13 @@ services:
       - api
 
   api:
-    image: ${REGISTRY}/rtn-tests-api:${IMAGE_TAG}
+    image: ${REGISTRY}/eisot-xml-api:${IMAGE_TAG}
     restart: always
     depends_on:
       - api-php-fpm
 
   api-php-fpm:
-    image: ${REGISTRY}/rtn-tests-api-php-fpm:${IMAGE_TAG}
+    image: ${REGISTRY}/eisot-xml-api-php-fpm:${IMAGE_TAG}
     restart: always
     environment:
       APP_DEBUG: 0
@@ -62,7 +62,7 @@ services:
       - jwt_private_key
 
   api-php-cli:
-    image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
+    image: ${REGISTRY}/eisot-xml-api-php-cli:${IMAGE_TAG}
     environment:
       APP_DEBUG: 0
       SITE_URL: ${API_SITE_URL}
