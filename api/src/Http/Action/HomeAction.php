@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HomeAction
 {
     #[Route('/', name: 'home', methods: ['GET'])]
-    public function __invoke(Request $request): Response
+    public function __invoke(): Response
     {
         return new Response('{}', 200, ['Content-Type' => 'application/json']);
     }
