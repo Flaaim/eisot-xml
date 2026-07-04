@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { KeyRound, Mail, Shield, UserIcon, Crown } from "lucide-react";
-import { Button } from "@base-ui/react";
+import { Button } from "@/components/ui/button";
 import { fetchUser } from "@/actions/auth";
 import { checkSubscriptionAccessAction } from "@/actions/subscription";
 import { SubscriptionStatusBadge } from "@/components/User/Subscription/SubscriptionStatusBadge";
@@ -84,8 +84,8 @@ export default async function ProfilePage() {
                 </div>
                 <p className="pl-6 text-base font-medium">{profile.email}</p>
               </div>
-              <Button variant="secondary" size="sm">
-                <Link href="/user/profile/change-email">Изменить email</Link>
+              <Button variant="secondary" size="sm" nativeButton={false} render={<Link href="/user/profile/change-email" />}>
+                Изменить email
               </Button>
             </div>
 
@@ -97,8 +97,13 @@ export default async function ProfilePage() {
                 </div>
                 <p className="pl-6 text-base font-medium">••••••••••••</p>
               </div>
-              <Button variant="secondary" size="sm">
-                <Link href="/user/dashboard/profile/change-password">Изменить пароль</Link>
+              <Button
+                variant="secondary"
+                size="sm"
+                nativeButton={false}
+                render={<Link href="/user/dashboard/profile/change-password" />}
+              >
+                Изменить пароль
               </Button>
             </div>
           </CardContent>
@@ -115,8 +120,13 @@ export default async function ProfilePage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <SubscriptionStatusBadge access={subscriptionAccess} />
-            <Button variant="secondary" size="sm">
-              <Link href="/user/subscription">Управление подпиской</Link>
+            <Button
+              variant="secondary"
+              size="sm"
+              nativeButton={false}
+              render={<Link href="/user/subscription" />}
+            >
+              Управление подпиской
             </Button>
           </CardContent>
         </Card>

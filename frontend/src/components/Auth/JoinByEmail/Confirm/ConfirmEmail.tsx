@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { ApiResponse } from "@/interfaces/response.interface";
 const tokenSchema = z.uuid("Неверный формат токена");
 
-const ConfirmEmailContent = (): JSX.Element => {
+const ConfirmEmailContent = (): JSX.Element | null => {
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ApiResponse | null>(null);
@@ -125,6 +125,8 @@ const ConfirmEmailContent = (): JSX.Element => {
       </Card>
     );
   }
+
+  return null;
 };
 
 export default function ConfirmEmail() {

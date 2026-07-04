@@ -8,12 +8,6 @@ import { Button } from "@/components/ui/button";
 export default async function CompanyPage() {
   const result = await fetchCompaniesAction();
 
-  const archivedCompanies = result.data?.filter((company) => company.status === "ARCHIVED");
-
-  const activeCompanies = result.data?.filter((company) => company.status === "ACTIVE");
-
-  const hasArchiveCompanies = archivedCompanies && archivedCompanies.length > 0;
-
   if (!result.ok || !result.data) {
     return (
       <div className="mx-auto max-w-4xl p-4 md:p-8">
@@ -29,6 +23,10 @@ export default async function CompanyPage() {
       </div>
     );
   }
+
+  const activeCompanies = result.data.filter((company) => company.status === "ACTIVE");
+  const archivedCompanies = result.data.filter((company) => company.status === "ARCHIVED");
+  const hasArchiveCompanies = archivedCompanies.length > 0;
 
   return (
     <div className="mx-auto max-w-4xl p-4 md:p-8">

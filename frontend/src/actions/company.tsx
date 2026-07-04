@@ -207,18 +207,36 @@ export async function changeCompanyInnAction(
 }
 
 /**
- * Заглушка для интеграции с прокси ФНС (получение Title по Inn).
- * Включить после появления эндпоинта на бэкенде.
+ * Получение Title организации по Inn через прокси ФНС.
+ * Реальный вызов API подключается, когда появится эндпоинт на бэкенде.
  */
-export function fetchCompanyTitleByInnAction(
+export async function fetchCompanyTitleByInnAction(
   inn: string
 ): Promise<ApiResponse<CompanyTitleByInnResponse>> {
-  void inn;
+  const normalizedInn = inn.trim();
 
-  return Promise.resolve({
-    ok: false,
-    error: FNS_TITLE_LOOKUP_ENABLED
-      ? "Эндпоинт прокси ФНС не настроен."
-      : "Сервис получения наименования по ИНН будет доступен в следующей версии.",
-  });
+  if (!normalizedInn) {
+    return await Promise.resolve({ ok: false, error: "ИНН не указан." });
+  }
+
+  if (!FNS_TITLE_LOOKUP_ENABLED) {
+    return await Promise.resolve({
+      ok: false,
+      error: "Сервис получения наименования по ИНН будет доступен в следующей версии.",
+    });
+  }
+
+  try {
+    // TODO: подключить apiFetch(API.company.titleByInn(normalizedInn), ...) после появления эндпоинта
+    return await Promise.resolve({
+      ok: false,
+      error: "Эндпоинт прокси ФНС не настроен.",
+    });
+  } catch (error) {
+    console.error("fetchCompanyTitleByInnAction Fetch error:", error);
+    return await Promise.resolve({
+      ok: false,
+      error: "Не удалось подключиться к серверу API.",
+    });
+  }
 }

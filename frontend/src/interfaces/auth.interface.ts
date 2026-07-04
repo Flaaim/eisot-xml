@@ -11,4 +11,5 @@ export interface LoginData {
 export interface ProfileDTO {
   id: string;
   email: string;
+  name?: string | null;
 }

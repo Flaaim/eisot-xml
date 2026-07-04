@@ -164,8 +164,8 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
       </p>
 
       <div>
-        <Button variant="ghost" asChild className="cursor-pointer">
-          <Link href="/user/company">Перейти к компаниям</Link>
+        <Button variant="ghost" nativeButton={false} render={<Link href="/user/company" />} className="cursor-pointer">
+          Перейти к компаниям
         </Button>
       </div>
     </div>

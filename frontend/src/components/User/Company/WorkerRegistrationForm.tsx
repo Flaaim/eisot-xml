@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
+import { useForm, useFieldArray, Controller, useWatch, type FieldPath } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2, ShieldCheck, UserCheck, BookOpen, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -49,6 +49,16 @@ const DEFAULT_VALUES: WorkerAndProtocolsFormData = {
   profession: "",
   protocols: [{ ...EMPTY_PROTOCOL }],
 };
+
+type ProtocolFieldName = "programId" | "result" | "date" | "protocolNumber";
+
+function protocolFieldPath(
+  index: number,
+  field: ProtocolFieldName
+): FieldPath<WorkerAndProtocolsFormData> {
+  // String(index) satisfies ESLint; assertion keeps react-hook-form FieldPath typing.
+  return `protocols.${String(index)}.${field}` as FieldPath<WorkerAndProtocolsFormData>;
+}
 
 export function WorkerRegistrationForm({ companyId, company }: WorkerRegistrationFormProps) {
   const router = useRouter();
@@ -306,17 +316,20 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
                   <div className="md:col-span-2 xl:col-span-1">
                     <Controller
-                      name={`protocols.${String(index)}.programId`}
+                      name={protocolFieldPath(index, "programId")}
                       control={control}
-                      render={({ field: controllerField, fieldState }) => (
+                      render={({ field: controllerField, fieldState }) => {
+                        const selectedProgramIds = Array.isArray(controllerField.value)
+                          ? (controllerField.value as unknown as (string | number)[])
+                          : [];
+
+                        return (
                         <Field data-invalid={fieldState.invalid}>
                           <FieldLabel htmlFor={`program-${String(index)}`}>Программа обучения</FieldLabel>
                           <select
                             id={`program-${String(index)}`}
                             multiple
-                            value={(controllerField.value as number[]).map((programId) =>
-                              String(programId)
-                            )}
+                            value={(selectedProgramIds).map((programId) => String(programId))}
                             onChange={(e) => {
                               const selected = Array.from(e.target.selectedOptions, (opt) =>
                                 Number.parseInt(opt.value, 10)
@@ -336,19 +349,24 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                           </p>
                           {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                         </Field>
-                      )}
+                        );
+                      }}
                     />
                   </div>
 
                   <Controller
-                    name={`protocols.${String(index)}.result`}
+                    name={protocolFieldPath(index, "result")}
                     control={control}
                     render={({ field: controllerField, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel htmlFor={`result-${String(index)}`}>Результат</FieldLabel>
                         <select
                           id={`result-${String(index)}`}
-                          {...controllerField}
+                          name={controllerField.name}
+                          value={typeof controllerField.value === "string" ? controllerField.value : ""}
+                          onChange={controllerField.onChange}
+                          onBlur={controllerField.onBlur}
+                          ref={controllerField.ref}
                           className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {TRAINING_RESULTS.map((res) => (
@@ -363,13 +381,17 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                   />
 
                   <Controller
-                    name={`protocols.${String(index)}.date`}
+                    name={protocolFieldPath(index, "date")}
                     control={control}
                     render={({ field: controllerField, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel htmlFor={`date-${String(index)}`}>Дата протокола</FieldLabel>
                         <Input
-                          {...controllerField}
+                          name={controllerField.name}
+                          value={typeof controllerField.value === "string" ? controllerField.value : ""}
+                          onChange={controllerField.onChange}
+                          onBlur={controllerField.onBlur}
+                          ref={controllerField.ref}
                           id={`date-${String(index)}`}
                           type="date"
                           aria-invalid={fieldState.invalid}
@@ -380,13 +402,17 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                   />
 
                   <Controller
-                    name={`protocols.${String(index)}.protocolNumber`}
+                    name={protocolFieldPath(index, "protocolNumber")}
                     control={control}
                     render={({ field: controllerField, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel htmlFor={`number-${String(index)}`}>Номер протокола</FieldLabel>
                         <Input
-                          {...controllerField}
+                          name={controllerField.name}
+                          value={typeof controllerField.value === "string" ? controllerField.value : ""}
+                          onChange={controllerField.onChange}
+                          onBlur={controllerField.onBlur}
+                          ref={controllerField.ref}
                           id={`number-${String(index)}`}
                           placeholder="ПР-001"
                           aria-invalid={fieldState.invalid}

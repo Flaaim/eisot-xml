@@ -176,28 +176,26 @@ const WorkerBaseSchema = z.object({
 
 const CitizenWorkerSchema = WorkerBaseSchema.extend({
   isForeigner: z.literal(false),
-  snils: z.preprocess(
-    (val) => (typeof val === "string" ? normalizeSnils(val) : val),
-    z
-      .string()
-      .min(1, "Укажите СНИЛС")
-      .superRefine((val, ctx) => {
-        if (!SNILS_PATTERN.test(val)) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Укажите СНИЛС полностью в формате 111-222-333 45",
-          });
-          return;
-        }
+  snils: z
+    .string()
+    .min(1, "Укажите СНИЛС")
+    .transform(normalizeSnils)
+    .superRefine((val, ctx) => {
+      if (!SNILS_PATTERN.test(val)) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Укажите СНИЛС полностью в формате 111-222-333 45",
+        });
+        return;
+      }
 
-        if (!isValidSnils(val)) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Неверная контрольная сумма СНИЛС",
-          });
-        }
-      })
-  ),
+      if (!isValidSnils(val)) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Неверная контрольная сумма СНИЛС",
+        });
+      }
+    }),
   citizenship: z.string().optional(),
   foreignSnils: z.string().optional(),
 });

@@ -43,11 +43,9 @@ export function AccessRestrictedDialog({ open, onOpenChange }: AccessRestrictedD
           <Button variant="outline" onClick={() => { onOpenChange(false); }} className="cursor-pointer">
             Закрыть
           </Button>
-          <Button asChild className="cursor-pointer">
-            <Link href="/user/subscription">
-              <Crown className="mr-2 size-4" />
-              Тарифы и подписка
-            </Link>
+          <Button nativeButton={false} render={<Link href="/user/subscription" />} className="cursor-pointer">
+            <Crown className="mr-2 size-4" />
+            Тарифы и подписка
           </Button>
         </DialogFooter>
       </DialogContent>
