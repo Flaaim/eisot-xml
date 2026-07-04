@@ -10,8 +10,8 @@ WORKDIR /app
 
 COPY ./composer.json ./composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --no-progress --no-suggest --optimize-autoloader --ignore-platform-req=ext-intl \
-     && rm -rf /root/.composer/cache \
+RUN composer install --no-dev --prefer-dist --no-progress --no-suggest --optimize-autoloader --no-scripts --ignore-platform-reqs \
+     && rm -rf /root/.composer/cache
 
 COPY ./ ./
 
@@ -20,7 +20,7 @@ RUN composer dump-autoload --optimize --classmap-authoritative \
 
 ### CLI ###
 
-FROM php:8.1-cli-alpine
+FROM php:8.4-cli-alpine
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 

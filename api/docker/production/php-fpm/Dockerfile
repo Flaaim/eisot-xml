@@ -10,7 +10,7 @@ WORKDIR /app
 
 COPY ./composer.json ./composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --no-progress --no-suggest --optimize-autoloader --ignore-platform-req=ext-intl \
+RUN composer install --no-dev --prefer-dist --no-progress --no-suggest --optimize-autoloader --no-scripts --ignore-platform-reqs \
      && rm -rf /root/.composer/cache
 
 COPY ./ ./
