@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="6.16.1@f1f5de594dc76faf8784e02d3dc4716c91c6f6ac">
+  <file src="src/Auth/Entity/User/Network.php">
+    <UnusedProperty>
+      <code><![CDATA[$user]]></code>
+    </UnusedProperty>
+  </file>
   <file src="src/Infrastructure/Http/EventSubscriber/ApiExceptionSubscriber.php">
     <UnusedClass>
       <code><![CDATA[ApiExceptionSubscriber]]></code>
     </UnusedClass>
+  </file>
+  <file src="src/Infrastructure/Http/EventSubscriber/ClearEmptyInputSubscriber.php">
+    <MissingParamType>
+      <code><![CDATA[$items]]></code>
+    </MissingParamType>
+  </file>
+  <file src="src/Infrastructure/Security/UserProvider.php">
+    <MissingTemplateParam>
+      <code><![CDATA[UserProviderInterface]]></code>
+    </MissingTemplateParam>
   </file>
 </files>
