@@ -56,7 +56,7 @@ export function DashboardSidebar({ email }: DashboardSidebarProps) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <User className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -65,7 +65,7 @@ export function DashboardSidebar({ email }: DashboardSidebarProps) {
                 </span>
               </div>
             </SidebarMenuButton>
-            <SidebarMenuButton onClick={handleLogout} className="text-destructive cursor-pointer">
+            <SidebarMenuButton onClick={handleLogout} className="cursor-pointer text-destructive">
               <LogOut className="mr-2 size-4" />
               <span>Выйти из системы</span>
             </SidebarMenuButton>

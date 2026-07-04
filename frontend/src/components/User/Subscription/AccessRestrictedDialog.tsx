@@ -25,8 +25,8 @@ export function AccessRestrictedDialog({ open, onOpenChange }: AccessRestrictedD
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 mb-2">
-            <ShieldAlert className="h-6 w-6" />
+          <div className="mb-2 flex size-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-600">
+            <ShieldAlert className="size-6" />
           </div>
           <DialogTitle>Доступ ограничен</DialogTitle>
           <DialogDescription className="leading-relaxed">
@@ -45,7 +45,7 @@ export function AccessRestrictedDialog({ open, onOpenChange }: AccessRestrictedD
           </Button>
           <Button asChild className="cursor-pointer">
             <Link href="/user/subscription">
-              <Crown className="mr-2 h-4 w-4" />
+              <Crown className="mr-2 size-4" />
               Тарифы и подписка
             </Link>
           </Button>

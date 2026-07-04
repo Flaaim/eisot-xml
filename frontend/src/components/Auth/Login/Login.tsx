@@ -115,7 +115,7 @@ export default function Login() {
           <div className="flex flex-col">
             <div className="space-y-2 pt-2">
               {form.formState.errors.root && (
-                <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
+                <div className="rounded-md bg-destructive/10 p-2 text-center text-sm font-medium text-destructive">
                   {form.formState.errors.root.message}
                 </div>
               )}

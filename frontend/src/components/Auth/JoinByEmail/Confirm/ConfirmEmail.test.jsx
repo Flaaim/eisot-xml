@@ -1,7 +1,5 @@
 import ConfirmEmail from "./ConfirmEmail";
 import { render, screen } from "@testing-library/react";
-import ResetPasswordForm from "../../Password/Confirm/ConfirmForm";
-import { joinConfirm } from "../../../../actions/auth";
 
 const mockGet = jest.fn();
 jest.mock("next/navigation", () => ({

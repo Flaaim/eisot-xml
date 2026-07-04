@@ -18,11 +18,11 @@ export default async function CompanyRegistryPage({ params }: CompanyRegistryPag
   if (!registryResult.ok) {
     return (
       <div className="flex min-h-[300px] flex-col items-center justify-center text-center">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-          <AlertCircle className="h-6 w-6 text-destructive" />
+        <div className="flex size-12 items-center justify-center rounded-full bg-destructive/10">
+          <AlertCircle className="size-6 text-destructive" />
         </div>
         <h3 className="mt-4 text-lg font-semibold">Ошибка загрузки реестра</h3>
-        <p className="mb-4 mt-2 text-sm text-muted-foreground max-w-sm">
+        <p className="mt-2 mb-4 max-w-sm text-sm text-muted-foreground">
           Не удалось получить список протоколов обучения. {registryResult.error}
         </p>
         <Link href={`/user/company/${companyId}`}>

@@ -1,6 +1,6 @@
 import { AlertCircle, PlusCircle } from "lucide-react";
 import { fetchCompaniesAction } from "@/actions/company";
-import { ActiveCompaniesList, CompaniesList } from "@/components/User/Company/ActiveCompaniesList";
+import { ActiveCompaniesList } from "@/components/User/Company/ActiveCompaniesList";
 import { ArchiveCompaniesList } from "@/components/User/Company/ArchiveCompanyLIst";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -17,12 +17,12 @@ export default async function CompanyPage() {
   if (!result.ok || !result.data) {
     return (
       <div className="mx-auto max-w-4xl p-4 md:p-8">
-        <div className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-4">
-          <div className="h-16 w-16 bg-destructive/10 text-destructive rounded-full flex items-center justify-center">
-            <AlertCircle className="h-8 w-8" />
+        <div className="flex min-h-[40vh] flex-col items-center justify-center space-y-4 text-center">
+          <div className="flex size-16 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+            <AlertCircle className="size-8" />
           </div>
           <h2 className="text-xl font-semibold">Не удалось загрузить компании</h2>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {result.error ?? "Произошла непредвиденная ошибка"}
           </p>
         </div>
@@ -32,17 +32,17 @@ export default async function CompanyPage() {
 
   return (
     <div className="mx-auto max-w-4xl p-4 md:p-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Активные компании</h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <p className="mt-1 text-sm text-muted-foreground">
             Выберите компанию для перехода в её рабочее пространство
           </p>
         </div>
         {result.data.length > 0 && (
           <Button>
             <Link href="/user/company/add" className="flex items-center gap-2">
-              <PlusCircle className="h-4 w-4" />
+              <PlusCircle className="size-4" />
               Добавить
             </Link>
           </Button>
@@ -52,10 +52,10 @@ export default async function CompanyPage() {
 
       {hasArchiveCompanies ? (
         <div className="mt-8">
-          <div className="flex items-center justify-between mb-8">
+          <div className="mb-8 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Архив компаний</h1>
-              <p className="text-muted-foreground text-sm mt-1">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Архив содержит компании, с которыми вы когда-то работали
               </p>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2, ShieldCheck, UserCheck, BookOpen, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -15,7 +15,6 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardFooter,
 } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
@@ -58,7 +57,6 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
     control,
     handleSubmit,
     reset,
-    watch,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<WorkerAndProtocolsFormData>({
@@ -67,7 +65,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
     mode: "onBlur",
   });
 
-  const isForeigner = watch("isForeigner");
+  const isForeigner = useWatch({ control, name: "isForeigner", defaultValue: false }) ?? false;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -92,8 +90,8 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
       {/* 1. Блок "Компания" (Read-only) */}
       <Card className="shadow-sm">
         <CardHeader className="flex flex-row items-center gap-3 pb-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-            <ShieldCheck className="h-5 w-5" />
+          <div className="flex size-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+            <ShieldCheck className="size-5" />
           </div>
           <div className="space-y-0.5">
             <CardTitle className="text-lg font-semibold">Компания</CardTitle>
@@ -108,7 +106,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                 id="company-name-ro"
                 value={company.name}
                 disabled
-                className="bg-muted/50 cursor-not-allowed"
+                className="cursor-not-allowed bg-muted/50"
               />
             </Field>
             <Field>
@@ -117,7 +115,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                 id="company-inn-ro"
                 value={company.inn}
                 disabled
-                className="bg-muted/50 cursor-not-allowed"
+                className="cursor-not-allowed bg-muted/50"
               />
             </Field>
           </FieldGroup>
@@ -127,8 +125,8 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
       {/* 2. Блок "Сотрудник" */}
       <Card className="shadow-sm">
         <CardHeader className="flex flex-row items-center gap-3 pb-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <UserCheck className="h-5 w-5" />
+          <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <UserCheck className="size-5" />
           </div>
           <div className="space-y-0.5">
             <CardTitle className="text-lg font-semibold">Сотрудник</CardTitle>
@@ -264,8 +262,8 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
       <Card className="shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div className="flex flex-row items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <BookOpen className="h-5 w-5" />
+            <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <BookOpen className="size-5" />
             </div>
             <div className="space-y-0.5">
               <CardTitle className="text-lg font-semibold">Протоколы обучения</CardTitle>
@@ -276,7 +274,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
         <CardContent className="space-y-4">
           {errors.protocols?.root && (
             <div className="flex items-center gap-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="size-4" />
               <span>{errors.protocols.root.message}</span>
             </div>
           )}
@@ -297,10 +295,10 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                       variant="ghost"
                       size="icon"
                       onClick={() => remove(index)}
-                      className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                      className="size-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                       title="Удалить протокол"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="size-4" />
                     </Button>
                   )}
                 </div>
@@ -323,7 +321,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                               );
                               controllerField.onChange(selected);
                             }}
-                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
+                            className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             {TRAINING_PROGRAMS.map((program) => (
                               <option key={program.id} value={program.id}>
@@ -331,7 +329,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                               </option>
                             ))}
                           </select>
-                          <p className="text-[11px] text-muted-foreground mt-1">
+                          <p className="mt-1 text-[11px] text-muted-foreground">
                             Удерживайте Ctrl (или Cmd на Mac) для выбора нескольких программ.
                           </p>
                           {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -349,7 +347,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                         <select
                           id={`result-${index}`}
                           {...controllerField}
-                          className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {TRAINING_RESULTS.map((res) => (
                             <option key={res} value={res}>
@@ -405,9 +403,9 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
             variant="outline"
             size="sm"
             onClick={() => append({ ...EMPTY_PROTOCOL })}
-            className="flex items-center gap-1 cursor-pointer"
+            className="flex cursor-pointer items-center gap-1"
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
             Добавить еще протокол
           </Button>
         </CardContent>

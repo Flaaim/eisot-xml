@@ -70,7 +70,7 @@ export default function JoinByEmail() {
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-            <MailCheck className="h-10 w-10 text-green-600" />
+            <MailCheck className="size-10 text-green-600" />
           </div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             <h1>Проверьте вашу почту</h1>
@@ -82,7 +82,7 @@ export default function JoinByEmail() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             Пожалуйста, перейдите по ссылке в письме, чтобы завершить регистрацию и активировать
             аккаунт.
           </p>
@@ -176,7 +176,7 @@ export default function JoinByEmail() {
           <div className="flex flex-col">
             <div className="space-y-4 pt-4">
               {form.formState.errors.root && (
-                <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
+                <div className="rounded-md bg-destructive/10 p-2 text-center text-sm font-medium text-destructive">
                   {form.formState.errors.root.message}
                 </div>
               )}

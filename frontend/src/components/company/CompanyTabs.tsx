@@ -38,7 +38,7 @@ function CompanyTabItem({ tab }: CompanyTabItemProps) {
       >
         {tab.title}
         {tab.comingSoonLabel ? (
-          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground ring-1 ring-border">
+          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium tracking-wide text-muted-foreground uppercase ring-1 ring-border">
             {tab.comingSoonLabel}
           </span>
         ) : null}

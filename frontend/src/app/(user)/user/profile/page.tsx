@@ -29,31 +29,31 @@ export default async function ProfilePage() {
     <div className="mx-auto max-w-4xl space-y-6 p-4 md:p-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Настройки профиля</h1>
-        <p className="text-muted-foreground text-sm mt-2">
+        <p className="mt-2 text-sm text-muted-foreground">
           Управляйте своими личными данными и настройками безопасности.
         </p>
       </div>
       <div className="grid gap-6 md:grid-cols-2">
         <Card className="shadow-sm">
           <CardHeader>
-            <div className="flex items-center gap-2 mb-1">
-              <UserIcon className="h-5 w-5 text-blue-600" />
+            <div className="mb-1 flex items-center gap-2">
+              <UserIcon className="size-5 text-blue-600" />
               <CardTitle className="text-xl">Личные данные</CardTitle>
             </div>
             <CardDescription>Основная информация о вашем аккаунте.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none text-muted-foreground">
+              <p className="text-sm leading-none font-medium text-muted-foreground">
                 ID пользователя
               </p>
-              <p className="text-sm font-mono text-gray-600 bg-gray-50 p-2 rounded-md w-fit">
+              <p className="w-fit rounded-md bg-gray-50 p-2 font-mono text-sm text-gray-600">
                 {profile.id}
               </p>
             </div>
 
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none text-muted-foreground">
+              <p className="text-sm leading-none font-medium text-muted-foreground">
                 Имя и Фамилия
               </p>
               <p className="text-base font-medium">{profile.name || "Не указано"}</p>
@@ -67,35 +67,35 @@ export default async function ProfilePage() {
         </Card>
         <Card>
           <CardHeader>
-            <div className="flex items-center gap-2 mb-1">
-              <Shield className="h-5 w-5 text-green-600" />
+            <div className="mb-1 flex items-center gap-2">
+              <Shield className="size-5 text-green-600" />
               <CardTitle className="text-xl">Безопасность</CardTitle>
             </div>
             <CardDescription>Управление email-адресом и паролем.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4">
+            <div className="flex flex-col justify-between gap-4 border-b pb-4 sm:flex-row sm:items-center">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-muted-foreground" />
-                  <p className="text-sm font-medium leading-none text-muted-foreground">
+                  <Mail className="size-4 text-muted-foreground" />
+                  <p className="text-sm leading-none font-medium text-muted-foreground">
                     Email адрес
                   </p>
                 </div>
-                <p className="text-base font-medium pl-6">{profile.email}</p>
+                <p className="pl-6 text-base font-medium">{profile.email}</p>
               </div>
               <Button variant="secondary" size="sm">
                 <Link href="/user/profile/change-email">Изменить email</Link>
               </Button>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+            <div className="flex flex-col justify-between gap-4 pt-2 sm:flex-row sm:items-center">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <KeyRound className="h-4 w-4 text-muted-foreground" />
-                  <p className="text-sm font-medium leading-none text-muted-foreground">Пароль</p>
+                  <KeyRound className="size-4 text-muted-foreground" />
+                  <p className="text-sm leading-none font-medium text-muted-foreground">Пароль</p>
                 </div>
-                <p className="text-base font-medium pl-6">••••••••••••</p>
+                <p className="pl-6 text-base font-medium">••••••••••••</p>
               </div>
               <Button variant="secondary" size="sm">
                 <Link href="/user/dashboard/profile/change-password">Изменить пароль</Link>
@@ -105,8 +105,8 @@ export default async function ProfilePage() {
         </Card>
         <Card className="shadow-sm md:col-span-2">
           <CardHeader>
-            <div className="flex items-center gap-2 mb-1">
-              <Crown className="h-5 w-5 text-primary" />
+            <div className="mb-1 flex items-center gap-2">
+              <Crown className="size-5 text-primary" />
               <CardTitle className="text-xl">User Subscription</CardTitle>
             </div>
             <CardDescription>

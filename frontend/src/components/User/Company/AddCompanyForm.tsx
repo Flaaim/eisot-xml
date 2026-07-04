@@ -118,7 +118,7 @@ export default function AddCompanyForm() {
         <div className="flex w-full flex-col">
           <div className="space-y-4 pt-4">
             {form.formState.errors.root && (
-              <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
+              <div className="rounded-md bg-destructive/10 p-2 text-center text-sm font-medium text-destructive">
                 {form.formState.errors.root.message}
               </div>
             )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX, Suspense, useEffect, useState } from "react";
+import { JSX, Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { z } from "zod";
 import {
@@ -49,28 +49,19 @@ const ResetPasswordFormContent = (): JSX.Element => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-
+  const tokenError = useMemo((): string | null => {
     if (!token) {
-      setError("Токен отсутствует в ссылке.");
-      setLoading(false);
-      return;
+      return "Токен отсутствует в ссылке.";
     }
 
     const parsed = tokenSchema.safeParse(token);
-
-    if (!token || !parsed.success) {
-      setError(parsed.success ? "Токен отсутствует" : parsed.error.issues[0].message);
-      setLoading(false);
-      return;
+    if (!parsed.success) {
+      return parsed.error.issues[0]?.message ?? "Неверный формат токена";
     }
-    setLoading(false);
+
+    return null;
   }, [token]);
 
   const form = useForm({
@@ -93,24 +84,35 @@ const ResetPasswordFormContent = (): JSX.Element => {
     setIsSuccess(true);
   }
 
-  if (loading) {
+  if (tokenError) {
     return (
-      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
-        <CardContent className="flex flex-col items-center justify-center space-y-4 pt-6">
-          <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
-          <p className="text-sm text-muted-foreground">Проверка безопасного соединения...</p>
-        </CardContent>
-      </Card>
+      <div className="mx-auto max-w-md p-4 pt-12 md:p-8">
+        <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
+          <CardHeader className="space-y-4">
+            <div className="mx-auto w-fit rounded-full bg-red-100 p-4">
+              <XCircle className="size-10 text-red-600" />
+            </div>
+            <CardTitle className="text-2xl font-semibold tracking-tight">
+              <h1>Ошибка доступа</h1>
+            </CardTitle>
+            <CardDescription className="text-base text-red-600">{tokenError}</CardDescription>
+          </CardHeader>
+          <CardFooter className="justify-center">
+            <Button variant="outline">
+              <Link href="/join/login">Вернуться на страницу входа</Link>
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
     );
   }
-
   if (isSuccess) {
     return (
-      <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
+      <div className="mx-auto max-w-md p-4 pt-12 md:p-8">
         <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
           <CardHeader className="space-y-4">
             <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-              <Check className="h-10 w-10 text-green-600" />
+              <Check className="size-10 text-green-600" />
             </div>
             <CardTitle className="text-2xl font-semibold tracking-tight">Успешно</CardTitle>
             <CardDescription className="text-base">
@@ -126,30 +128,9 @@ const ResetPasswordFormContent = (): JSX.Element => {
       </div>
     );
   }
-  if (error) {
-    return (
-      <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
-        <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
-          <CardHeader className="space-y-4">
-            <div className="mx-auto w-fit rounded-full bg-red-100 p-4">
-              <XCircle className="h-10 w-10 text-red-600" />
-            </div>
-            <CardTitle className="text-2xl font-semibold tracking-tight">
-              <h1>Ошибка доступа</h1>
-            </CardTitle>
-            <CardDescription className="text-base text-red-600">{error}</CardDescription>
-          </CardHeader>
-          <CardFooter className="justify-center">
-            <Button variant="outline">
-              <Link href="/join/login">Вернуться на страницу входа</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-    );
-  }
+
   return (
-    <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
+    <div className="mx-auto max-w-md p-4 pt-12 md:p-8">
       <div className="mb-6">
         <Button
           variant="ghost"
@@ -157,7 +138,7 @@ const ResetPasswordFormContent = (): JSX.Element => {
           className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900"
         >
           <Link href="/user/profile" className="inline-flex items-center">
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="mr-2 size-4" />
             <span>Назад на страницу входа</span>
           </Link>
         </Button>
@@ -165,7 +146,7 @@ const ResetPasswordFormContent = (): JSX.Element => {
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-            <Wrench className="h-10 w-10 text-green-600" />
+            <Wrench className="size-10 text-green-600" />
           </div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             <h1>Восстановление доступа</h1>
@@ -224,7 +205,7 @@ const ResetPasswordFormContent = (): JSX.Element => {
           <div className="flex flex-col">
             <div className="space-y-4 pt-4">
               {form.formState.errors.root && (
-                <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
+                <div className="rounded-md bg-destructive/10 p-2 text-center text-sm font-medium text-destructive">
                   {form.formState.errors.root.message}
                 </div>
               )}
@@ -249,7 +230,7 @@ export default function ResetPasswordForm() {
     <Suspense
       fallback={
         <div className="flex justify-center p-8">
-          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+          <Loader2 className="size-8 animate-spin text-gray-400" />
         </div>
       }
     >

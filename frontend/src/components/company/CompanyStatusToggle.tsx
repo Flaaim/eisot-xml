@@ -36,7 +36,7 @@ export function CompanyStatusToggle({ companyId, status }: CompanyStatusTogglePr
           toast.error(res.error || "Не удалось восстановить компанию");
         }
       }
-    } catch (err) {
+    } catch {
       toast.error("Произошла ошибка при смене статуса компании");
     } finally {
       setLoading(false);
@@ -49,9 +49,9 @@ export function CompanyStatusToggle({ companyId, status }: CompanyStatusTogglePr
         variant="outline"
         onClick={handleToggle}
         disabled={loading}
-        className="flex items-center gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/20"
+        className="flex items-center gap-2 border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-destructive"
       >
-        <Archive className="h-4 w-4" />
+        <Archive className="size-4" />
         {loading ? "Обработка..." : "Отправить в архив"}
       </Button>
     );
@@ -64,7 +64,7 @@ export function CompanyStatusToggle({ companyId, status }: CompanyStatusTogglePr
       disabled={loading}
       className="flex items-center gap-2"
     >
-      <RotateCcw className="h-4 w-4" />
+      <RotateCcw className="size-4" />
       {loading ? "Обработка..." : "Восстановить из архива"}
     </Button>
   );

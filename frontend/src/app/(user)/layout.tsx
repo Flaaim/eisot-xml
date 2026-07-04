@@ -41,9 +41,9 @@ export default async function UserDashboardLayout({
       <div className="grid min-h-screen w-full grid-cols-[auto_1fr] max-[765px]:grid-cols-1">
         <DashboardSidebar email={profile.email} />
         <div className="flex min-h-screen flex-col">
-          <header className="bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
             <SidebarTrigger className="-ml-1" />
-            <div className="bg-border mx-2 my-auto h-4 w-px" />
+            <div className="mx-2 my-auto h-4 w-px bg-border" />
             <span className="font-medium">Панель пользователя</span>
             <div className="ml-auto flex items-center gap-3">
               <Link href="/user/subscription">
@@ -52,7 +52,7 @@ export default async function UserDashboardLayout({
             </div>
           </header>
           <main className="flex-1 p-6 max-[765px]:p-2.5">{children}</main>
-          <footer className="text-muted-foreground border-t p-4 text-sm">Footer</footer>
+          <footer className="border-t p-4 text-sm text-muted-foreground">Footer</footer>
         </div>
       </div>
 

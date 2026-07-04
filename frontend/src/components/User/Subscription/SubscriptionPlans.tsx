@@ -115,11 +115,11 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
           return (
             <Card
               key={plan.id}
-              className={isCurrent ? "ring-2 ring-primary/30 shadow-md" : "shadow-sm"}
+              className={isCurrent ? "shadow-md ring-2 ring-primary/30" : "shadow-sm"}
             >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Crown className="h-5 w-5 text-primary" />
+                  <Crown className="size-5 text-primary" />
                   {plan.title}
                 </CardTitle>
                 <CardDescription>{plan.price}</CardDescription>
@@ -128,7 +128,7 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <Check className="mt-0.5 size-4 shrink-0 text-emerald-600" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -143,7 +143,7 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
                 >
                   {loadingPlan === plan.id ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="mr-2 size-4 animate-spin" />
                       Активация...
                     </>
                   ) : isCurrent ? (

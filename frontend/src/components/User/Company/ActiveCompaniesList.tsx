@@ -16,16 +16,16 @@ export function ActiveCompaniesList({ companies }: CompaniesListProps) {
     return (
       <div
         data-testid="companies-empty"
-        className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-4 max-w-md mx-auto"
+        className="mx-auto flex min-h-[40vh] max-w-md flex-col items-center justify-center space-y-4 text-center"
       >
-        <div className="h-20 w-20 bg-primary/10 text-primary rounded-full flex items-center justify-center">
-          <Building2 className="h-10 w-10" />
+        <div className="flex size-20 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <Building2 className="size-10" />
         </div>
         <h2 className="text-2xl font-bold tracking-tight">Компании не найдены</h2>
         <p className="text-muted-foreground">Добавьте вашу первую компанию, чтобы начать работу</p>
         <Button className="mt-2">
           <Link href="/user/company/add" className="flex items-center gap-2">
-            <PlusCircle className="h-4 w-4" />
+            <PlusCircle className="size-4" />
             Добавить компанию
           </Link>
         </Button>

@@ -65,7 +65,7 @@ const ConfirmEmailContent = (): JSX.Element => {
         <CardHeader>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-              <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+              <Loader2 className="size-10 animate-spin text-blue-600" />
             </div>
             <h1>Проверка данных...</h1>
           </CardTitle>
@@ -81,7 +81,7 @@ const ConfirmEmailContent = (): JSX.Element => {
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader>
           <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-            <Check className="h-10 w-10 text-green-600" />
+            <Check className="size-10 text-green-600" />
           </div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             <h1>Успех!</h1>
@@ -105,7 +105,7 @@ const ConfirmEmailContent = (): JSX.Element => {
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-red-100 p-4">
-            <XCircle className="h-10 w-10 text-red-600" />
+            <XCircle className="size-10 text-red-600" />
           </div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             <h1>Что-то пошло не так.</h1>
@@ -132,7 +132,7 @@ export default function ConfirmEmail() {
     <Suspense
       fallback={
         <div className="flex justify-center p-8">
-          <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+          <Loader2 className="size-8 animate-spin text-gray-400" />
         </div>
       }
     >

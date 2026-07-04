@@ -235,7 +235,6 @@ export async function fetchUser(): Promise<ProfileDTO> {
       Accept: "application/json",
     },
   });
-  console.log(response);
   const parsed = await handleApiResponse<ProfileDTO>(response);
   if (!parsed.ok || !parsed.data) {
     throw new Error(parsed.error || "Не удалось загрузить профиль");
@@ -253,7 +252,6 @@ export default async function requestEmailChange(email: string, id: string): Pro
       },
       body: JSON.stringify({ email: email, userId: id }),
     });
-    console.log(response);
     const parsed = await handleApiResponse(response);
 
     if (!parsed.ok) {

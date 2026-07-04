@@ -26,7 +26,7 @@ export default async function CompanyOverviewPage({ params }: CompanyOverviewPag
       </Suspense>
 
       {/* Form Area */}
-      <div className="pt-4 border-t space-y-4">
+      <div className="space-y-4 border-t pt-4">
         <div>
           <h2 className="text-lg font-semibold tracking-tight">Регистрация работника</h2>
           <p className="text-sm text-muted-foreground">

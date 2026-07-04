@@ -54,7 +54,7 @@ export default function RequestChangePassword({ profile }: RequestChangePassword
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-            <MailCheck className="h-10 w-10 text-green-600" />
+            <MailCheck className="size-10 text-green-600" />
           </div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             <h1>Письмо отправлено</h1>
@@ -66,7 +66,7 @@ export default function RequestChangePassword({ profile }: RequestChangePassword
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             Пожалуйста, перейдите по ссылке в письме, чтобы завершить привязку нового адреса к
             вашему аккаунту.
           </p>
@@ -83,7 +83,7 @@ export default function RequestChangePassword({ profile }: RequestChangePassword
   }
 
   return (
-    <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
+    <div className="mx-auto max-w-md p-4 pt-12 md:p-8">
       <div className="mb-6">
         <Button
           variant="ghost"
@@ -91,7 +91,7 @@ export default function RequestChangePassword({ profile }: RequestChangePassword
           className="pl-0 text-muted-foreground hover:bg-transparent hover:text-gray-900"
         >
           <Link href="/user/profile" className="inline-flex items-center">
-            <ArrowLeft className="mr-2 h-4 w-4" />
+            <ArrowLeft className="mr-2 size-4" />
             <span>Назад в профиль</span>
           </Link>
         </Button>
@@ -100,9 +100,9 @@ export default function RequestChangePassword({ profile }: RequestChangePassword
       <Card className="shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-blue-100 p-4">
-            <Mail className="h-10 w-10 text-blue-600" />
+            <Mail className="size-10 text-blue-600" />
           </div>
-          <CardTitle className="text-2xl font-semibold tracking-tight text-center">
+          <CardTitle className="text-center text-2xl font-semibold tracking-tight">
             Изменение Email
           </CardTitle>
           <CardDescription className="text-center">
@@ -138,7 +138,7 @@ export default function RequestChangePassword({ profile }: RequestChangePassword
 
         <CardFooter className="flex-col">
           {form.formState.errors.root && (
-            <div className="w-full mb-4 text-destructive bg-destructive/10 rounded-md p-3 text-center text-sm font-medium">
+            <div className="mb-4 w-full rounded-md bg-destructive/10 p-3 text-center text-sm font-medium text-destructive">
               {form.formState.errors.root.message}
             </div>
           )}

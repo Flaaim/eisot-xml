@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Download, CheckSquare, Square, FileCode, CheckCircle2, XCircle } from "lucide-react";
+import { Download, FileCode, CheckCircle2, XCircle } from "lucide-react";
 
 import {
   Table,
@@ -20,7 +20,6 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "@/components/ui/card";
 import { RegistryRecordDto, exportRegistryToXmlAction } from "@/actions/registry";
 import { AccessRestrictedDialog } from "@/components/User/Subscription/AccessRestrictedDialog";
@@ -36,7 +35,6 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
   const [accessDialogOpen, setAccessDialogOpen] = useState(false);
 
   const isAllSelected = records.length > 0 && selectedIds.size === records.length;
-  const isSomeSelected = selectedIds.size > 0 && selectedIds.size < records.length;
 
   const toggleSelectAll = () => {
     if (isAllSelected) {
@@ -112,10 +110,10 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
     <>
       <AccessRestrictedDialog open={accessDialogOpen} onOpenChange={setAccessDialogOpen} />
       <Card className="shadow-sm">
-        <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-4">
+        <CardHeader className="flex flex-col gap-4 pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <CardTitle className="text-lg font-semibold flex items-center gap-2">
-              <FileCode className="h-5 w-5 text-primary" />
+            <CardTitle className="flex items-center gap-2 text-lg font-semibold">
+              <FileCode className="size-5 text-primary" />
               Реестр протоколов обучения
             </CardTitle>
             <CardDescription>
@@ -129,11 +127,11 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
             <Button
               onClick={handleExport}
               disabled={selectedIds.size === 0 || isExporting}
-              className="flex items-center gap-2 cursor-pointer min-w-[170px]"
+              className="flex min-w-[170px] cursor-pointer items-center gap-2"
             >
               {isExporting ? (
                 <>
-                  <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <svg className="size-4 animate-spin" fill="none" viewBox="0 0 24 24">
                     <circle
                       className="opacity-25"
                       cx="12"
@@ -152,16 +150,16 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
                 </>
               ) : (
                 <>
-                  <Download className="h-4 w-4" />
+                  <Download className="size-4" />
                   Сформировать XML
                 </>
               )}
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="p-0 border-t">
+        <CardContent className="border-t p-0">
           {records.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-8 text-center min-h-[250px]">
+            <div className="flex min-h-[250px] flex-col items-center justify-center p-8 text-center">
               <p className="text-sm text-muted-foreground">
                 Записи об обучении отсутствуют. Сначала зарегистрируйте сотрудников и протоколы.
               </p>
@@ -210,12 +208,12 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
                         <TableCell>
                           {isPassed ? (
                             <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-                              <CheckCircle2 className="h-3.5 w-3.5" />
+                              <CheckCircle2 className="size-3.5" />
                               Удовл.
                             </span>
                           ) : (
                             <span className="inline-flex items-center gap-1 text-xs font-medium text-destructive">
-                              <XCircle className="h-3.5 w-3.5" />
+                              <XCircle className="size-3.5" />
                               Неудовл.
                             </span>
                           )}

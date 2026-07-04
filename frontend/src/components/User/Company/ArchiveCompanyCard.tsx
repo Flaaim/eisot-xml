@@ -30,7 +30,8 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
         router.refresh();
       }
     } catch (error) {
-      toast.success("Ошибка при восстановлении компании.");
+      console.error("Restore company error:", error);
+      toast.error("Ошибка при восстановлении компании.");
     } finally {
       setLoading(false);
     }
@@ -39,11 +40,11 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
   if (loading) {
     return (
       <div className="pointer-events-none opacity-50">
-        <Card className="group transition-all duration-200 flex flex-col justify-between h-full opacity-70">
+        <Card className="group flex h-full flex-col justify-between opacity-70 transition-all duration-200">
           <div>
             <CardHeader className="pb-2">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 animate-pulse rounded-lg bg-muted" />
+                <div className="size-10 animate-pulse rounded-lg bg-muted" />
                 <div className="h-5 w-3/4 animate-pulse rounded-md bg-muted" />
               </div>
             </CardHeader>
@@ -51,7 +52,7 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
               <div className="h-6 w-24 animate-pulse rounded-md bg-muted" />
             </CardContent>
           </div>
-          <CardFooter className="flex items-center justify-between border-t bg-muted/20 px-6 py-3 mt-4">
+          <CardFooter className="mt-4 flex items-center justify-between border-t bg-muted/20 px-6 py-3">
             <div className="flex gap-4">
               <div className="h-4 w-10 animate-pulse rounded bg-muted" />
               <div className="h-4 w-10 animate-pulse rounded bg-muted" />
@@ -66,40 +67,40 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
   return (
     <Card
       data-testid={`company-card-${company.id}`}
-      className="group transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:ring-2 hover:ring-primary/20 flex flex-col justify-between h-full opacity-75 grayscale-[20%]"
+      className="group flex h-full flex-col justify-between opacity-75 grayscale-[20%] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-2 hover:ring-primary/20"
     >
       <Link
         href={`/user/company/${company.id}`}
-        className="block flex-1 rounded-t-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="block flex-1 rounded-t-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         <CardHeader className="pb-2">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-              <Building2 className="h-5 w-5" />
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+              <Building2 className="size-5" />
             </div>
-            <CardTitle className="text-base leading-snug line-clamp-2 font-semibold">
+            <CardTitle className="line-clamp-2 text-base leading-snug font-semibold">
               {company.name}
             </CardTitle>
           </div>
         </CardHeader>
-        <CardContent className="pt-0 flex items-center justify-between">
-          <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-inset ring-border">
+        <CardContent className="flex items-center justify-between pt-0">
+          <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border ring-inset">
             ИНН {company.inn}
           </span>
-          <span className="inline-flex items-center rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-500 ring-1 ring-inset ring-amber-500/20">
+          <span className="inline-flex items-center rounded-md bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-500 ring-1 ring-amber-500/20 ring-inset">
             В архиве
           </span>
         </CardContent>
       </Link>
-      <CardFooter className="flex items-center justify-between border-t bg-muted/20 px-6 py-3 mt-4">
+      <CardFooter className="mt-4 flex items-center justify-between border-t bg-muted/20 px-6 py-3">
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5" title="Количество работников">
-            <Users className="h-4 w-4 text-muted-foreground/75" />
+            <Users className="size-4 text-muted-foreground/75" />
             <span className="font-semibold text-foreground/80">{company.workersCount ?? 0}</span>
             <span className="text-muted-foreground/60">раб.</span>
           </div>
           <div className="flex items-center gap-1.5" title="Количество протоколов">
-            <GraduationCap className="h-4 w-4 text-muted-foreground/75" />
+            <GraduationCap className="size-4 text-muted-foreground/75" />
             <span className="font-semibold text-foreground/80">{company.protocolsCount ?? 0}</span>
             <span className="text-muted-foreground/60">прот.</span>
           </div>
@@ -108,17 +109,17 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
         <div className="flex items-center gap-1">
           <Link
             href={`/user/company/${company.id}/settings`}
-            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
           >
-            <Settings className="h-4 w-4" />
+            <Settings className="size-4" />
             <span>Настройки</span>
           </Link>
           <button
             type="button"
             onClick={() => activate(company.id)}
-            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/80 hover:text-primary"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="size-4" />
             <span>Восстановить</span>
           </button>
         </div>

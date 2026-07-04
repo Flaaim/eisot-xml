@@ -34,16 +34,16 @@ export async function CompanyStats({ companyId }: CompanyStatsProps) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {stats.map((stat) => (
-        <Card key={stat.title} className="shadow-none bg-muted/40 border">
+        <Card key={stat.title} className="border bg-muted/40 shadow-none">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               {stat.title}
             </CardTitle>
-            <stat.icon className="h-4 w-4 text-muted-foreground" />
+            <stat.icon className="size-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stat.value}</div>
-            <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{stat.description}</p>
           </CardContent>
         </Card>
       ))}
@@ -55,14 +55,14 @@ export function CompanyStatsSkeleton() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 3 }).map((_, i) => (
-        <Card key={i} className="shadow-none bg-muted/40 border">
+        <Card key={i} className="border bg-muted/40 shadow-none">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <Skeleton className="h-4 w-[100px]" />
-            <Skeleton className="h-4 w-4 rounded-full" />
+            <Skeleton className="size-4 rounded-full" />
           </CardHeader>
           <CardContent>
             <Skeleton className="h-8 w-[60px]" />
-            <Skeleton className="h-3 w-[150px] mt-2" />
+            <Skeleton className="mt-2 h-3 w-[150px]" />
           </CardContent>
         </Card>
       ))}

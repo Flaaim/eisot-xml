@@ -30,7 +30,8 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
         router.refresh();
       }
     } catch (error) {
-      toast.success("Ошибка при удалении компании.");
+      console.error("Archive company error:", error);
+      toast.error("Ошибка при удалении компании.");
     } finally {
       setLoading(false);
     }
@@ -39,11 +40,11 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
   if (loading) {
     return (
       <div className="pointer-events-none opacity-50">
-        <Card className="group transition-all duration-200 flex flex-col justify-between h-full">
+        <Card className="group flex h-full flex-col justify-between transition-all duration-200">
           <div>
             <CardHeader className="pb-2">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 animate-pulse rounded-lg bg-muted" />
+                <div className="size-10 animate-pulse rounded-lg bg-muted" />
                 <div className="h-5 w-3/4 animate-pulse rounded-md bg-muted" />
               </div>
             </CardHeader>
@@ -51,7 +52,7 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
               <div className="h-6 w-24 animate-pulse rounded-md bg-muted" />
             </CardContent>
           </div>
-          <CardFooter className="flex items-center justify-between border-t bg-muted/20 px-6 py-3 mt-4">
+          <CardFooter className="mt-4 flex items-center justify-between border-t bg-muted/20 px-6 py-3">
             <div className="flex gap-4">
               <div className="h-4 w-10 animate-pulse rounded bg-muted" />
               <div className="h-4 w-10 animate-pulse rounded bg-muted" />
@@ -67,33 +68,33 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
     <Card data-testid={`company-card-${company.id}`} className="h-full">
       <Link
         href={`/user/company/${company.id}`}
-        className="block flex-1 rounded-t-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="block flex-1 rounded-t-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         <CardHeader className="pb-2">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-              <Building2 className="h-5 w-5" />
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+              <Building2 className="size-5" />
             </div>
-            <CardTitle className="text-base leading-snug line-clamp-2 font-semibold">
+            <CardTitle className="line-clamp-2 text-base leading-snug font-semibold">
               {company.name}
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent className="pt-0">
-          <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-inset ring-border">
+          <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border ring-inset">
             ИНН {company.inn}
           </span>
         </CardContent>
       </Link>
-      <CardFooter className="flex items-center justify-between border-t bg-muted/20 px-6 py-3 mt-4">
+      <CardFooter className="mt-4 flex items-center justify-between border-t bg-muted/20 px-6 py-3">
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5" title="Количество работников">
-            <Users className="h-4 w-4 text-muted-foreground/75" />
+            <Users className="size-4 text-muted-foreground/75" />
             <span className="font-semibold text-foreground/80">{company.workersCount}</span>
             <span className="text-muted-foreground/60">раб.</span>
           </div>
           <div className="flex items-center gap-1.5" title="Количество протоколов">
-            <GraduationCap className="h-4 w-4 text-muted-foreground/75" />
+            <GraduationCap className="size-4 text-muted-foreground/75" />
             <span className="font-semibold text-foreground/80">{company.protocolsCount}</span>
             <span className="text-muted-foreground/60">прот.</span>
           </div>
@@ -102,17 +103,17 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
         <div className="flex items-center gap-1">
           <Link
             href={`/user/company/${company.id}/settings`}
-            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/80 hover:text-foreground"
           >
-            <Settings className="h-4 w-4" />
+            <Settings className="size-4" />
             <span>Настройки</span>
           </Link>
           <button
             type="button"
             onClick={() => archive(company.id)}
-            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted/80 hover:text-destructive transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/80 hover:text-destructive"
           >
-            <Archive className="h-4 w-4" />
+            <Archive className="size-4" />
             <span>В архив</span>
           </button>
         </div>

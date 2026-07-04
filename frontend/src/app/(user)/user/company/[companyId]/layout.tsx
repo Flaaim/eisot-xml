@@ -23,22 +23,22 @@ export default async function CompanyLayout({ children, params }: CompanyLayoutP
   const company = result.data;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto py-6">
+    <div className="mx-auto max-w-7xl space-y-6 py-6">
       <div className="space-y-4">
         <div>
           <Link
             href="/user/company"
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="size-4" />
             Назад к списку компаний
           </Link>
         </div>
 
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between p-6 rounded-2xl border bg-card text-card-foreground shadow-sm">
+        <div className="flex flex-col gap-4 rounded-2xl border bg-card p-6 text-card-foreground shadow-sm md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
-              <Building2 className="h-6 w-6" />
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Building2 className="size-6" />
             </div>
             <div className="space-y-1">
               <h1 className="text-2xl font-bold tracking-tight">{company.name}</h1>
@@ -46,7 +46,7 @@ export default async function CompanyLayout({ children, params }: CompanyLayoutP
                 <span>ИНН: {company.inn}</span>
                 <span className="flex items-center gap-1.5">
                   <span
-                    className={`h-2 w-2 rounded-full ${company.status === "ACTIVE" ? "bg-emerald-500" : "bg-amber-500"}`}
+                    className={`size-2 rounded-full ${company.status === "ACTIVE" ? "bg-emerald-500" : "bg-amber-500"}`}
                   />
                   {company.status === "ACTIVE" ? "Активна" : "В архиве"}
                 </span>
