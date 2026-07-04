@@ -15,4 +15,5 @@ interface CompanyFetcherInterface
      * @return list<array{id: string, name: string, inn: string, status: string, workers_count: int, protocols_count: int}>
      */
     public function findAllByUserId(string $userId): array;
+    public function findOneByUserId(string $id, string $userId): array;
 }
