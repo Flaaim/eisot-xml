@@ -58,6 +58,8 @@
                 <directory name="src/Auth/Command/Remove" />
                 <directory name="src/Auth/Command/ResetPassword" />
                 <directory name="src/Training/Command/RecordTrainingResult" />
+                <directory name="src/Subscription/Command/ActivateSubscription" />
+                <directory name="src/Auth/Query/GetProfile" />
             </errorLevel>
         </PossiblyUnusedMethod>
 

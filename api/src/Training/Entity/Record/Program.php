@@ -96,6 +96,7 @@ final class Program
 
     /**
      * @deprecated Используйте getTitle(). Оставлен для обратной совместимости.
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function getValue(): string
     {

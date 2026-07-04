@@ -13,11 +13,13 @@ use Webmozart\Assert\Assert;
 #[ORM\UniqueConstraint(name: 'network_identity_idx', columns: ['network', 'identity'])]
 final class Network
 {
+    /** @psalm-suppress UnusedProperty  */
     #[ORM\Id]
     #[ORM\Column(type: 'guid')]
     private string $id;
 
     public function __construct(
+        /** @psalm-suppress UnusedProperty  */
         #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'networks')]
         #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
         private User $user,

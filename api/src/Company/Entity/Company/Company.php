@@ -72,7 +72,7 @@ final class Company implements AggregateRoot
     {
         return $this->userId;
     }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getStatus(): CompanyStatus
     {
         return $this->status;

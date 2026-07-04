@@ -7,12 +7,12 @@ namespace App\Company\Entity\Company;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
-/** @psalm-suppress PossiblyUnusedMethod */
+
 final class CompanyRepository
 {
     private EntityRepository $repo;
     private EntityManagerInterface $em;
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(EntityManagerInterface $em)
     {
         /** @var EntityRepository $repo */

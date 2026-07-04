@@ -273,6 +273,7 @@ final class User implements AggregateRoot
         return $this->role;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     #[ORM\PostLoad]
     public function checkEmbeddables(): void
     {

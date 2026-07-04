@@ -13,6 +13,7 @@ final class UserRepository
     private EntityRepository $repo;
     private EntityManagerInterface $em;
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(EntityManagerInterface $em)
     {
         /** @var EntityRepository $repo */
