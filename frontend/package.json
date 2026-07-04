@@ -8,6 +8,7 @@
     "start": "next start",
     "eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "eslint-fix": "eslint . --fix",
+    "type-check": "tsc --noEmit",
     "test": "jest",
     "prettier-fix": "prettier --write .",
     "prettier-check": "prettier --check .",
