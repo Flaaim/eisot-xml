@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine AS Builder
+FROM php:8.4-fpm-alpine AS builder
 
 RUN apk add --no-cache git unzip
 
