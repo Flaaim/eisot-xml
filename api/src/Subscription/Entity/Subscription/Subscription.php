@@ -11,7 +11,6 @@ use App\Subscription\Event\SubscriptionPurchased;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
-/** @psalm-suppress PossiblyUnusedMethod */
 #[ORM\Entity]
 #[ORM\Table(name: 'subscriptions')]
 final class Subscription implements AggregateRoot
@@ -136,7 +135,7 @@ final class Subscription implements AggregateRoot
         $this->recordEvent(new SubscriptionExpired($this->id, $this->userId));
     }
 
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function cancel(): void
     {
         if (SubscriptionStatus::CANCELLED === $this->status) {

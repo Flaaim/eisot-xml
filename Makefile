@@ -93,7 +93,7 @@ build-gateway:
 	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/eisot-xml-gateway:${IMAGE_TAG} gateway/docker
 
 build-frontend:
-	docker --log-level=debug build --pull --file=frontend/docker/production/nginx/Dockerfile --tag=${REGISTRY}/eisot-xml-frontend:${IMAGE_TAG} frontend
+	docker --log-level=debug build --pull --file=frontend/docker/production/node/Dockerfile --tag=${REGISTRY}/eisot-xml-frontend:${IMAGE_TAG} frontend
 
 build-api:
 	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/eisot-xml-api:${IMAGE_TAG} api
