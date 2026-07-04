@@ -40,7 +40,7 @@ export function AccessRestrictedDialog({ open, onOpenChange }: AccessRestrictedD
           всех компаниях, которыми вы владеете, в формате schema.xsd Минтруда России.
         </p>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="cursor-pointer">
+          <Button variant="outline" onClick={() => { onOpenChange(false); }} className="cursor-pointer">
             Закрыть
           </Button>
           <Button asChild className="cursor-pointer">

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
+import { handleApiResponse, readResponseJson } from "@/lib/handleApiResponse";
 
 interface TokenResponseData {
   access_token: string;
@@ -13,29 +14,16 @@ interface TokenResponseData {
   expires_in: number;
   token_type: string;
 }
-async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
-  const text = await response.text();
-  let data;
 
-  try {
-    data = text ? JSON.parse(text) : {};
-  } catch (parseError) {
-    console.error("Ошибка парсинга ответа API:", parseError);
-    return { ok: false, data: null, error: "Сервер вернул некорректный ответ." };
-  }
-
-  if (!response.ok) {
-    let errorMessage =
-      data.error_description || data.message || "Произошла ошибка при выполнении запроса.";
-    if (response.status === 409) {
-      errorMessage = data.message;
-    } else if (response.status === 401 && !data.error_description) {
-      errorMessage = "Ошибка авторизации";
-    }
-    return { ok: false, data, error: errorMessage };
-  }
-  return { ok: true, data: data as T };
+function isTokenResponseData(data: unknown): data is TokenResponseData {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "access_token" in data &&
+    typeof (data as TokenResponseData).access_token === "string"
+  );
 }
+
 export async function JoinAction(data: JoinData): Promise<ApiResponse> {
   try {
     const response = await fetch(API.auth.joinByEmail(), {
@@ -81,7 +69,7 @@ export async function LoginAction(data: LoginData): Promise<ApiResponse> {
 
     const parsed = await handleApiResponse<TokenResponseData>(response);
 
-    if (!parsed.ok) {
+    if (!parsed.ok || !parsed.data) {
       return { ok: false, error: parsed.error };
     }
 
@@ -89,15 +77,15 @@ export async function LoginAction(data: LoginData): Promise<ApiResponse> {
       const cookieStore = await cookies();
       cookieStore.set({
         name: "access_token",
-        value: String(parsed.data.access_token),
+        value: parsed.data.access_token,
         httpOnly: true,
         path: "/",
         secure: process.env.NODE_ENV === "production",
-        maxAge: Number(parsed.data.expires_in),
+        maxAge: parsed.data.expires_in,
       });
       cookieStore.set({
         name: "refresh_token",
-        value: String(parsed.data.refresh_token),
+        value: parsed.data.refresh_token,
         httpOnly: true,
         path: "/",
         secure: process.env.NODE_ENV === "production",
@@ -132,7 +120,9 @@ export async function RefreshSessionAction(
     if (!response.ok) {
       return null;
     }
-    return await response.json();
+
+    const data: unknown = await readResponseJson(response);
+    return isTokenResponseData(data) ? data : null;
   } catch (error) {
     console.error("RefreshSessionAction API Error:", error);
     return null;
@@ -145,7 +135,8 @@ export async function Logout(): Promise<never> {
 
   if (refreshToken) {
     try {
-      await fetch(`${process.env.INTERNAL_BACKEND_URL}/v1/auth/token/revoke`, {
+      const backendUrl = process.env.INTERNAL_BACKEND_URL ?? "";
+      await fetch(`${backendUrl}/v1/auth/token/revoke`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -237,7 +228,7 @@ export async function fetchUser(): Promise<ProfileDTO> {
   });
   const parsed = await handleApiResponse<ProfileDTO>(response);
   if (!parsed.ok || !parsed.data) {
-    throw new Error(parsed.error || "Не удалось загрузить профиль");
+    throw new Error(parsed.error ?? "Не удалось загрузить профиль");
   }
   return parsed.data;
 }

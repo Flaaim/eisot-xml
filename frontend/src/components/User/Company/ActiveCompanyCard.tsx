@@ -110,7 +110,7 @@ export function ActiveCompanyCard({ company }: CompanyCardProps) {
           </Link>
           <button
             type="button"
-            onClick={() => archive(company.id)}
+            onClick={() => { void archive(company.id); }}
             className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/80 hover:text-destructive"
           >
             <Archive className="size-4" />

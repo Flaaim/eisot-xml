@@ -46,7 +46,7 @@ const ConfirmEmailContent = (): JSX.Element => {
       const parsed = tokenSchema.safeParse(token);
 
       if (!parsed.success) {
-        setError(parsed.success ? "Токен отсутствует" : parsed.error.issues[0].message);
+        setError(parsed.error.issues[0]?.message ?? "Неверный формат токена");
         setLoading(false);
         return;
       }
@@ -56,7 +56,7 @@ const ConfirmEmailContent = (): JSX.Element => {
       setLoading(false);
     };
 
-    initializeConfirmToken();
+    void initializeConfirmToken();
   }, [token]);
 
   if (loading) {
@@ -76,7 +76,7 @@ const ConfirmEmailContent = (): JSX.Element => {
       </Card>
     );
   }
-  if (result && result.ok) {
+  if (result?.ok) {
     return (
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader>
@@ -111,7 +111,7 @@ const ConfirmEmailContent = (): JSX.Element => {
             <h1>Что-то пошло не так.</h1>
           </CardTitle>
           <CardDescription className="text-base text-red-600">
-            {error || result?.error || "Произошла неизвестная ошибка."}
+            {error ?? result?.error ?? "Произошла неизвестная ошибка."}
           </CardDescription>
         </CardHeader>
         <CardFooter className="justify-center">

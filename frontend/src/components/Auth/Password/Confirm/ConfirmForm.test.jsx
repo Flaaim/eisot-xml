@@ -61,6 +61,6 @@ describe("Confirm new password form", () => {
     await user.type(passwordInput, "12345678");
     await user.type(confirmPasswordInput, "123456789");
 
-    expect(await screen.getByText("Пароли не совпадают")).toBeInTheDocument();
+    expect(screen.getByText("Пароли не совпадают")).toBeInTheDocument();
   });
 });

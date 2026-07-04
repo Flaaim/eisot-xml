@@ -22,7 +22,7 @@ declare module "react-input-mask" {
   }
 
   export interface MaskOptions {
-    mask: string | Array<string | RegExp>;
+    mask: string | (string | RegExp)[];
     maskChar?: string | null;
     formatChars?: Record<string, string>;
     alwaysShowMask?: boolean;

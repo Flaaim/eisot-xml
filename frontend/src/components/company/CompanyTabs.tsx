@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { cn } from "@/lib/utils";
 
 /** Способ №2: «Добавление автоматически» — включить, когда будет готов импорт Excel. */
-const EXCEL_IMPORT_ENABLED = false;
+const EXCEL_IMPORT_ENABLED = process.env.NEXT_PUBLIC_EXCEL_IMPORT_ENABLED === "true";
 
 interface CompanyTabsProps {
   readonly companyId: string;
@@ -113,7 +113,9 @@ export function CompanyTabs({ companyId }: CompanyTabsProps) {
       title: "EXCEL",
       subtitle: "Формируем XML из таблицы EXCEL",
       href: `/user/company/${companyId}/excel`,
-      isActive: EXCEL_IMPORT_ENABLED && pathname === `/user/company/${companyId}/excel`,
+      isActive: EXCEL_IMPORT_ENABLED
+        ? pathname === `/user/company/${companyId}/excel`
+        : false,
       disabled: !EXCEL_IMPORT_ENABLED,
       comingSoonLabel: "В разработке",
       disabledTooltip:

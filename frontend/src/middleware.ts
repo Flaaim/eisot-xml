@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
 
   if (pathname.startsWith("/user") && !accessToken && refreshToken) {
     try {
-      const newTokens = await RefreshSessionAction(refreshToken as string);
+      const newTokens = await RefreshSessionAction(refreshToken);
 
       if (newTokens === null) {
         const redirectResponse = NextResponse.redirect(new URL("/join/login", request.url));

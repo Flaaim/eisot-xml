@@ -25,7 +25,7 @@ export function CompanyStatusToggle({ companyId, status }: CompanyStatusTogglePr
           toast.success("Компания успешно отправлена в архив");
           router.refresh();
         } else {
-          toast.error(res.error || "Не удалось отправить компанию в архив");
+          toast.error(res.error ?? "Не удалось отправить компанию в архив");
         }
       } else {
         const res = await unarchiveCompanyAction(companyId);
@@ -33,7 +33,7 @@ export function CompanyStatusToggle({ companyId, status }: CompanyStatusTogglePr
           toast.success("Компания успешно восстановлена из архива");
           router.refresh();
         } else {
-          toast.error(res.error || "Не удалось восстановить компанию");
+          toast.error(res.error ?? "Не удалось восстановить компанию");
         }
       }
     } catch {
@@ -47,7 +47,7 @@ export function CompanyStatusToggle({ companyId, status }: CompanyStatusTogglePr
     return (
       <Button
         variant="outline"
-        onClick={handleToggle}
+        onClick={() => { void handleToggle(); }}
         disabled={loading}
         className="flex items-center gap-2 border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-destructive"
       >
@@ -60,7 +60,7 @@ export function CompanyStatusToggle({ companyId, status }: CompanyStatusTogglePr
   return (
     <Button
       variant="outline"
-      onClick={handleToggle}
+      onClick={() => { void handleToggle(); }}
       disabled={loading}
       className="flex items-center gap-2"
     >

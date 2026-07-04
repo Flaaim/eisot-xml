@@ -10,7 +10,8 @@ const CHECKSUM_COEF_12_FIRST = [7, 2, 4, 10, 3, 5, 9, 4, 6, 8] as const;
 const CHECKSUM_COEF_12_SECOND = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8] as const;
 
 /** Включить, когда на бэкенде появится прокси к сервису ФНС. */
-export const FNS_TITLE_LOOKUP_ENABLED = false;
+export const FNS_TITLE_LOOKUP_ENABLED =
+  process.env.NEXT_PUBLIC_FNS_TITLE_LOOKUP_ENABLED === "true";
 
 export function normalizeInn(value: string): string {
   return value.replace(/\D/g, "").slice(0, 12);

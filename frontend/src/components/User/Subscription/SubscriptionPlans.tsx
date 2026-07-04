@@ -139,7 +139,7 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
                   className="w-full cursor-pointer"
                   variant={plan.id === "premium" ? "default" : "outline"}
                   disabled={isCurrent || loadingPlan !== null}
-                  onClick={() => handleActivate(plan)}
+                  onClick={() => { void handleActivate(plan); }}
                 >
                   {loadingPlan === plan.id ? (
                     <>

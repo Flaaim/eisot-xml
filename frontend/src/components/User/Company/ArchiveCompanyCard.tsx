@@ -116,7 +116,7 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
           </Link>
           <button
             type="button"
-            onClick={() => activate(company.id)}
+            onClick={() => { void activate(company.id); }}
             className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/80 hover:text-primary"
           >
             <RotateCcw className="size-4" />

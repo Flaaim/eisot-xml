@@ -102,7 +102,7 @@ export default function RequestResetPassword() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form id="reset-password-form" onSubmit={form.handleSubmit(onSubmit)} method="POST">
+          <form id="reset-password-form" onSubmit={(e) => { void form.handleSubmit(onSubmit)(e); }} method="POST">
             <FieldGroup>
               <Controller
                 name="email"

@@ -3,6 +3,7 @@
 import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
 import { ApiResponse } from "@/interfaces/response.interface";
+import { getApiErrorMessage, handleApiResponse, parseApiErrorBody } from "@/lib/handleApiResponse";
 
 export interface RegistryRecordDto {
   id: string;
@@ -26,22 +27,9 @@ export async function getRegistryRecordsAction(
       },
     });
 
-    const text = await response.text();
-    let data;
-    try {
-      data = text ? JSON.parse(text) : [];
-    } catch (parseError) {
-      console.error("Ошибка парсинга ответа реестра обучения:", parseError);
-      return { ok: false, error: "Сервер вернул некорректный ответ." };
-    }
-
-    if (!response.ok) {
-      const errorMessage =
-        data.message || data.error_description || "Не удалось загрузить реестр обучения.";
-      return { ok: false, error: errorMessage };
-    }
-
-    return { ok: true, data: data as RegistryRecordDto[] };
+    return await handleApiResponse<RegistryRecordDto[]>(response, {
+      defaultError: "Не удалось загрузить реестр обучения.",
+    });
   } catch (error) {
     console.error("getRegistryRecordsAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
@@ -66,11 +54,12 @@ export async function exportRegistryToXmlAction(
     if (!response.ok) {
       let errorMessage = "Не удалось экспортировать реестр в XML.";
       try {
-        const data = JSON.parse(text);
-        if (data.code === "subscription_required") {
+        const data: unknown = text ? JSON.parse(text) : null;
+        const body = parseApiErrorBody(data);
+        if (body.code === "subscription_required") {
           return { ok: false, error: "subscription_required" };
         }
-        errorMessage = data.message || data.error_description || errorMessage;
+        errorMessage = getApiErrorMessage(data, errorMessage);
       } catch {
         if (text) {
           errorMessage += ` (${text})`;

@@ -44,7 +44,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    "eslint.config.js"
+    "eslint.config.js",
+    "eslint.config.mjs",
+    "postcss.config.mjs",
   ]),
   eslintConfigPrettier,
 ]);

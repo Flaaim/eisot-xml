@@ -9,31 +9,12 @@ import {
 import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
+import { handleApiResponse } from "@/lib/handleApiResponse";
 import { FNS_TITLE_LOOKUP_ENABLED } from "@/lib/inn";
 import { revalidatePath } from "next/cache";
 
 interface AddCompanyResponseData {
   id: string;
-}
-
-async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
-  const text = await response.text();
-  let data;
-
-  try {
-    data = text ? JSON.parse(text) : {};
-  } catch (parseError) {
-    console.error("Ошибка парсинга ответа API:", parseError);
-    return { ok: false, data: null, error: "Сервер вернул некорректный ответ." };
-  }
-
-  if (!response.ok) {
-    const errorMessage =
-      data.error_description || data.message || "Произошла ошибка при выполнении запроса.";
-    return { ok: false, data, error: errorMessage };
-  }
-
-  return { ok: true, data: data as T };
 }
 
 export async function addCompanyAction(
@@ -152,7 +133,7 @@ export async function getCompanyStatsAction(companyId: string): Promise<CompanyS
 
     const parsed = await handleApiResponse<CompanyStats>(response);
     if (!parsed.ok || !parsed.data) {
-      throw new Error(parsed.error || "Не удалось загрузить статистику компании.");
+      throw new Error(parsed.error ?? "Не удалось загрузить статистику компании.");
     }
     return parsed.data;
   } catch (error) {
@@ -229,16 +210,15 @@ export async function changeCompanyInnAction(
  * Заглушка для интеграции с прокси ФНС (получение Title по Inn).
  * Включить после появления эндпоинта на бэкенде.
  */
-export async function fetchCompanyTitleByInnAction(
+export function fetchCompanyTitleByInnAction(
   inn: string
 ): Promise<ApiResponse<CompanyTitleByInnResponse>> {
-  if (!FNS_TITLE_LOOKUP_ENABLED) {
-    return {
-      ok: false,
-      error: "Сервис получения наименования по ИНН будет доступен в следующей версии.",
-    };
-  }
-
   void inn;
-  return { ok: false, error: "Эндпоинт прокси ФНС не настроен." };
+
+  return Promise.resolve({
+    ok: false,
+    error: FNS_TITLE_LOOKUP_ENABLED
+      ? "Эндпоинт прокси ФНС не настроен."
+      : "Сервис получения наименования по ИНН будет доступен в следующей версии.",
+  });
 }

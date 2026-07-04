@@ -56,7 +56,7 @@ export default async function ProfilePage() {
               <p className="text-sm leading-none font-medium text-muted-foreground">
                 Имя и Фамилия
               </p>
-              <p className="text-base font-medium">{profile.name || "Не указано"}</p>
+              <p className="text-base font-medium">{profile.name ?? "Не указано"}</p>
             </div>
             <div className="pt-2">
               <Button variant="outline" size="sm" disabled>

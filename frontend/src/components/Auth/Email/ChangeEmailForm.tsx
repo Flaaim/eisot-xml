@@ -112,7 +112,7 @@ export default function RequestChangePassword({ profile }: RequestChangePassword
         </CardHeader>
 
         <CardContent>
-          <form id="change-email-form" onSubmit={form.handleSubmit(onSubmit)} method="POST">
+          <form id="change-email-form" onSubmit={(e) => { void form.handleSubmit(onSubmit)(e); }} method="POST">
             <FieldGroup>
               <Controller
                 name="email"

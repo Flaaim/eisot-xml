@@ -7,7 +7,12 @@ import {
   SubscriptionAccess,
 } from "@/interfaces/subscription.interface";
 import { ApiResponse } from "@/interfaces/response.interface";
+import { handleApiResponse } from "@/lib/handleApiResponse";
 import { revalidatePath } from "next/cache";
+
+interface ActivateSubscriptionResponse {
+  id: string;
+}
 
 export async function checkSubscriptionAccessAction(): Promise<ApiResponse<SubscriptionAccess>> {
   try {
@@ -16,17 +21,9 @@ export async function checkSubscriptionAccessAction(): Promise<ApiResponse<Subsc
       headers: { Accept: "application/json" },
     });
 
-    const text = await response.text();
-    const data = text ? JSON.parse(text) : null;
-
-    if (!response.ok) {
-      return {
-        ok: false,
-        error: data?.message ?? "Не удалось проверить статус User Subscription.",
-      };
-    }
-
-    return { ok: true, data };
+    return await handleApiResponse<SubscriptionAccess>(response, {
+      defaultError: "Не удалось проверить статус User Subscription.",
+    });
   } catch {
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
@@ -45,21 +42,19 @@ export async function activateSubscriptionAction(
       body: JSON.stringify(payload),
     });
 
-    const text = await response.text();
-    const data = text ? JSON.parse(text) : null;
+    const parsed = await handleApiResponse<ActivateSubscriptionResponse>(response, {
+      defaultError: "Не удалось активировать User Subscription.",
+    });
 
-    if (!response.ok) {
-      return {
-        ok: false,
-        error: data?.message ?? "Не удалось активировать User Subscription.",
-      };
+    if (!parsed.ok) {
+      return { ok: false, error: parsed.error };
     }
 
     revalidatePath("/user/subscription");
     revalidatePath("/user/profile");
     revalidatePath("/user/company");
 
-    return { ok: true, data };
+    return { ok: true, data: parsed.data ?? undefined };
   } catch {
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }

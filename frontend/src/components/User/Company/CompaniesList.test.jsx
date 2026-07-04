@@ -17,13 +17,14 @@ jest.mock("sonner", () => ({
 }));
 
 jest.mock("next/link", () => {
-  const MockLink = ({ children, href, ...rest }) => {
+  /** @param {{ children: import("react").ReactNode; href: string }} props */
+  function MockLink({ children, href, ...rest }) {
     return (
       <a href={href} {...rest}>
         {children}
       </a>
     );
-  };
+  }
   MockLink.displayName = "MockLink";
   return {
     __esModule: true,

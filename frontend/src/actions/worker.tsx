@@ -5,9 +5,19 @@ import { apiFetch } from "@/lib/apiClient";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { WorkerAndProtocolsFormData } from "@/types/worker-form.schema";
 import { buildRegisterWorkerCommand, RegisterWorkerCommand } from "@/lib/register-worker.command";
+import { getApiErrorMessage, handleApiResponse } from "@/lib/handleApiResponse";
 
 interface RegisterWorkerResponse {
-  workerId: string;
+  id: string;
+}
+
+function isRegisterWorkerResponse(data: unknown): data is RegisterWorkerResponse {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "id" in data &&
+    typeof (data as RegisterWorkerResponse).id === "string"
+  );
 }
 
 function toApiPayload(command: RegisterWorkerCommand): Record<string, unknown> {
@@ -36,7 +46,7 @@ function toApiPayload(command: RegisterWorkerCommand): Record<string, unknown> {
 export async function registerWorkerWithProtocolsAction(
   companyId: string,
   formData: WorkerAndProtocolsFormData
-): Promise<ApiResponse<RegisterWorkerResponse>> {
+): Promise<ApiResponse<{ workerId: string }>> {
   try {
     const command = buildRegisterWorkerCommand(formData);
 
@@ -49,27 +59,20 @@ export async function registerWorkerWithProtocolsAction(
       body: JSON.stringify(toApiPayload(command)),
     });
 
-    const workerText = await workerResponse.text();
-    let workerData;
-    try {
-      workerData = workerText ? JSON.parse(workerText) : {};
-    } catch (parseError) {
-      console.error("Ошибка парсинга ответа API регистрации работника:", parseError);
-      return { ok: false, error: "Сервер вернул некорректный ответ при регистрации работника." };
+    const parsed = await handleApiResponse<RegisterWorkerResponse>(
+      workerResponse,
+      { defaultError: "Не удалось зарегистрировать работника." }
+    );
+
+    if (!parsed.ok || !parsed.data) {
+      return { ok: false, error: parsed.error };
     }
 
-    if (!workerResponse.ok) {
-      const errorMessage =
-        workerData.error_description ||
-        workerData.message ||
-        "Не удалось зарегистрировать работника.";
-      return { ok: false, error: errorMessage };
-    }
-
-    const workerId = workerData.id;
-    if (!workerId) {
+    if (!isRegisterWorkerResponse(parsed.data)) {
       return { ok: false, error: "Не удалось получить ID зарегистрированного работника." };
     }
+
+    const workerId = parsed.data.id;
 
     const records = formData.protocols.flatMap((p) => {
       const [year, month, day] = p.date.split("-");
@@ -98,8 +101,8 @@ export async function registerWorkerWithProtocolsAction(
             const text = await response.text().catch(() => "");
             let msg = "Не удалось сохранить протокол обучения.";
             try {
-              const data = JSON.parse(text);
-              msg = data.error_description || data.message || msg;
+              const data: unknown = text ? JSON.parse(text) : null;
+              msg = getApiErrorMessage(data, msg);
             } catch {
               if (text) {
                 msg += ` (${text})`;

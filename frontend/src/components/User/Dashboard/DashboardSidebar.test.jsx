@@ -5,7 +5,7 @@ import { SidebarProvider } from "../../ui/sidebar";
 beforeAll(() => {
   Object.defineProperty(window, "matchMedia", {
     writable: true,
-    value: jest.fn().mockImplementation((query) => ({
+    value: jest.fn().mockImplementation((/** @type {string} */ query) => ({
       matches: false,
       media: query,
       onchange: null,

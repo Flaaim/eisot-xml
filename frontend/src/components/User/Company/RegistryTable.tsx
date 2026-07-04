@@ -76,7 +76,7 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
           setAccessDialogOpen(true);
           return;
         }
-        toast.error(result.error || "Не удалось экспортировать данные в XML.");
+        toast.error(result.error ?? "Не удалось экспортировать данные в XML.");
         return;
       }
 
@@ -125,7 +125,7 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
               Выбрано: {selectedIds.size} из {records.length}
             </span>
             <Button
-              onClick={handleExport}
+              onClick={() => { void handleExport(); }}
               disabled={selectedIds.size === 0 || isExporting}
               className="flex min-w-[170px] cursor-pointer items-center gap-2"
             >
@@ -195,7 +195,7 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
                         <TableCell className="text-center">
                           <Checkbox
                             checked={isSelected}
-                            onCheckedChange={() => toggleRecord(row.id)}
+                            onCheckedChange={() => { toggleRecord(row.id); }}
                             aria-label={`Выбрать запись ${row.workerFullName}`}
                           />
                         </TableCell>

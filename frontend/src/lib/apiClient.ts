@@ -6,7 +6,7 @@ export async function apiFetch(url: string, options: RequestInit = {}): Promise<
   const headersList = await headers();
   const cookieStore = await cookies();
 
-  const access_token = headersList.get("x-access-token") || cookieStore.get("access_token")?.value;
+  const access_token = headersList.get("x-access-token") ?? cookieStore.get("access_token")?.value;
 
   const fetchHeaders = new Headers(customHeaders);
 
@@ -14,7 +14,8 @@ export async function apiFetch(url: string, options: RequestInit = {}): Promise<
     fetchHeaders.set("Authorization", `Bearer ${access_token}`);
   }
 
-  const fetchUrl = url.startsWith("http") ? url : `${process.env.INTERNAL_BACKEND_URL}${url}`;
+  const backendUrl = process.env.INTERNAL_BACKEND_URL ?? "";
+  const fetchUrl = url.startsWith("http") ? url : `${backendUrl}${url}`;
 
   return await fetch(fetchUrl, {
     ...restOptions,

@@ -138,7 +138,7 @@ export function CompanySettingsForm({
             </div>
           ) : null}
 
-          <form id="company-settings-form" onSubmit={form.handleSubmit(onSubmit)} method="POST">
+          <form id="company-settings-form" onSubmit={(e) => { void form.handleSubmit(onSubmit)(e); }} method="POST">
             <FieldGroup>
               <Controller
                 name="inn"
@@ -168,7 +168,7 @@ export function CompanySettingsForm({
                                 form.formState.isSubmitting ||
                                 !FNS_TITLE_LOOKUP_ENABLED
                               }
-                              onClick={handleLookupTitleByInn}
+                              onClick={() => { void handleLookupTitleByInn(); }}
                               className="shrink-0"
                             >
                               {isLookupLoading ? (

@@ -65,7 +65,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
     mode: "onBlur",
   });
 
-  const isForeigner = useWatch({ control, name: "isForeigner", defaultValue: false }) ?? false;
+  const isForeigner = useWatch({ control, name: "isForeigner", defaultValue: false });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -76,7 +76,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
     const result = await registerWorkerWithProtocolsAction(companyId, values);
 
     if (!result.ok) {
-      toast.error(result.error || "Произошла ошибка при отправке данных.");
+      toast.error(result.error ?? "Произошла ошибка при отправке данных.");
       return;
     }
 
@@ -86,7 +86,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={(e) => { void handleSubmit(onSubmit)(e); }} className="space-y-6">
       {/* 1. Блок "Компания" (Read-only) */}
       <Card className="shadow-sm">
         <CardHeader className="flex flex-row items-center gap-3 pb-3">
@@ -143,7 +143,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                   id="worker-is-foreigner"
                   checked={field.value}
                   onCheckedChange={(checked) => {
-                    const nextValue = checked === true;
+                    const nextValue = checked;
                     field.onChange(nextValue);
                     if (nextValue) {
                       setValue("snils", "");
@@ -287,14 +287,14 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
               >
                 <div className="mb-4 flex items-center justify-between">
                   <span className="text-sm font-semibold text-muted-foreground">
-                    Протокол #{index + 1}
+                    Протокол #{String(index + 1)}
                   </span>
                   {fields.length > 1 && (
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon"
-                      onClick={() => remove(index)}
+                      onClick={() => { remove(index); }}
                       className="size-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                       title="Удалить протокол"
                     >
@@ -306,18 +306,20 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
                   <div className="md:col-span-2 xl:col-span-1">
                     <Controller
-                      name={`protocols.${index}.programId`}
+                      name={`protocols.${String(index)}.programId`}
                       control={control}
                       render={({ field: controllerField, fieldState }) => (
                         <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor={`program-${index}`}>Программа обучения</FieldLabel>
+                          <FieldLabel htmlFor={`program-${String(index)}`}>Программа обучения</FieldLabel>
                           <select
-                            id={`program-${index}`}
+                            id={`program-${String(index)}`}
                             multiple
-                            value={controllerField.value.map(String)}
+                            value={(controllerField.value as number[]).map((programId) =>
+                              String(programId)
+                            )}
                             onChange={(e) => {
                               const selected = Array.from(e.target.selectedOptions, (opt) =>
-                                Number(opt.value)
+                                Number.parseInt(opt.value, 10)
                               );
                               controllerField.onChange(selected);
                             }}
@@ -339,13 +341,13 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                   </div>
 
                   <Controller
-                    name={`protocols.${index}.result`}
+                    name={`protocols.${String(index)}.result`}
                     control={control}
                     render={({ field: controllerField, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={`result-${index}`}>Результат</FieldLabel>
+                        <FieldLabel htmlFor={`result-${String(index)}`}>Результат</FieldLabel>
                         <select
-                          id={`result-${index}`}
+                          id={`result-${String(index)}`}
                           {...controllerField}
                           className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                         >
@@ -361,14 +363,14 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                   />
 
                   <Controller
-                    name={`protocols.${index}.date`}
+                    name={`protocols.${String(index)}.date`}
                     control={control}
                     render={({ field: controllerField, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={`date-${index}`}>Дата протокола</FieldLabel>
+                        <FieldLabel htmlFor={`date-${String(index)}`}>Дата протокола</FieldLabel>
                         <Input
                           {...controllerField}
-                          id={`date-${index}`}
+                          id={`date-${String(index)}`}
                           type="date"
                           aria-invalid={fieldState.invalid}
                         />
@@ -378,14 +380,14 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                   />
 
                   <Controller
-                    name={`protocols.${index}.protocolNumber`}
+                    name={`protocols.${String(index)}.protocolNumber`}
                     control={control}
                     render={({ field: controllerField, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={`number-${index}`}>Номер протокола</FieldLabel>
+                        <FieldLabel htmlFor={`number-${String(index)}`}>Номер протокола</FieldLabel>
                         <Input
                           {...controllerField}
-                          id={`number-${index}`}
+                          id={`number-${String(index)}`}
                           placeholder="ПР-001"
                           aria-invalid={fieldState.invalid}
                         />
@@ -402,7 +404,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => append({ ...EMPTY_PROTOCOL })}
+            onClick={() => { append({ ...EMPTY_PROTOCOL }); }}
             className="flex cursor-pointer items-center gap-1"
           >
             <Plus className="size-4" />
@@ -416,7 +418,7 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
           type="button"
           variant="ghost"
           disabled={isSubmitting}
-          onClick={() => reset(DEFAULT_VALUES)}
+          onClick={() => { reset(DEFAULT_VALUES); }}
           className="cursor-pointer"
         >
           Сбросить
