@@ -61,14 +61,14 @@ final class RequestActionTest extends WebTestCase
 
         $this->client->jsonRequest('PUT', '/v1/auth/user/role/change', [
             'userId' => RequestFixture::USER_ID,
-            'role' => Role::TEACHER,
+            'role' => Role::ADMIN,
         ]);
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
 
         $user = $this->users->get(new Id(RequestFixture::USER_ID));
 
-        self::assertEquals(Role::TEACHER, $user->getRole()->getName());
+        self::assertEquals(Role::ADMIN, $user->getRole()->getName());
 
         self::assertCount(1, $transport->getSent());
 
@@ -77,14 +77,14 @@ final class RequestActionTest extends WebTestCase
         self::assertInstanceOf(UserRoleChanged::class, $message);
 
         self::assertEquals(RequestFixture::USER_ID, $message->id);
-        self::assertEquals(Role::TEACHER, $message->role);
+        self::assertEquals(Role::ADMIN, $message->role);
     }
 
     public function testNotFound(): void
     {
         $this->client->jsonRequest('PUT', '/v1/auth/user/role/change', [
             'userId' => 'c2cfad53-23dd-4817-8c2d-944b4c0101f1',
-            'role' => Role::TEACHER,
+            'role' => Role::ADMIN,
         ]);
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
