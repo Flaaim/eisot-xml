@@ -55,6 +55,7 @@ final class CompanyRepository
      * Используется для query-эндпоинтов (списки, XML-выгрузки ЕИСОТ).
      *
      * @return Company[]
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function findAllActiveByUser(UserId $userId): array
     {

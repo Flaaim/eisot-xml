@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Security;
 
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\User;
 use App\Auth\Entity\User\UserRepository as DomainUserRepository;
 use App\OAuth\Entity\UserAdapter;
 use Exception;
@@ -12,7 +13,9 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-/** @psalm-suppress UnusedClass */
+/**
+ * @psalm-suppress UnusedClass
+ */
 final class UserProvider implements UserProviderInterface
 {
     public function __construct(

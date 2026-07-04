@@ -19,9 +19,9 @@ final class Network
     private string $id;
 
     public function __construct(
-        /** @psalm-suppress UnusedProperty  */
         #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'networks')]
         #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+        /** @psalm-suppress UnusedProperty  */
         private User $user,
         #[ORM\Column(type: 'string', length: 16)]
         private string $network,
