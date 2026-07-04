@@ -7,11 +7,11 @@ import eslintConfigPrettier from "eslint-config-prettier";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  ...tailwind.configs["flat/recommended"],
   {
+    extends: [tailwind.configs.recommended],
     settings: {
       tailwindcss: {
-        config: {},
+        cssConfigPath: './src/app/globals.css',
         whitelist: ["bg-foreground", "text-background"],
       },
     },
