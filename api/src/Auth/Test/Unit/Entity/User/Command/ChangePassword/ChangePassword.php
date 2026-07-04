@@ -50,7 +50,7 @@ final class ChangePassword extends TestCase
     public function testByNetwork(): void
     {
         $user = new UserBuilder()
-            ->viaNetwork()
+            ->viaNetwork('vk', '00000001')
             ->build();
 
         $hasher = $this->createHasher(false, 'new-hash');
