@@ -52,8 +52,6 @@ services:
       MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:8000
       MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
-      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
-      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
       SENTRY_DSN: ${SENTRY_DSN}
       JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
@@ -82,8 +80,6 @@ services:
       MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:8000
       MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
-      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
-      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
       SENTRY_DSN: ${SENTRY_DSN}
       JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key

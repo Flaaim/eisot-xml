@@ -64,8 +64,6 @@ services:
       MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:3000
       MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
-      TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
-      TELEGRAM_CHAT_ID: 1954013093
       SENTRY_DSN: https://4c7ee997911a9ecfa772d8b6aa4e0a92@o4511418890452992.ingest.de.sentry.io/4511419447246928
       JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
@@ -101,8 +99,6 @@ services:
       MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:3000
       MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
-      TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
-      TELEGRAM_CHAT_ID: 1954013093
       SENTRY_DSN: https://4c7ee997911a9ecfa772d8b6aa4e0a92@o4511418890452992.ingest.de.sentry.io/4511419447246928
       JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
