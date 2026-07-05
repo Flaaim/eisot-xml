@@ -1,0 +1,161 @@
+name: ci.yml
+on:
+  push:
+    branches:
+      - master
+
+env:
+  REGISTRY: ${{ secrets.REGISTRY }}
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache API Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: api/vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('api/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Cache Node Modules (NPM)
+        uses: actions/cache@v4
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('frontend/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: dev init
+        run: make init
+        env:
+          REGISTRY: local-registry
+          IMAGE_TAG: test
+
+      - name: api lint
+        run: make api-lint
+
+      - name: frontend lint
+        run: frontend-lint-style
+
+      - name: api-analyze
+        run: api-analyze
+
+      - name: frontend-analyze
+        run: frontend-analyze
+
+      - name: api tests
+        id: api-test
+        run: make api-test
+
+      - name: Archive tests output
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: /api/var/log
+        if: ${{ always() && steps.api-test.outcome == 'failure' }}
+
+      - name: Dev down
+        run: make docker-down-clear
+
+
+      - name: Docker Login
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ secrets.REGISTRY }}
+          username: ${{ secrets.REGISTRY_USER }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and Push API PHP-CLI Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          file: ./api/docker/production/php-cli/Dockerfile
+          tags: ${{ env.REGISTRY }}/eisot-xml-api-php-cli:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Push API PHP-FPM Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          file: ./api/docker/production/php-fpm/Dockerfile
+          tags: ${{ env.REGISTRY }}/eisot-xml-api-php-fpm:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Push API NGINX Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          file: ./api/docker/production/nginx/Dockerfile
+          tags: ${{ env.REGISTRY }}/eisot-xml-api:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Push FRONTEND-NODE Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/docker/production/node/Dockerfile
+          tags: ${{ env.REGISTRY }}/eisot-xml-frontend-node:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NEXT_PUBLIC_BACKEND_URL=https://api.eisot-xml.ru
+
+      - name: Build and Push GATEWAY Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./gateway
+          file: ./gateway/docker/production/nginx/Dockerfile
+          tags: ${{ env.REGISTRY }}/eisot-xml-gateway:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add Server to Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.SERVER_PORT }} -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Server
+        run: make deploy
+        env:
+          HOST: ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}
+          PORT: ${{ secrets.SERVER_PORT }}
+          BUILD_NUMBER: ${{ github.run_id }}
+          REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+          COMPOSE_PROJECT_NAME: ${{ secrets.COMPOSE_PROJECT_NAME }}
+          API_SITE_URL: ${{ secrets.API_SITE_URL }}
+          API_SITE_NAME: ${{ secrets.API_SITE_NAME }}
+          API_DB_PASSWORD: ${{ secrets.API_DB_PASSWORD }}
+          API_MAILER_HOST: ${{ secrets.API_MAILER_HOST }}
+          API_MAILER_PORT: ${{ secrets.API_MAILER_PORT }}
+          API_MAILER_USER: ${{ secrets.API_MAILER_USER }}
+          API_MAILER_PASSWORD: ${{ secrets.API_MAILER_PASSWORD }}
+          API_MAILER_FROM_EMAIL: ${{ secrets.API_MAILER_FROM_EMAIL }}
+          API_MAILER_FROM_NAME: ${{ secrets.API_MAILER_FROM_NAME }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
