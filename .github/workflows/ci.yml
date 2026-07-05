@@ -35,6 +35,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      - name: Change ownership for Docker containers
+        run: |
+          sudo chown -R 1000:1000 api
+          sudo chown -R 1000:1000 frontend
+
       - name: dev init
         run: make init
         env:
