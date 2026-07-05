@@ -2,6 +2,14 @@
   hosts: site
   remote_user: root
   tasks:
+  - name: Ensure home directory has correct ownership
+    file:
+      path: /home/deploy
+      state: directory
+      owner: deploy
+      group: deploy
+      mode: '0750'
+
   - name: Ensure .ssh directory exists for deploy user
     file:
       path: /home/deploy/.ssh

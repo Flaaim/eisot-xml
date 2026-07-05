@@ -8,6 +8,8 @@
 - name: Generate certificates
   command: >
     certbot certonly
+    --webroot
+    -w /var/www/html
     --noninteractive
     --agree-tos
     --email {{ certbot_email }}
