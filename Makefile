@@ -43,7 +43,7 @@ api-fixtures:
 	docker compose run --rm api-php-cli bin/console doctrine:fixtures:load --no-interaction
 
 api-permissions:
-	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 var
+	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c "mkdir -p var/cache var/log && chmod -R 777 var"
 
 api-lint:
 	docker compose run --rm api-php-cli composer lint
