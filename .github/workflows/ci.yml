@@ -47,9 +47,9 @@ jobs:
           IMAGE_TAG: test
 
       - name: api lint
-        run: | 
-          make api-lint
+        run: |
           make api-cs-fix
+          make api-lint
 
       - name: frontend lint
         run: frontend-lint-style
