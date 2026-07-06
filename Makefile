@@ -141,8 +141,8 @@ deploy:
 	echo "$$JWT_PUBLIC_KEY" > temp_jwt_public.key
 	echo "$$JWT_PRIVATE_KEY" > temp_jwt_private.key
 
-	scp -o StrictHostKeyChecking=no -P ${PORT} ${JWT_PUBLIC_KEY} $(HOST):site_${BUILD_NUMBER}/secrets/jwt_public.key
-	scp -o StrictHostKeyChecking=no -P ${PORT} ${JWT_PRIVATE_KEY} $(HOST):site_${BUILD_NUMBER}/secrets/jwt_private.key
+	scp -o StrictHostKeyChecking=no -P ${PORT} temp_jwt_public.key $(HOST):site_${BUILD_NUMBER}/secrets/jwt_public.key
+	scp -o StrictHostKeyChecking=no -P ${PORT} temp_jwt_private.key $(HOST):site_${BUILD_NUMBER}/secrets/jwt_private.key
 
 	rm -f temp_jwt_public.key temp_jwt_private.key
 
