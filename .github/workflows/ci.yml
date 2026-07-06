@@ -52,13 +52,13 @@ jobs:
           make api-lint
 
       - name: frontend lint
-        run: frontend-lint-style
+        run: make frontend-lint-style
 
       - name: api-analyze
-        run: api-analyze
+        run: make api-analyze
 
       - name: frontend-analyze
-        run: frontend-analyze
+        run: make frontend-analyze
 
       - name: api tests
         id: api-test
