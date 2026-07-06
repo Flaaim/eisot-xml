@@ -136,7 +136,7 @@ deploy:
 	scp -P ${PORT} .env.local ${HOST}:site_${BUILD_NUMBER}/.env
 	rm .env.local
 
-	ssh -o StrictHostKeyChecking=no deploy@${HOST} -p ${PORT} 'mkdir site_${BUILD_NUMBER}/secrets'
+	ssh -o StrictHostKeyChecking=no $(HOST) -p ${PORT} 'mkdir -p site_${BUILD_NUMBER}/secrets'
 	scp -o StrictHostKeyChecking=no -P ${PORT} ${JWT_PUBLIC_KEY} deploy@${HOST}:site_${BUILD_NUMBER}/secrets/jwt_public.key
 	scp -o StrictHostKeyChecking=no -P ${PORT} ${JWT_PRIVATE_KEY} deploy@${HOST}:site_${BUILD_NUMBER}/secrets/jwt_private.key
 
