@@ -27,6 +27,7 @@ final class UserId
     {
         return $this->value;
     }
+
     /** @psalm-suppress PossiblyUnusedMethod */
     public function isEqualTo(self $other): bool
     {

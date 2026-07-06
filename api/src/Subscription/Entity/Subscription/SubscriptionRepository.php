@@ -8,11 +8,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
 
-
 final class SubscriptionRepository
 {
     /** @var EntityRepository<Subscription> */
     private EntityRepository $repository;
+
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -24,6 +24,7 @@ final class SubscriptionRepository
     {
         $this->em->persist($subscription);
     }
+
     /** @psalm-suppress PossiblyUnusedMethod */
     public function get(Id $id): Subscription
     {

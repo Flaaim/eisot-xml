@@ -12,6 +12,7 @@ final class CompanyRepository
 {
     private EntityRepository $repo;
     private EntityManagerInterface $em;
+
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(EntityManagerInterface $em)
     {

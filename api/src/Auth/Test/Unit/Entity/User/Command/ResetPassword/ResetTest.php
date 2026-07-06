@@ -26,7 +26,6 @@ final class ResetTest extends TestCase
 
         $user->requestPasswordReset($token, $now);
 
-
         $user->resetPassword($token->getValue(), $now, $hash = 'hash');
 
         self::assertNull($user->getPasswordResetToken());

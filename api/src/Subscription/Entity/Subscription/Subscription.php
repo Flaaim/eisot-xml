@@ -11,6 +11,7 @@ use App\Subscription\Event\SubscriptionPurchased;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
+
 #[ORM\Entity]
 #[ORM\Table(name: 'subscriptions')]
 final class Subscription implements AggregateRoot
@@ -67,6 +68,7 @@ final class Subscription implements AggregateRoot
     {
         return $this->id;
     }
+
     /** @psalm-suppress PossiblyUnusedMethod */
     public function getUserId(): UserId
     {

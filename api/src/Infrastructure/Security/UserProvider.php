@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Security;
 
 use App\Auth\Entity\User\Id;
-use App\Auth\Entity\User\User;
 use App\Auth\Entity\User\UserRepository as DomainUserRepository;
 use App\OAuth\Entity\UserAdapter;
 use Exception;

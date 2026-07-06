@@ -30,6 +30,7 @@ final class CompanyId
     {
         return $this->value;
     }
+
     /** @psalm-suppress PossiblyUnusedMethod */
     public function isEqualTo(self $other): bool
     {

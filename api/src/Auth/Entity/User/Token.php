@@ -32,7 +32,7 @@ final class Token
         return !isset($this->value);
     }
 
-    public function getExpiresAt(): DateTimeImmutable|null
+    public function getExpiresAt(): ?DateTimeImmutable
     {
         return $this->expiresAt;
     }

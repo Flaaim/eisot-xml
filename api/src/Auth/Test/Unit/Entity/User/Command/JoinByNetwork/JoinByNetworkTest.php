@@ -6,7 +6,6 @@ namespace App\Auth\Test\Unit\Entity\User\Command\JoinByNetwork;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
-use App\Auth\Entity\User\Network;
 use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\User;
 use App\Auth\Event\UserCreated;
