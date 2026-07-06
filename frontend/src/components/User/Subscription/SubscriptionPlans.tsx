@@ -29,25 +29,14 @@ const PLANS: PlanOption[] = [
   {
     id: "basic",
     title: "Базовый Plan",
-    price: "990 ₽ / мес.",
+    price: "490 ₽ / мес.",
     durationDays: 30,
     features: [
       "RegistrySet XML для всех ваших компаний",
       "До 500 записей реестра в Subscription Period",
       "Проверка СНИЛС и ИНН по контрольным суммам",
     ],
-  },
-  {
-    id: "premium",
-    title: "Премиум Plan",
-    price: "2 490 ₽ / мес.",
-    durationDays: 30,
-    features: [
-      "Неограниченное формирование RegistrySet XML",
-      "Доступ ко всем компаниям аккаунта",
-      "Приоритетная поддержка по актуальной редакции XSD",
-    ],
-  },
+  }
 ];
 
 interface SubscriptionPlansProps {
