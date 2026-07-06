@@ -137,8 +137,14 @@ deploy:
 	rm .env.local
 
 	ssh -o StrictHostKeyChecking=no $(HOST) -p ${PORT} 'mkdir -p site_${BUILD_NUMBER}/secrets'
+
+	echo "$$JWT_PUBLIC_KEY" > temp_jwt_public.key
+	echo "$$JWT_PRIVATE_KEY" > temp_jwt_private.key
+
 	scp -o StrictHostKeyChecking=no -P ${PORT} ${JWT_PUBLIC_KEY} $(HOST):site_${BUILD_NUMBER}/secrets/jwt_public.key
 	scp -o StrictHostKeyChecking=no -P ${PORT} ${JWT_PRIVATE_KEY} $(HOST):site_${BUILD_NUMBER}/secrets/jwt_private.key
+
+	rm -f temp_jwt_public.key temp_jwt_private.key
 
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose pull'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose up --build --remove-orphans -d'
