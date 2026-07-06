@@ -197,6 +197,9 @@
       <path value="$PROJECT_DIR$/api/vendor/symfony/property-info" />
       <path value="$PROJECT_DIR$/api/vendor/nyholm/psr7" />
       <path value="$PROJECT_DIR$/api/vendor/league/oauth2-server-bundle" />
+      <path value="$PROJECT_DIR$/api/vendor/php-ds/php-ds" />
+      <path value="$PROJECT_DIR$/api/vendor/yoomoney/yookassa-sdk-validator" />
+      <path value="$PROJECT_DIR$/api/vendor/yoomoney/yookassa-sdk-php" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
