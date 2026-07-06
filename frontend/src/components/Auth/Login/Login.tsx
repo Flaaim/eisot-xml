@@ -61,7 +61,13 @@ export default function Login() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form id="login-form" onSubmit={(e) => { void form.handleSubmit(onSubmit)(e); }} method="POST">
+          <form
+            id="login-form"
+            onSubmit={(e) => {
+              void form.handleSubmit(onSubmit)(e);
+            }}
+            method="POST"
+          >
             <FieldGroup>
               <Controller
                 name="email"

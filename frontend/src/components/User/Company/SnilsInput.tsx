@@ -39,7 +39,9 @@ export const SnilsInput = forwardRef<HTMLInputElement, SnilsInputProps>(function
     <PatternFormat
       format="###-###-### ##"
       value={normalizeSnils(value)}
-      onValueChange={(values) => { onChange(values.formattedValue); }}
+      onValueChange={(values) => {
+        onChange(values.formattedValue);
+      }}
       getInputRef={ref}
       customInput={Input}
       id={id}

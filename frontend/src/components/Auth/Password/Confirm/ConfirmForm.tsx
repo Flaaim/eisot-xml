@@ -157,7 +157,13 @@ const ResetPasswordFormContent = (): JSX.Element => {
           </CardDescription>
         </CardHeader>
         <CardContent className="text-start">
-          <form id="new-password-form" onSubmit={(e) => { void form.handleSubmit(onSubmit)(e); }} method="POST">
+          <form
+            id="new-password-form"
+            onSubmit={(e) => {
+              void form.handleSubmit(onSubmit)(e);
+            }}
+            method="POST"
+          >
             <FieldGroup>
               <Controller
                 name="password"

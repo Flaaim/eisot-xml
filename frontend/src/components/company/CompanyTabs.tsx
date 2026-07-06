@@ -113,9 +113,7 @@ export function CompanyTabs({ companyId }: CompanyTabsProps) {
       title: "EXCEL",
       subtitle: "Формируем XML из таблицы EXCEL",
       href: `/user/company/${companyId}/excel`,
-      isActive: EXCEL_IMPORT_ENABLED
-        ? pathname === `/user/company/${companyId}/excel`
-        : false,
+      isActive: EXCEL_IMPORT_ENABLED ? pathname === `/user/company/${companyId}/excel` : false,
       disabled: !EXCEL_IMPORT_ENABLED,
       comingSoonLabel: "В разработке",
       disabledTooltip:

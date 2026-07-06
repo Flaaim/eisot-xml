@@ -16,14 +16,14 @@ const eslintConfig = defineConfig([
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
-      }
-    }
+      },
+    },
   },
   {
     extends: [tailwind.configs.recommended],
     settings: {
       tailwindcss: {
-        cssConfigPath: './src/app/globals.css',
+        cssConfigPath: "./src/app/globals.css",
         whitelist: ["bg-foreground", "text-background"],
       },
     },

@@ -73,7 +73,13 @@ export default function AddCompanyForm() {
         <CardDescription>Укажите название и ИНН организации, проводившей обучение.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="add-company-form" onSubmit={(e) => { void form.handleSubmit(onSubmit)(e); }} method="POST">
+        <form
+          id="add-company-form"
+          onSubmit={(e) => {
+            void form.handleSubmit(onSubmit)(e);
+          }}
+          method="POST"
+        >
           <FieldGroup>
             <Controller
               name="name"

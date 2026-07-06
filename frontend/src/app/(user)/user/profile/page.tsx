@@ -84,7 +84,12 @@ export default async function ProfilePage() {
                 </div>
                 <p className="pl-6 text-base font-medium">{profile.email}</p>
               </div>
-              <Button variant="secondary" size="sm" nativeButton={false} render={<Link href="/user/profile/change-email" />}>
+              <Button
+                variant="secondary"
+                size="sm"
+                nativeButton={false}
+                render={<Link href="/user/profile/change-email" />}
+              >
                 Изменить email
               </Button>
             </div>

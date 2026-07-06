@@ -47,7 +47,9 @@ export function CompanyStatusToggle({ companyId, status }: CompanyStatusTogglePr
     return (
       <Button
         variant="outline"
-        onClick={() => { void handleToggle(); }}
+        onClick={() => {
+          void handleToggle();
+        }}
         disabled={loading}
         className="flex items-center gap-2 border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-destructive"
       >
@@ -60,7 +62,9 @@ export function CompanyStatusToggle({ companyId, status }: CompanyStatusTogglePr
   return (
     <Button
       variant="outline"
-      onClick={() => { void handleToggle(); }}
+      onClick={() => {
+        void handleToggle();
+      }}
       disabled={loading}
       className="flex items-center gap-2"
     >

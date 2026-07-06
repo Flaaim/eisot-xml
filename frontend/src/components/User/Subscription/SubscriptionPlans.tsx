@@ -139,7 +139,9 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
                   className="w-full cursor-pointer"
                   variant={plan.id === "premium" ? "default" : "outline"}
                   disabled={isCurrent || loadingPlan !== null}
-                  onClick={() => { void handleActivate(plan); }}
+                  onClick={() => {
+                    void handleActivate(plan);
+                  }}
                 >
                   {loadingPlan === plan.id ? (
                     <>
@@ -164,7 +166,12 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
       </p>
 
       <div>
-        <Button variant="ghost" nativeButton={false} render={<Link href="/user/company" />} className="cursor-pointer">
+        <Button
+          variant="ghost"
+          nativeButton={false}
+          render={<Link href="/user/company" />}
+          className="cursor-pointer"
+        >
           Перейти к компаниям
         </Button>
       </div>

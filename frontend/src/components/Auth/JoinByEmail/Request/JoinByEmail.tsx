@@ -110,7 +110,13 @@ export default function JoinByEmail() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form id="join-form" onSubmit={(e) => { void form.handleSubmit(onSubmit)(e); }} method="POST">
+          <form
+            id="join-form"
+            onSubmit={(e) => {
+              void form.handleSubmit(onSubmit)(e);
+            }}
+            method="POST"
+          >
             <FieldGroup>
               <Controller
                 name="email"

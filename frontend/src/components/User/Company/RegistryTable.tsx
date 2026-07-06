@@ -14,13 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RegistryRecordDto, exportRegistryToXmlAction } from "@/actions/registry";
 import { AccessRestrictedDialog } from "@/components/User/Subscription/AccessRestrictedDialog";
 
@@ -125,7 +119,9 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
               Выбрано: {selectedIds.size} из {records.length}
             </span>
             <Button
-              onClick={() => { void handleExport(); }}
+              onClick={() => {
+                void handleExport();
+              }}
               disabled={selectedIds.size === 0 || isExporting}
               className="flex min-w-[170px] cursor-pointer items-center gap-2"
             >
@@ -195,7 +191,9 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
                         <TableCell className="text-center">
                           <Checkbox
                             checked={isSelected}
-                            onCheckedChange={() => { toggleRecord(row.id); }}
+                            onCheckedChange={() => {
+                              toggleRecord(row.id);
+                            }}
                             aria-label={`Выбрать запись ${row.workerFullName}`}
                           />
                         </TableCell>

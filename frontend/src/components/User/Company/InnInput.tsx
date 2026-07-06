@@ -36,7 +36,9 @@ export const InnInput = forwardRef<HTMLInputElement, InnInputProps>(function Inn
     <PatternFormat
       format="############"
       value={normalizeInn(value)}
-      onValueChange={(values) => { onChange(values.value); }}
+      onValueChange={(values) => {
+        onChange(values.value);
+      }}
       getInputRef={ref}
       customInput={Input}
       id={id}

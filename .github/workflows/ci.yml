@@ -52,7 +52,9 @@ jobs:
           make api-lint
 
       - name: frontend lint
-        run: make frontend-lint-style
+        run: |
+          make frontend-format
+          make frontend-lint-style
 
       - name: api-analyze
         run: make api-analyze

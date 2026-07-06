@@ -9,13 +9,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
   WorkerAndProtocolsSchema,
@@ -96,7 +90,12 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
   };
 
   return (
-    <form onSubmit={(e) => { void handleSubmit(onSubmit)(e); }} className="space-y-6">
+    <form
+      onSubmit={(e) => {
+        void handleSubmit(onSubmit)(e);
+      }}
+      className="space-y-6"
+    >
       {/* 1. Блок "Компания" (Read-only) */}
       <Card className="shadow-sm">
         <CardHeader className="flex flex-row items-center gap-3 pb-3">
@@ -304,7 +303,9 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                       type="button"
                       variant="ghost"
                       size="icon"
-                      onClick={() => { remove(index); }}
+                      onClick={() => {
+                        remove(index);
+                      }}
                       className="size-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                       title="Удалить протокол"
                     >
@@ -324,31 +325,33 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                           : [];
 
                         return (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor={`program-${String(index)}`}>Программа обучения</FieldLabel>
-                          <select
-                            id={`program-${String(index)}`}
-                            multiple
-                            value={(selectedProgramIds).map((programId) => String(programId))}
-                            onChange={(e) => {
-                              const selected = Array.from(e.target.selectedOptions, (opt) =>
-                                Number.parseInt(opt.value, 10)
-                              );
-                              controllerField.onChange(selected);
-                            }}
-                            className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                          >
-                            {TRAINING_PROGRAMS.map((program) => (
-                              <option key={program.id} value={program.id}>
-                                {program.id}. {program.title}
-                              </option>
-                            ))}
-                          </select>
-                          <p className="mt-1 text-[11px] text-muted-foreground">
-                            Удерживайте Ctrl (или Cmd на Mac) для выбора нескольких программ.
-                          </p>
-                          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                        </Field>
+                          <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={`program-${String(index)}`}>
+                              Программа обучения
+                            </FieldLabel>
+                            <select
+                              id={`program-${String(index)}`}
+                              multiple
+                              value={selectedProgramIds.map((programId) => String(programId))}
+                              onChange={(e) => {
+                                const selected = Array.from(e.target.selectedOptions, (opt) =>
+                                  Number.parseInt(opt.value, 10)
+                                );
+                                controllerField.onChange(selected);
+                              }}
+                              className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              {TRAINING_PROGRAMS.map((program) => (
+                                <option key={program.id} value={program.id}>
+                                  {program.id}. {program.title}
+                                </option>
+                              ))}
+                            </select>
+                            <p className="mt-1 text-[11px] text-muted-foreground">
+                              Удерживайте Ctrl (или Cmd на Mac) для выбора нескольких программ.
+                            </p>
+                            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                          </Field>
                         );
                       }}
                     />
@@ -363,7 +366,9 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                         <select
                           id={`result-${String(index)}`}
                           name={controllerField.name}
-                          value={typeof controllerField.value === "string" ? controllerField.value : ""}
+                          value={
+                            typeof controllerField.value === "string" ? controllerField.value : ""
+                          }
                           onChange={controllerField.onChange}
                           onBlur={controllerField.onBlur}
                           ref={controllerField.ref}
@@ -388,7 +393,9 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                         <FieldLabel htmlFor={`date-${String(index)}`}>Дата протокола</FieldLabel>
                         <Input
                           name={controllerField.name}
-                          value={typeof controllerField.value === "string" ? controllerField.value : ""}
+                          value={
+                            typeof controllerField.value === "string" ? controllerField.value : ""
+                          }
                           onChange={controllerField.onChange}
                           onBlur={controllerField.onBlur}
                           ref={controllerField.ref}
@@ -409,7 +416,9 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
                         <FieldLabel htmlFor={`number-${String(index)}`}>Номер протокола</FieldLabel>
                         <Input
                           name={controllerField.name}
-                          value={typeof controllerField.value === "string" ? controllerField.value : ""}
+                          value={
+                            typeof controllerField.value === "string" ? controllerField.value : ""
+                          }
                           onChange={controllerField.onChange}
                           onBlur={controllerField.onBlur}
                           ref={controllerField.ref}
@@ -430,7 +439,9 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => { append({ ...EMPTY_PROTOCOL }); }}
+            onClick={() => {
+              append({ ...EMPTY_PROTOCOL });
+            }}
             className="flex cursor-pointer items-center gap-1"
           >
             <Plus className="size-4" />
@@ -444,7 +455,9 @@ export function WorkerRegistrationForm({ companyId, company }: WorkerRegistratio
           type="button"
           variant="ghost"
           disabled={isSubmitting}
-          onClick={() => { reset(DEFAULT_VALUES); }}
+          onClick={() => {
+            reset(DEFAULT_VALUES);
+          }}
           className="cursor-pointer"
         >
           Сбросить

@@ -59,10 +59,9 @@ export async function registerWorkerWithProtocolsAction(
       body: JSON.stringify(toApiPayload(command)),
     });
 
-    const parsed = await handleApiResponse<RegisterWorkerResponse>(
-      workerResponse,
-      { defaultError: "Не удалось зарегистрировать работника." }
-    );
+    const parsed = await handleApiResponse<RegisterWorkerResponse>(workerResponse, {
+      defaultError: "Не удалось зарегистрировать работника.",
+    });
 
     if (!parsed.ok || !parsed.data) {
       return { ok: false, error: parsed.error };

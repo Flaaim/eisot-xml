@@ -65,7 +65,12 @@ export function DashboardSidebar({ email }: DashboardSidebarProps) {
                 </span>
               </div>
             </SidebarMenuButton>
-            <SidebarMenuButton onClick={() => { void handleLogout(); }} className="cursor-pointer text-destructive">
+            <SidebarMenuButton
+              onClick={() => {
+                void handleLogout();
+              }}
+              className="cursor-pointer text-destructive"
+            >
               <LogOut className="mr-2 size-4" />
               <span>Выйти из системы</span>
             </SidebarMenuButton>
