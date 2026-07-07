@@ -1,0 +1,54 @@
+{% extends 'mail.html.twig' %}
+
+{% block title %}Оплата подписки | EISOT-XML.RU{% endblock %}
+{% block preheader %}Подписка оформлена на {{ durationDays }} дн.{% endblock %}
+
+{% block body %}
+    <h2 style="margin: 0 0 20px 0; font-size: 20px; color: #0f172a;">Здравствуйте!</h2>
+
+    {% set url = frontend_url('/user/profile') %}
+
+    <p style="margin: 0 0 15px 0;">
+        Благодарим вас за оплату подписки на сервис <strong>EISOT-XML.RU</strong>. Платёж успешно обработан, и ваш аккаунт <strong>{{ email }}</strong> активирован.
+    </p>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 30px; margin-top: 15px;">
+        <tr>
+            <td align="center">
+                <table border="0" cellspacing="0" cellpadding="0" style="background-color: #f1f5f9; border-radius: 8px;">
+                    <tr>
+                        <td style="padding: 20px 30px; text-align: center;">
+                            <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">Срок действия подписки</p>
+                            <p style="margin: 0; font-size: 32px; font-weight: bold; color: #0f172a;">{{ durationDays }} {{ durationDays == 1 ? 'день' : (durationDays in [2,3,4] ? 'дня' : 'дней') }}</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 30px;">
+        <tr>
+            <td align="center">
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td align="center" style="border-radius: 6px;" bgcolor="#2563eb">
+                            <a href="{{ url }}" target="_blank" style="font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px; padding: 14px 30px; border: 1px solid #2563eb; display: inline-block; font-weight: bold;">
+                                Перейти в личный кабинет
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin: 0 0 20px 0; padding: 15px; background-color: #f8fafc; border-left: 4px solid #cbd5e1; font-size: 15px; color: #475569;">
+        <strong>Что дальше?</strong> Ваша подписка уже активна. Вы можете войти в личный кабинет и начать пользоваться всеми возможностями сервиса. Если у вас возникнут вопросы, наша служба поддержки всегда готова помочь.
+    </p>
+
+    <p style="margin: 0 0 10px 0; font-size: 14px; color: #64748b;">
+        Если у вас возникли вопросы по оплате или работе сервиса, напишите мне в <a href="https://t.me/flaaim" target="_blank">Телеграм</a>
+    </p>
+
+{% endblock %}
