@@ -65,7 +65,7 @@ services:
       FRONTEND_URL: http://localhost:3000
       YOOKASSA_SHOP_ID: 221345
       YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
-      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+      MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f/messages
       SENTRY_DSN: https://4c7ee997911a9ecfa772d8b6aa4e0a92@o4511418890452992.ingest.de.sentry.io/4511419447246928
       JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
@@ -74,6 +74,7 @@ services:
       - ./api:/app
     depends_on:
       - api-postgres
+      - rabbitmq
     secrets:
       - jwt_public_key
       - jwt_private_key
@@ -102,11 +103,14 @@ services:
       FRONTEND_URL: http://localhost:3000
       YOOKASSA_SHOP_ID: 221345
       YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
-      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+      MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f/messages
       SENTRY_DSN: https://4c7ee997911a9ecfa772d8b6aa4e0a92@o4511418890452992.ingest.de.sentry.io/4511419447246928
       JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+    depends_on:
+      - api-postgres
+      - rabbitmq
     secrets:
       - jwt_public_key
       - jwt_private_key
@@ -125,6 +129,50 @@ services:
   mailer:
     image: mailhog/mailhog
 
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: always
+
+  api-php-worker:
+    build:
+      context: api/docker
+      dockerfile: development/php-cli/Dockerfile
+    volumes:
+      - ./api:/app
+    environment:
+      APP_DEBUG: 1
+      SITE_URL: localhost
+      SITE_NAME: Docker
+      DB_HOST: api-postgres
+      DB_USER: app
+      DB_PASSWORD: secret
+      DB_NAME: app
+      MAILER_HOST: mailer
+      MAILER_PORT: 1025
+      MAILER_USER: app
+      MAILER_PASSWORD: secret
+      MAILER_ENCRYPTION: tcp
+      MAILER_FROM_EMAIL: admin@site.ru
+      MAILER_FROM_NAME: admin
+      FRONTEND_URL: http://localhost:3000
+      YOOKASSA_SHOP_ID: 221345
+      YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
+      MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f/messages
+      SENTRY_DSN: https://4c7ee997911a9ecfa772d8b6aa4e0a92@o4511418890452992.ingest.de.sentry.io/4511419447246928
+      JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
+      JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
+      JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+    command: php bin/console messenger:consume async --limit=1000 --memory-limit=128M -vv
+    restart: always
+    depends_on:
+      - api-postgres
+      - rabbitmq
+
 secrets:
   jwt_public_key:
     file: ./docker/development/secrets/jwt_public.key
@@ -134,3 +182,4 @@ secrets:
 
 volumes:
   api-postgres:
+  rabbitmq_data:
