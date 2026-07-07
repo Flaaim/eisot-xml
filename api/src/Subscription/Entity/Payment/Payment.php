@@ -88,9 +88,9 @@ final class Payment implements AggregateRoot
         $this->confirmedAt = new DateTimeImmutable();
 
         $this->recordEvent(new PaymentConfirmed(
-            $this->id,
-            $this->userId,
-            $this->plan,
+            $this->id->getValue(),
+            $this->userId->getValue(),
+            $this->plan->value,
             $this->durationDays,
         ));
     }
