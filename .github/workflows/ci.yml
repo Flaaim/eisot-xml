@@ -170,3 +170,5 @@ jobs:
           POSTGRESQL_ROOT_PASSWORD: ${{ secrets.POSTGRESQL_ROOT_PASSWORD }}
           JWT_PUBLIC_KEY: ${{secrets.JWT_PUBLIC_KEY}}
           JWT_PRIVATE_KEY: ${{secrets.JWT_PRIVATE_KEY}}
+          RABBITMQ_USER: ${{secrets.RABBITMQ_USER}}
+          RABBITMQ_PASSWORD: ${{secrets.RABBITMQ_PASSWORD}}
