@@ -29,6 +29,7 @@ doctrine:
             training_registry_number: App\Training\Entity\Record\RegistryNumberType
             subscription_id: App\Subscription\Entity\Subscription\IdType
             subscription_user_id: App\Subscription\Entity\Subscription\UserIdType
+            subscription_payment_id: App\Subscription\Entity\Payment\IdType
 
     orm:
         validate_xml_mapping: true

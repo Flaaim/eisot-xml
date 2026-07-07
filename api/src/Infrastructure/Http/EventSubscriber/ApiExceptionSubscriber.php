@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\EventSubscriber;
 
-use App\OAuth\Entity\UserAdapter;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,8 +15,7 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private LoggerInterface $logger
-    ){
-    }
+    ) {}
 
     public function onKernelException(ExceptionEvent $event): void
     {

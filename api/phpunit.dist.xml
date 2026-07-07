@@ -58,6 +58,7 @@
             <directory>src/Company/Test</directory>
             <directory>src/Worker/Test</directory>
             <directory>src/Training/Test</directory>
+            <directory>src/Subscription/Test</directory>
         </testsuite>
         <testsuite name="Functional">
             <directory>tests/Functional</directory>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Check, Crown, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { activateSubscriptionAction } from "@/actions/subscription";
+import { createPaymentAction } from "@/actions/subscription";
 import type { SubscriptionAccess, SubscriptionPlan } from "@/interfaces/subscription.interface";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,7 +36,7 @@ const PLANS: PlanOption[] = [
       "До 500 записей реестра в Subscription Period",
       "Проверка СНИЛС и ИНН по контрольным суммам",
     ],
-  }
+  },
 ];
 
 interface SubscriptionPlansProps {
@@ -44,30 +44,26 @@ interface SubscriptionPlansProps {
 }
 
 export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
-  const [access, setAccess] = useState(initialAccess);
+  const [access] = useState(initialAccess);
   const [loadingPlan, setLoadingPlan] = useState<SubscriptionPlan | null>(null);
 
-  const handleActivate = async (plan: PlanOption) => {
+  const handleCheckout = async (plan: PlanOption) => {
     setLoadingPlan(plan.id);
+
     try {
-      const result = await activateSubscriptionAction({
+      const returnUrl = `${window.location.origin}/user/subscription/callback`;
+      const result = await createPaymentAction({
         planId: plan.id,
         durationDays: plan.durationDays,
+        returnUrl,
       });
 
-      if (!result.ok) {
-        toast.error(result.error ?? "Не удалось активировать User Subscription.");
+      if (!result.ok || !result.data) {
+        toast.error(result.error ?? "Не удалось инициировать оплату User Subscription.");
         return;
       }
 
-      toast.success(`User Subscription «${plan.title}» успешно активирована.`);
-      setAccess({
-        hasAccess: true,
-        plan: plan.id,
-        status: "active",
-        periodStart: new Date().toISOString().slice(0, 10),
-        periodEnd: new Date(Date.now() + plan.durationDays * 86400000).toISOString().slice(0, 10),
-      });
+      window.location.href = result.data.confirmationUrl;
     } finally {
       setLoadingPlan(null);
     }
@@ -92,7 +88,7 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
         ) : (
           <p>
             User Subscription разблокирует выгрузку реестра обученных лиц (RegistrySet) в ЕИСОТ для
-            всех ваших компаний. Выберите тарифный Plan ниже.
+            всех ваших компаний. Выберите тарифный Plan и перейдите к оплате через ЮKassa.
           </p>
         )}
       </div>
@@ -129,13 +125,13 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
                   variant={plan.id === "premium" ? "default" : "outline"}
                   disabled={isCurrent || loadingPlan !== null}
                   onClick={() => {
-                    void handleActivate(plan);
+                    void handleCheckout(plan);
                   }}
                 >
                   {loadingPlan === plan.id ? (
                     <>
                       <Loader2 className="mr-2 size-4 animate-spin" />
-                      Активация...
+                      Переход к оплате...
                     </>
                   ) : isCurrent ? (
                     "Текущий Plan"
@@ -150,8 +146,8 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Актуальная редакция требований к XML-реестру — июнь 2026 года. Оплата будет подключена на
-        следующем этапе; сейчас подписка активируется в демо-режиме.
+        Оплата обрабатывается через ЮKassa. После подтверждения платежа User Subscription
+        активируется автоматически для всех компаний вашего аккаунта.
       </p>
 
       <div>

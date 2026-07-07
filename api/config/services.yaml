@@ -62,6 +62,22 @@ services:
         arguments:
             $baseUrl: '%env(resolve:FRONTEND_URL)%'
 
+    YooKassa\Client:
+        calls:
+            - setAuth: ['%env(int:YOOKASSA_SHOP_ID)%', '%env(YOOKASSA_SECRET_KEY)%']
+
+    App\Subscription\Service\PaymentGatewayInterface:
+        class: App\Infrastructure\Payment\Yookassa\YookassaPaymentGateway
+
+    App\Infrastructure\Payment\Yookassa\YookassaWebhookGuard:
+        arguments:
+            $environment: '%kernel.environment%'
+
     App\Auth\Service\Tokenizer:
         arguments:
             $interval: 'PT1H'
+
+when@test:
+    services:
+        App\Subscription\Service\PaymentGatewayInterface:
+            class: App\Subscription\Test\Double\FakePaymentGateway

@@ -4,6 +4,9 @@ import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
 import {
   ActivateSubscriptionPayload,
+  CreatePaymentPayload,
+  CreatePaymentResponse,
+  PaymentStatusResponse,
   SubscriptionAccess,
 } from "@/interfaces/subscription.interface";
 import { ApiResponse } from "@/interfaces/response.interface";
@@ -23,6 +26,43 @@ export async function checkSubscriptionAccessAction(): Promise<ApiResponse<Subsc
 
     return await handleApiResponse<SubscriptionAccess>(response, {
       defaultError: "Не удалось проверить статус User Subscription.",
+    });
+  } catch {
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function createPaymentAction(
+  payload: CreatePaymentPayload
+): Promise<ApiResponse<CreatePaymentResponse>> {
+  try {
+    const response = await apiFetch(API.subscription.createPayment(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    return await handleApiResponse<CreatePaymentResponse>(response, {
+      defaultError: "Не удалось инициировать оплату User Subscription.",
+    });
+  } catch {
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function getPaymentStatusAction(
+  paymentId: string
+): Promise<ApiResponse<PaymentStatusResponse>> {
+  try {
+    const response = await apiFetch(API.subscription.paymentStatus(paymentId), {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    });
+
+    return await handleApiResponse<PaymentStatusResponse>(response, {
+      defaultError: "Не удалось получить статус платежа.",
     });
   } catch {
     return { ok: false, error: "Не удалось подключиться к серверу API." };

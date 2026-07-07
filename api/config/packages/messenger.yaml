@@ -35,6 +35,7 @@ framework:
             'App\Training\Event\RegistryNumberAttached': async
             'App\Subscription\Event\SubscriptionPurchased': async
             'App\Subscription\Event\SubscriptionExpired': async
+            'App\Subscription\Event\PaymentConfirmed': async
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
 
 

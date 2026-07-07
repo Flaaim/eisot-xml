@@ -18,6 +18,10 @@ security:
             pattern: ^/token$
             security: false
 
+        subscription_payment_webhook:
+            pattern: ^/v1/subscription/payment/webhook$
+            security: false
+
         api:
             pattern: ^/v1
             stateless: true

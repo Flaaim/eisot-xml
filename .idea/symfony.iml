@@ -6,6 +6,9 @@
       <sourceFolder url="file://$MODULE_DIR$/frontend" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/api/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/api/tests" isTestSource="true" packagePrefix="Tests\" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/php-ds/php-ds" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/yoomoney/yookassa-sdk-php" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/yoomoney/yookassa-sdk-validator" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
