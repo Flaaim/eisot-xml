@@ -7,6 +7,14 @@ framework:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    auto_setup: true
+                    exchange:
+                        name: domain_events
+                        type: topic
+                    queues:
+                        app_domain_events_queue:
+                            binding_keys: ['#']
                 retry_strategy:
                     max_retries: 3
                     delay: 1000
