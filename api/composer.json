@@ -16,6 +16,7 @@
         "league/oauth2-server-bundle": "^1.1",
         "ramsey/uuid": "^4.9.2",
         "sentry/sentry-symfony": "^5.10",
+        "symfony/amqp-messenger": "8.0.*",
         "symfony/console": "8.0.*",
         "symfony/doctrine-messenger": "8.0.*",
         "symfony/dotenv": "8.0.*",
