@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Subscription\MessageHandler;
 
 use App\Auth\ReadModel\UserFetcherInterface;
-use App\Subscription\Event\PaymentConfirmed;
+use App\Subscription\Event\SubscriptionPurchased;
 use App\Subscription\Service\PaymentConfirmedSender;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
-final class SendEmailOnPaymentConfirmedHandler
+final class SendEmailOnSubscriptionPurchasedHandler
 {
     public function __construct(
         private readonly PaymentConfirmedSender $sender,
@@ -20,7 +20,7 @@ final class SendEmailOnPaymentConfirmedHandler
         private readonly LoggerInterface $logger,
     ) {}
 
-    public function __invoke(PaymentConfirmed $event): void
+    public function __invoke(SubscriptionPurchased $event): void
     {
         $userId = $event->userId;
         $user = $this->userFetcher->findDetail($userId);
@@ -30,6 +30,6 @@ final class SendEmailOnPaymentConfirmedHandler
             return;
         }
 
-        $this->sender->send($user['email'], $event->durationDays);
+        $this->sender->send($user['email'], $event->ended);
     }
 }

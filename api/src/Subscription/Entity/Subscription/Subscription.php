@@ -55,10 +55,10 @@ final class Subscription implements AggregateRoot
         );
 
         $subscription->recordEvent(new SubscriptionPurchased(
-            $id,
-            $userId,
-            $plan,
-            $period,
+            $id->getValue(),
+            $userId->getValue(),
+            $plan->value,
+            $period->getEndDate()->format('d.m.Y'),
         ));
 
         return $subscription;

@@ -19,12 +19,12 @@ final class PaymentConfirmedSender
         private Environment $twig
     ) {}
 
-    public function send(string $email, int $durationDays): void
+    public function send(string $email, string $ended): void
     {
         $message = new SymfonyEmail()
-            ->subject('Успешный платеж')
+            ->subject('Подписка активирована')
             ->to($email)
-            ->html($this->twig->render(self::TEMPLATE, ['email' => $email, 'durationDays' => $durationDays]));
+            ->html($this->twig->render(self::TEMPLATE, ['email' => $email, 'ended' => $ended]));
         try {
             $this->mailer->send($message);
         } catch (TransportExceptionInterface $e) {

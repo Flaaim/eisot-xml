@@ -21,14 +21,14 @@ final class PaymentConfirmedSenderTest extends TestCase
     public function testSuccess(): void
     {
         $email = 'test@mail.ru';
-        $durationDays = 5;
+        $ended = '07.07.2026';
         $template = 'subscribe/payment/confirm.html.twig';
         $twig = new Environment(new ArrayLoader([
             $template => "<p>Успешная подписка: адрес - {$email}</p>",
         ]));
         $symfonyEmail = new Email()
             ->to($email)
-            ->subject('Успешный платеж')
+            ->subject('Подписка активирована')
             ->html($twig->render($template, ['email' => $email]));
 
         $mailer = $this->createMock(MailerInterface::class);
@@ -45,13 +45,13 @@ final class PaymentConfirmedSenderTest extends TestCase
             $mailer,
             $twig
         );
-        $sender->send($email, $durationDays);
+        $sender->send($email, $ended);
     }
 
     public function testError(): void
     {
         $email = 'test@mail.ru';
-        $durationDays = 5;
+        $ended = '07.07.2026';
         $template = 'subscribe/payment/confirm.html.twig';
         $twig = new Environment(new ArrayLoader([
             $template => "<p>Успешная подписка: адрес - {$email}</p>",
@@ -63,6 +63,6 @@ final class PaymentConfirmedSenderTest extends TestCase
         $sender = new PaymentConfirmedSender($mailer, $twig);
         self::expectException(TransportException::class);
         self::expectExceptionMessage('Exception');
-        $sender->send($email, $durationDays);
+        $sender->send($email, $ended);
     }
 }

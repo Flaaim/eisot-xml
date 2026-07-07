@@ -6,7 +6,6 @@ namespace Tests\Functional\Subscription\OnPaymentConfirmed;
 
 use App\Infrastructure\Doctrine\Flusher;
 use App\Subscription\Command\ActivateSubscription\Handler as ActivateSubscriptionHandler;
-use App\Subscription\Entity\Payment\Id as PaymentId;
 use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Entity\Subscription\UserId;
@@ -45,9 +44,9 @@ final class HandlerTest extends KernelTestCase
         $userId = new UserId(RequestFixture::USER_ID);
 
         $handler(new PaymentConfirmed(
-            new PaymentId(RequestFixture::PAYMENT_ID),
-            $userId,
-            Plan::BASIC,
+            RequestFixture::PAYMENT_ID,
+            $userId->getValue(),
+            Plan::BASIC->value,
             30,
         ));
 
