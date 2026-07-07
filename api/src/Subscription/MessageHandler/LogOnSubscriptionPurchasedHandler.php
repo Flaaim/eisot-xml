@@ -19,11 +19,10 @@ final readonly class LogOnSubscriptionPurchasedHandler
     public function __invoke(SubscriptionPurchased $event): void
     {
         $this->logger->info('User Subscription purchased.', [
-            'subscriptionId' => $event->id->getValue(),
-            'userId' => $event->userId->getValue(),
-            'plan' => $event->plan->value,
-            'periodStart' => $event->period->getStartDate()->format('Y-m-d'),
-            'periodEnd' => $event->period->getEndDate()->format('Y-m-d'),
+            'subscriptionId' => $event->id,
+            'userId' => $event->userId,
+            'plan' => $event->plan,
+            'end' => $event->ended,
         ]);
     }
 }

@@ -1,7 +1,7 @@
 {% extends 'mail.html.twig' %}
 
-{% block title %}Оплата подписки | EISOT-XML.RU{% endblock %}
-{% block preheader %}Подписка оформлена на {{ durationDays }} дн.{% endblock %}
+{% block title %}Активация подписки | EISOT-XML.RU{% endblock %}
+{% block preheader %}Подписка оформлена! Окончание {{ ended }}{% endblock %}
 
 {% block body %}
     <h2 style="margin: 0 0 20px 0; font-size: 20px; color: #0f172a;">Здравствуйте!</h2>
@@ -18,8 +18,7 @@
                 <table border="0" cellspacing="0" cellpadding="0" style="background-color: #f1f5f9; border-radius: 8px;">
                     <tr>
                         <td style="padding: 20px 30px; text-align: center;">
-                            <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">Срок действия подписки</p>
-                            <p style="margin: 0; font-size: 32px; font-weight: bold; color: #0f172a;">{{ durationDays }} {{ durationDays == 1 ? 'день' : (durationDays in [2,3,4] ? 'дня' : 'дней') }}</p>
+                            <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">Срок действия подписки до {{ ended }}</p>
                         </td>
                     </tr>
                 </table>
