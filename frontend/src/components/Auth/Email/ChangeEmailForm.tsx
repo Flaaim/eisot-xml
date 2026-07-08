@@ -5,7 +5,7 @@ import { ProfileDTO } from "@/interfaces/auth.interface";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import requestEmailChange from "@/actions/auth";
+import { requestEmailChange } from "@/actions/auth";
 import {
   Card,
   CardContent,
