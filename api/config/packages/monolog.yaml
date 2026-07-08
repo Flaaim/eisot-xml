@@ -44,12 +44,6 @@ when@prod:
                 path: php://stderr
                 level: debug
                 formatter: monolog.formatter.json
-            telegram:
-                type: telegram
-                token: '%env(TELEGRAM_BOT_TOKEN)%'
-                channel: '%env(TELEGRAM_CHAT_ID)%'
-                level: warning
-                channels: ["!event", "!doctrine", "!console"]
             console:
                 type: console
                 process_psr_3_messages: false
