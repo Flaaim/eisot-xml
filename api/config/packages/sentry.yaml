@@ -1,24 +1,24 @@
-#when@prod:
-sentry:
-    dsn: '%env(SENTRY_DSN)%'
+when@prod:
+    sentry:
+        dsn: '%env(SENTRY_DSN)%'
 
-    messenger:
-        enabled: false
-        capture_soft_fails: true
+        messenger:
+            enabled: false
+            capture_soft_fails: true
 
-    options:
-        enable_logs: true
-        environment: '%kernel.environment%'
-        send_default_pii: true
-        traces_sample_rate: 1.0
-        logger: 'logger'
-        # Add request headers, cookies, IP address and the authenticated user
-        # see https://docs.sentry.io/platforms/php/data-management/data-collected/ for more info
-        # send_default_pii: true
-        ignore_exceptions:
-            - 'Symfony\Component\ErrorHandler\Error\FatalError'
-            - 'Symfony\Component\Debug\Exception\FatalErrorException'
-            - 'Sentry\Integration\IgnoreErrorsIntegration'
+        options:
+            enable_logs: true
+            environment: '%kernel.environment%'
+            send_default_pii: true
+            traces_sample_rate: 1.0
+            logger: 'logger'
+            # Add request headers, cookies, IP address and the authenticated user
+            # see https://docs.sentry.io/platforms/php/data-management/data-collected/ for more info
+            # send_default_pii: true
+            ignore_exceptions:
+                - 'Symfony\Component\ErrorHandler\Error\FatalError'
+                - 'Symfony\Component\Debug\Exception\FatalErrorException'
+                - 'Sentry\Integration\IgnoreErrorsIntegration'
 #
 #        # If you are using Monolog, you also need this additional configuration to log the errors correctly:
 #        # https://docs.sentry.io/platforms/php/guides/symfony/integrations/monolog/
