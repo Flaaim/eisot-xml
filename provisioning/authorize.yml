@@ -20,7 +20,7 @@
 
   - name: Add SSH public key using copy module
     copy:
-      content: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      content: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
       dest: /home/deploy/.ssh/authorized_keys
       owner: deploy
       group: deploy
