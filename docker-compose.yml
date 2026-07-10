@@ -109,8 +109,10 @@ services:
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
     depends_on:
-      - api-postgres
-      - rabbitmq
+        api-postgres:
+          condition: service_started
+        rabbitmq:
+            condition: service_healthy
     secrets:
       - jwt_public_key
       - jwt_private_key
@@ -134,6 +136,12 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     restart: always
