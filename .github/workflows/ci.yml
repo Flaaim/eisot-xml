@@ -161,10 +161,7 @@ jobs:
           API_SITE_URL: ${{ secrets.API_SITE_URL }}
           API_SITE_NAME: ${{ secrets.API_SITE_NAME }}
           API_DB_PASSWORD: ${{ secrets.API_DB_PASSWORD }}
-          API_MAILER_HOST: ${{ secrets.API_MAILER_HOST }}
-          API_MAILER_PORT: ${{ secrets.API_MAILER_PORT }}
-          API_MAILER_USER: ${{ secrets.API_MAILER_USER }}
-          API_MAILER_PASSWORD: ${{ secrets.API_MAILER_PASSWORD }}
+          API_MAILER_DSN: ${{ secrets.API_MAILER_DSN }}
           API_MAILER_FROM_EMAIL: ${{ secrets.API_MAILER_FROM_EMAIL }}
           API_MAILER_FROM_NAME: ${{ secrets.API_MAILER_FROM_NAME }}
           POSTGRESQL_ROOT_PASSWORD: ${{ secrets.POSTGRESQL_ROOT_PASSWORD }}
