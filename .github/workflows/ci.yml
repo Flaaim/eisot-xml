@@ -171,4 +171,5 @@ jobs:
           JWT_PUBLIC_KEY: ${{secrets.JWT_PUBLIC_KEY}}
           JWT_PRIVATE_KEY: ${{secrets.JWT_PRIVATE_KEY}}
           RABBITMQ_USER: ${{secrets.RABBITMQ_USER}}
+          SENTRY_DSN: ${{secrets.SENTRY_DSN}}
           RABBITMQ_PASSWORD: ${{secrets.RABBITMQ_PASSWORD}}
