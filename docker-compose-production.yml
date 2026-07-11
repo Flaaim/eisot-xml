@@ -158,8 +158,8 @@ services:
     depends_on:
       api-postgres:
         condition: service_started
-        rabbitmq:
-          condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
 volumes:
   api-postgres:
