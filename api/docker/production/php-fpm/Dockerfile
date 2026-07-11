@@ -24,7 +24,7 @@ FROM php:8.4-fpm-alpine
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN apk add --no-cache bash coreutils postgresql-client
-RUN install-php-extensions intl pdo_pgsql opcache zip apcu
+RUN install-php-extensions intl pdo_pgsql opcache zip apcu amqp
 
 RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 COPY ./docker/common/php/conf.d /usr/local/etc/php/conf.d
