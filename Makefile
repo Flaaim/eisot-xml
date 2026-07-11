@@ -158,7 +158,7 @@ deploy:
 
 rollback:
 	$(eval DEPLOY_DIR := /home/deploy)
-    $(eval SITE_DIR := $(DEPLOY_DIR)/site_${BUILD_NUMBER})
+	$(eval SITE_DIR := $(DEPLOY_DIR)/site_${BUILD_NUMBER})
 
 	ssh -o StrictHostKeyChecking=no ${HOST} -p ${PORT} 'cd $(SITE_DIR) && docker compose pull'
 	ssh -o StrictHostKeyChecking=no ${HOST} -p ${PORT} 'cd $(SITE_DIR) && docker compose up --build --remove-orphans -d'
