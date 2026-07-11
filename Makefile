@@ -125,6 +125,7 @@ ifneq ("$(wildcard .env.production)","")
 endif
 
 deploy:
+	ssh ${HOST} -p ${PORT} 'cd /home/deploy'
 	ssh ${HOST} -p ${PORT} 'rm -rf site_${BUILD_NUMBER}'
 	ssh ${HOST} -p ${PORT} 'mkdir site_${BUILD_NUMBER}'
 
