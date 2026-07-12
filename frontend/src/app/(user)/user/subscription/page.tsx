@@ -17,8 +17,8 @@ export default async function SubscriptionPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Тарифы и подписка</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          User Subscription разблокирует формирование XML-реестра (RegistrySet) для всех ваших
-          компаний в соответствии с требованиями ЕИСОТ Минтруда России.
+          Подписка разблокирует формирование XML-реестра (RegistrySet) для всех ваших компаний в
+          соответствии с требованиями ЕИСОТ Минтруда России.
         </p>
       </div>
       <SubscriptionPlans initialAccess={access} />

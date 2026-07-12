@@ -28,25 +28,25 @@ interface PlanOption {
 const PLANS: PlanOption[] = [
   {
     id: "basic",
-    title: "Базовый Plan",
+    title: "Базовый",
     price: "490 ₽ / мес.",
     durationDays: 30,
     features: [
       "1 компания",
       "RegistrySet XML для вашей компании",
-      "До 500 записей реестра в Subscription Period",
+      "До 500 записей реестра в период подписки",
       "Проверка СНИЛС и ИНН по контрольным суммам",
     ],
   },
   {
     id: "extended",
-    title: "Extended Plan",
-    price: "2 490 ₽ / мес.",
+    title: "Расширенный",
+    price: "1 490 ₽ / мес.",
     durationDays: 30,
     features: [
       "Безлимит компаний",
       "RegistrySet XML для всех ваших компаний",
-      "До 500 записей реестра в Subscription Period",
+      "До 500 записей реестра в период подписки",
       "Проверка СНИЛС и ИНН по контрольным суммам",
     ],
   },
@@ -87,12 +87,12 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
       <div className="rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
         {access.hasAccess ? (
           <p>
-            Active Status: активна · Plan:{" "}
-            <strong>{access.plan === "extended" ? "Extended" : "Базовый"}</strong>
+            Active Status: активна · План:{" "}
+            <strong>{access.plan === "extended" ? "Расширенный" : "Базовый"}</strong>
             {access.periodEnd && (
               <>
                 {" "}
-                · Subscription Period до{" "}
+                · Период подписки до{" "}
                 <strong>{new Date(access.periodEnd).toLocaleDateString("ru-RU")}</strong>
               </>
             )}
@@ -100,8 +100,8 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
           </p>
         ) : (
           <p>
-            User Subscription разблокирует выгрузку реестра обученных лиц (RegistrySet) в ЕИСОТ для
-            ваших компаний. Выберите тарифный Plan и перейдите к оплате через ЮKassa.
+            Подписка разблокирует выгрузку реестра обученных лиц (RegistrySet) в ЕИСОТ для ваших
+            компаний. Выберите тарифный план и перейдите к оплате через ЮKassa.
           </p>
         )}
       </div>
@@ -159,8 +159,11 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Оплата обрабатывается через ЮKassa. После подтверждения платежа User Subscription
-        активируется автоматически для всех компаний вашего аккаунта.
+        Оплата обрабатывается через ЮKassa. После подтверждения платежа Подписка активируется
+        автоматически для всех компаний вашего аккаунта. Приобретая доступ вы соглашаетесь с{" "}
+        <Link className="link" href="/user/terms">
+          условиями использования
+        </Link>
       </p>
 
       <div>

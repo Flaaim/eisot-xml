@@ -16,7 +16,7 @@ export function SubscriptionStatusBadge({ access }: SubscriptionStatusBadgeProps
     return (
       <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border ring-inset">
         <Crown className="size-3.5" />
-        User Subscription не активна
+        Подписка не активна
       </span>
     );
   }
