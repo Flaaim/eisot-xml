@@ -28,13 +28,13 @@ final readonly class RequestAction
     #[Route('/v1/subscription/payment/webhook', name: 'subscription.payment.webhook', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
-        if (!$this->webhookGuard->isAllowed($request)) {
-            $this->logger->warning('Rejected YooKassa webhook from untrusted IP.', [
-                'clientIp' => $request->getClientIp(),
-            ]);
-
-            return new Response('Forbidden', Response::HTTP_FORBIDDEN);
-        }
+//        if (!$this->webhookGuard->isAllowed($request)) {
+//            $this->logger->warning('Rejected YooKassa webhook from untrusted IP.', [
+//                'clientIp' => $request->getClientIp(),
+//            ]);
+//
+//            return new Response('Forbidden', Response::HTTP_FORBIDDEN);
+//        }
 
         try {
             $payload = $request->toArray();
