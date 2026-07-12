@@ -1,6 +1,7 @@
 "use client";
 
 import { z } from "zod";
+import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -14,10 +15,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { addCompanyAction } from "@/actions/company";
 import { normalizeInn, validateInn } from "@/lib/inn";
 import { useRouter } from "next/navigation";
+import type { SubscriptionPlan } from "@/interfaces/subscription.interface";
 
 const schema = z.object({
   name: z
@@ -40,7 +43,22 @@ const schema = z.object({
 
 type AddCompanyFormData = z.infer<typeof schema>;
 
-export default function AddCompanyForm() {
+interface AddCompanyFormProps {
+  readonly plan: SubscriptionPlan | null;
+  readonly totalCompanyCount: number;
+}
+
+function isCompanyLimitReached(plan: SubscriptionPlan | null, totalCompanyCount: number): boolean {
+  if (plan === "extended") {
+    return false;
+  }
+
+  return totalCompanyCount >= 1;
+}
+
+export default function AddCompanyForm({ plan, totalCompanyCount }: AddCompanyFormProps) {
+  const companyLimitReached = isCompanyLimitReached(plan, totalCompanyCount);
+
   const form = useForm<AddCompanyFormData>({
     mode: "onBlur",
     resolver: zodResolver(schema),
@@ -65,6 +83,17 @@ export default function AddCompanyForm() {
     form.reset();
     router.push("/user/company");
   }
+
+  const submitButton = (
+    <Button
+      type="submit"
+      form="add-company-form"
+      disabled={form.formState.isSubmitting || companyLimitReached}
+      className="w-full cursor-pointer py-2"
+    >
+      {form.formState.isSubmitting ? "Загрузка..." : "Добавить компанию"}
+    </Button>
+  );
 
   return (
     <Card className="mx-auto w-full max-w-lg shadow-sm">
@@ -123,19 +152,32 @@ export default function AddCompanyForm() {
       <CardFooter>
         <div className="flex w-full flex-col">
           <div className="space-y-4 pt-4">
+            {companyLimitReached && (
+              <div className="rounded-md bg-muted p-3 text-center text-sm text-muted-foreground">
+                Удалите существующую компанию или{" "}
+                <Link href="/user/subscription" className="font-medium text-primary underline">
+                  обновите тариф
+                </Link>
+                .
+              </div>
+            )}
             {form.formState.errors.root && (
               <div className="rounded-md bg-destructive/10 p-2 text-center text-sm font-medium text-destructive">
                 {form.formState.errors.root.message}
               </div>
             )}
-            <Button
-              type="submit"
-              form="add-company-form"
-              disabled={form.formState.isSubmitting}
-              className="w-full cursor-pointer py-2"
-            >
-              {form.formState.isSubmitting ? "Загрузка..." : "Добавить компанию"}
-            </Button>
+            {companyLimitReached ? (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger
+                    render={<span className="inline-block w-full">{submitButton}</span>}
+                  />
+                  <TooltipContent>Удалите существующую компанию или обновите тариф</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : (
+              submitButton
+            )}
           </div>
         </div>
       </CardFooter>

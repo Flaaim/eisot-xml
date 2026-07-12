@@ -11,6 +11,7 @@ use App\Company\Entity\Company\UserId;
 use App\Company\Event\CompanyAdded;
 use App\Company\Event\CompanyArchived;
 use App\Company\Event\CompanyInnChanged;
+use App\Company\Event\CompanyRemoved;
 use App\Company\Event\CompanyRenamed;
 use App\Company\Test\Builder\CompanyBuilder;
 use DomainException;
@@ -198,5 +199,30 @@ final class CompanyTest extends TestCase
         self::assertCount(1, $events);
         self::assertInstanceOf(CompanyArchived::class, $events[0]);
         self::assertSame($company->getId()->getValue(), $events[0]->id->getValue());
+    }
+
+    public function testRemoveArchivedCompanyRecordsEvent(): void
+    {
+        $company = (new CompanyBuilder())->build();
+        $company->archive();
+        $company->releaseEvents();
+
+        $company->remove();
+
+        $events = $company->releaseEvents();
+
+        self::assertCount(1, $events);
+        self::assertInstanceOf(CompanyRemoved::class, $events[0]);
+        self::assertSame($company->getId()->getValue(), $events[0]->id->getValue());
+    }
+
+    public function testRemoveActiveCompanyThrowsException(): void
+    {
+        $company = (new CompanyBuilder())->build();
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Only archived companies can be permanently removed.');
+
+        $company->remove();
     }
 }

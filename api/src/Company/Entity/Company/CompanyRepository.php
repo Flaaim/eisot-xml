@@ -49,6 +49,11 @@ final class CompanyRepository
         $this->em->persist($company);
     }
 
+    public function remove(Company $company): void
+    {
+        $this->em->remove($company);
+    }
+
     /**
      * Возвращает только активные (не архивированные) компании текущего пользователя.
      *
@@ -68,5 +73,27 @@ final class CompanyRepository
             ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function countActiveByUser(UserId $userId): int
+    {
+        return (int)$this->repo->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->andWhere('c.userId = :userId')
+            ->andWhere('c.status = :status')
+            ->setParameter('userId', $userId->getValue())
+            ->setParameter('status', CompanyStatus::ACTIVE)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function countAllByUser(UserId $userId): int
+    {
+        return (int)$this->repo->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->andWhere('c.userId = :userId')
+            ->setParameter('userId', $userId->getValue())
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

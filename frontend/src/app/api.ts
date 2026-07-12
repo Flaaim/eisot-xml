@@ -24,6 +24,7 @@ export const API = {
     get: (id: string) => BASE_URL + `/v1/companies/${id}`,
     archive: (id: string) => BASE_URL + `/v1/companies/${id}/archive`,
     restore: (id: string) => BASE_URL + `/v1/companies/${id}/restore`,
+    remove: (id: string) => BASE_URL + `/v1/companies/${id}`,
     trainingRecords: (id: string) => BASE_URL + `/v1/companies/${id}/training-records`,
     stats: (id: string) => BASE_URL + `/v1/companies/${id}/stats`,
     rename: (id: string) => BASE_URL + `/v1/companies/${id}/name`,

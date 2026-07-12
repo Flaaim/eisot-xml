@@ -53,7 +53,7 @@ final class SubscriptionTest extends TestCase
         $subscription = Subscription::activate(
             Id::generate(),
             new UserId(self::USER_ID),
-            Plan::PREMIUM,
+            Plan::EXTENDED,
             Period::fromDurationDays(30),
         );
 

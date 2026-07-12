@@ -1,10 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, Users, GraduationCap, RotateCcw, Settings } from "lucide-react";
+import { Building2, GraduationCap, RotateCcw, Settings, Trash2, Users } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import type { CompanyShort } from "@/interfaces/company.interface";
-import { unarchiveCompanyAction } from "@/actions/company";
+import { removeCompanyAction, unarchiveCompanyAction } from "@/actions/company";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -15,12 +26,12 @@ interface CompanyCardProps {
 
 /**
  * Карточка архивной компании для дашборда.
- * Отображает название, ИНН и статистику (работники, протоколы).
- * Стилизована с faded эффектом и кнопкой восстановления.
  */
 export function ArchiveCompanyCard({ company }: CompanyCardProps) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const router = useRouter();
+
   const activate = async (id: string) => {
     try {
       setLoading(true);
@@ -28,10 +39,31 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
       if (response.ok) {
         toast.success("Компания успешно восстановлена!");
         router.refresh();
+      } else {
+        toast.error(response.error ?? "Ошибка при восстановлении компании.");
       }
     } catch (error) {
       console.error("Restore company error:", error);
       toast.error("Ошибка при восстановлении компании.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removePermanently = async (id: string) => {
+    try {
+      setLoading(true);
+      const response = await removeCompanyAction(id);
+      if (response.ok) {
+        toast.success("Компания безвозвратно удалена.");
+        setDeleteDialogOpen(false);
+        router.refresh();
+      } else {
+        toast.error(response.error ?? "Не удалось удалить компанию.");
+      }
+    } catch (error) {
+      console.error("Remove company error:", error);
+      toast.error("Не удалось удалить компанию.");
     } finally {
       setLoading(false);
     }
@@ -124,6 +156,43 @@ export function ArchiveCompanyCard({ company }: CompanyCardProps) {
             <RotateCcw className="size-4" />
             <span>Восстановить</span>
           </button>
+          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <DialogTrigger
+              render={
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-destructive transition-colors hover:bg-destructive/10"
+                >
+                  <Trash2 className="size-4" />
+                  <span>Удалить навсегда</span>
+                </button>
+              }
+            />
+            <DialogContent showCloseButton={false}>
+              <DialogHeader>
+                <DialogTitle>Удалить компанию навсегда?</DialogTitle>
+                <DialogDescription>
+                  Компания «{company.name}» и все связанные работники и протоколы обучения будут
+                  безвозвратно удалены. Это действие нельзя отменить.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose render={<Button variant="outline" className="cursor-pointer" />}>
+                  Отмена
+                </DialogClose>
+                <Button
+                  variant="destructive"
+                  className="cursor-pointer"
+                  disabled={loading}
+                  onClick={() => {
+                    void removePermanently(company.id);
+                  }}
+                >
+                  Удалить навсегда
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </CardFooter>
     </Card>

@@ -14,14 +14,14 @@ final class PlanPricing
     {
         return match ($plan) {
             Plan::BASIC => Amount::fromRubles('490.00'),
-            Plan::PREMIUM => Amount::fromRubles('2490.00'),
+            Plan::EXTENDED => Amount::fromRubles('2490.00'),
         };
     }
 
     public static function durationDaysFor(Plan $plan): int
     {
         return match ($plan) {
-            Plan::BASIC, Plan::PREMIUM => 30,
+            Plan::BASIC, Plan::EXTENDED => 30,
         };
     }
 
@@ -29,7 +29,7 @@ final class PlanPricing
     {
         return match ($plan) {
             Plan::BASIC => 'User Subscription: Базовый Plan',
-            Plan::PREMIUM => 'User Subscription: Премиум Plan',
+            Plan::EXTENDED => 'User Subscription: Extended Plan',
         };
     }
 

@@ -11,6 +11,8 @@ use App\Company\Entity\Company\Inn;
 use App\Company\Entity\Company\Name;
 use App\Company\Entity\Company\UserId;
 use App\Infrastructure\Doctrine\Flusher;
+use App\Subscription\Entity\Subscription\UserId as SubscriptionUserId;
+use App\Subscription\Service\SubscriptionAccessGuard;
 use DomainException;
 
 /**
@@ -20,7 +22,8 @@ use DomainException;
  *
  * Ответственность:
  *  1. Трансформация примитивов из Command → Value Objects (инварианты проверяются автоматически)
- *  2. Проверка бизнес-уникальности ИНН
+ *  2. Проверка лимита компаний по тарифному Plan (SubscriptionAccessGuard)
+ *  3. Проверка бизнес-уникальности ИНН
  *  3. Создание агрегата через фабричный метод (внутри записывается CompanyAdded с userId)
  *  4. Сохранение агрегата (транзакционная граница)
  *  5. Сброс (flush) через Flusher
@@ -30,6 +33,7 @@ final class Handler
     public function __construct(
         private readonly CompanyRepository $companies,
         private readonly Flusher $flusher,
+        private readonly SubscriptionAccessGuard $subscriptionAccessGuard,
     ) {}
 
     /** @psalm-suppress PossiblyUnusedMethod */
@@ -39,6 +43,10 @@ final class Handler
         $name   = Name::fromString($command->name);
         $inn    = Inn::fromString($command->inn);
         $userId = new UserId($command->userId);
+
+        $this->subscriptionAccessGuard->assertCanAddCompany(
+            new SubscriptionUserId($command->userId),
+        );
 
         if ($this->companies->hasByInn($inn)) {
             throw new DomainException('Company with this INN already exists.');

@@ -79,7 +79,7 @@ final class RequestActionTest extends WebTestCase
         $this->client->jsonRequest(
             'POST',
             '/v1/user/subscription/activate',
-            ['planId' => 'premium', 'durationDays' => 30],
+            ['planId' => 'extended', 'durationDays' => 30],
             $this->authHeaders($this->accessToken),
         );
 

@@ -121,6 +121,31 @@ export async function unarchiveCompanyAction(companyId: string): Promise<ApiResp
   }
 }
 
+export async function removeCompanyAction(companyId: string): Promise<ApiResponse> {
+  try {
+    const response = await apiFetch(API.company.remove(companyId), {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    const parsed = await handleApiResponse(response);
+    if (!parsed.ok) {
+      return { ok: false, error: parsed.error };
+    }
+
+    revalidatePath("/user/company");
+    revalidatePath("/user/company/add");
+    revalidatePath(`/user/company/${companyId}`);
+
+    return { ok: true };
+  } catch (error) {
+    console.error("removeCompanyAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
 export async function getCompanyStatsAction(companyId: string): Promise<CompanyStats> {
   try {
     const response = await apiFetch(API.company.stats(companyId), {

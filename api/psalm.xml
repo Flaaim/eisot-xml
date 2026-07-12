@@ -48,6 +48,7 @@
                 <directory name="src/Company/Command/ChangeCompanyInn" />
                 <directory name="src/Company/Command/RenameCompany" />
                 <directory name="src/Company/Command/ArchiveCompany" />
+                <directory name="src/Company/Command/RemoveCompany" />
                 <directory name="src/Company/Command/AddCompany" />
                 <directory name="src/Auth/Command/AttachNetwork" />
                 <directory name="src/Auth/Command/ChangeEmail" />

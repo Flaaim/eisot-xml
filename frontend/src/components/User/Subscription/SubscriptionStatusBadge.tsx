@@ -4,7 +4,7 @@ import type { SubscriptionAccess } from "@/interfaces/subscription.interface";
 
 const PLAN_LABELS: Record<string, string> = {
   basic: "Базовый",
-  premium: "Премиум",
+  extended: "Extended",
 };
 
 interface SubscriptionStatusBadgeProps {

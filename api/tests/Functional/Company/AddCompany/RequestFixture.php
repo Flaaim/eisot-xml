@@ -10,6 +10,11 @@ use App\Auth\Test\Builder\UserBuilder;
 use App\Company\Entity\Company\Inn;
 use App\Company\Entity\Company\UserId as CompanyUserId;
 use App\Company\Test\Builder\CompanyBuilder;
+use App\Subscription\Entity\Subscription\Id as SubscriptionId;
+use App\Subscription\Entity\Subscription\Period;
+use App\Subscription\Entity\Subscription\Plan;
+use App\Subscription\Entity\Subscription\Subscription;
+use App\Subscription\Entity\Subscription\UserId as SubscriptionUserId;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -37,6 +42,15 @@ final class RequestFixture extends AbstractFixture
             ->withUserId(new CompanyUserId(self::USER_ID))
             ->build();
         $manager->persist($company);
+
+        // Extended Plan — пользователь уже имеет 1 компанию, для добавления второй нужен безлимитный тариф
+        $subscription = Subscription::activate(
+            SubscriptionId::generate(),
+            new SubscriptionUserId(self::USER_ID),
+            Plan::EXTENDED,
+            Period::fromDurationDays(30),
+        );
+        $manager->persist($subscription);
 
         $manager->flush();
     }

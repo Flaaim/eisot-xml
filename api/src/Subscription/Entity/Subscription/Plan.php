@@ -10,5 +10,13 @@ namespace App\Subscription\Entity\Subscription;
 enum Plan: string
 {
     case BASIC = 'basic';
-    case PREMIUM = 'premium';
+    case EXTENDED = 'extended';
+
+    public function canAddMoreCompanies(int $currentCount): bool
+    {
+        return match ($this) {
+            self::BASIC => $currentCount < 1,
+            self::EXTENDED => true,
+        };
+    }
 }

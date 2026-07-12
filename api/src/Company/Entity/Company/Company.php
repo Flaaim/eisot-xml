@@ -7,6 +7,7 @@ namespace App\Company\Entity\Company;
 use App\Company\Event\CompanyAdded;
 use App\Company\Event\CompanyArchived;
 use App\Company\Event\CompanyInnChanged;
+use App\Company\Event\CompanyRemoved;
 use App\Company\Event\CompanyRenamed;
 use App\Company\Event\CompanyRestored;
 use App\SharedDomain\AggregateRoot;
@@ -136,5 +137,19 @@ final class Company implements AggregateRoot
         $this->status = CompanyStatus::ACTIVE;
 
         $this->recordEvent(new CompanyRestored($this->id));
+    }
+
+    /**
+     * Помечает компанию как безвозвратно удалённую.
+     *
+     * Инвариант: удалить можно только архивированную компанию.
+     */
+    public function remove(): void
+    {
+        if (CompanyStatus::ARCHIVED !== $this->status) {
+            throw new DomainException('Only archived companies can be permanently removed.');
+        }
+
+        $this->recordEvent(new CompanyRemoved($this->id));
     }
 }

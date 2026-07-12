@@ -10,7 +10,7 @@ final class Command
 {
     public function __construct(
         #[Assert\NotBlank]
-        #[Assert\Choice(choices: ['basic', 'premium'], message: 'Plan must be basic or premium.')]
+        #[Assert\Choice(choices: ['basic', 'extended'], message: 'Plan must be basic or extended.')]
         public readonly string $planId,
         #[Assert\NotBlank]
         #[Assert\Positive]

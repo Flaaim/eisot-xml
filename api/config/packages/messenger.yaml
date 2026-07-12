@@ -38,6 +38,7 @@ framework:
             'App\Company\Event\CompanyRenamed': async
             'App\Company\Event\CompanyArchived': async
             'App\Company\Event\CompanyRestored': async
+            'App\Company\Event\CompanyRemoved': async
             'App\Worker\Event\WorkerRegistered': async
             'App\Training\Event\TrainingResultRecorded': async
             'App\Training\Event\RegistryNumberAttached': async

@@ -26,7 +26,7 @@ export function ArchiveCompaniesList({ companies }: CompaniesListProps) {
   }
 
   return (
-    <div data-testid="companies-grid" className="grid gap-4 lg:grid-cols-2">
+    <div data-testid="companies-grid" className="grid gap-4 lg:grid-cols-1">
       {companies.map((company) => (
         <ArchiveCompanyCard key={company.id} company={company} />
       ))}

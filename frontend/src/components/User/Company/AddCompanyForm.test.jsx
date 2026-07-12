@@ -25,12 +25,17 @@ jest.mock("next/navigation", () => ({
 const mockAddCompanyAction = jest.mocked(addCompanyAction);
 
 describe("AddCompanyForm", () => {
+  const defaultProps = {
+    plan: null,
+    totalCompanyCount: 0,
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it("renders all fields and the submit button", () => {
-    render(<AddCompanyForm />);
+    render(<AddCompanyForm {...defaultProps} />);
 
     expect(screen.getByRole("button", { name: "Добавить компанию" })).toBeInTheDocument();
     expect(screen.getByLabelText(/Название организации/i)).toBeInTheDocument();
@@ -41,7 +46,7 @@ describe("AddCompanyForm", () => {
     const user = userEvent.setup();
     mockAddCompanyAction.mockResolvedValue({ ok: true, data: { id: "test-uuid" } });
 
-    render(<AddCompanyForm />);
+    render(<AddCompanyForm {...defaultProps} />);
 
     const nameInput = screen.getByLabelText(/Название организации/i);
     const innInput = screen.getByLabelText(/ИНН/i);
@@ -63,7 +68,7 @@ describe("AddCompanyForm", () => {
     const user = userEvent.setup();
     mockAddCompanyAction.mockResolvedValue({ ok: true, data: { id: "test-uuid" } });
 
-    render(<AddCompanyForm />);
+    render(<AddCompanyForm {...defaultProps} />);
 
     const nameInput = screen.getByLabelText(/Название организации/i);
     const innInput = screen.getByLabelText(/ИНН/i);
@@ -82,7 +87,7 @@ describe("AddCompanyForm", () => {
   it("shows validation error for INN with non-digit characters", async () => {
     const user = userEvent.setup();
 
-    render(<AddCompanyForm />);
+    render(<AddCompanyForm {...defaultProps} />);
 
     const innInput = screen.getByLabelText(/ИНН/i);
     const nameInput = screen.getByLabelText(/Название организации/i);
@@ -98,7 +103,7 @@ describe("AddCompanyForm", () => {
   it("shows validation error for INN with invalid checksum", async () => {
     const user = userEvent.setup();
 
-    render(<AddCompanyForm />);
+    render(<AddCompanyForm {...defaultProps} />);
 
     const innInput = screen.getByLabelText(/ИНН/i);
     const nameInput = screen.getByLabelText(/Название организации/i);
@@ -114,7 +119,7 @@ describe("AddCompanyForm", () => {
   it("shows validation error for INN with wrong digit count (9 digits)", async () => {
     const user = userEvent.setup();
 
-    render(<AddCompanyForm />);
+    render(<AddCompanyForm {...defaultProps} />);
 
     const innInput = screen.getByLabelText(/ИНН/i);
     const nameInput = screen.getByLabelText(/Название организации/i);
@@ -130,7 +135,7 @@ describe("AddCompanyForm", () => {
   it("shows validation error when name is empty", async () => {
     const user = userEvent.setup();
 
-    render(<AddCompanyForm />);
+    render(<AddCompanyForm {...defaultProps} />);
 
     const nameInput = screen.getByLabelText(/Название организации/i);
     const innInput = screen.getByLabelText(/ИНН/i);
@@ -152,7 +157,7 @@ describe("AddCompanyForm", () => {
       error: "Компания с таким ИНН уже существует.",
     });
 
-    render(<AddCompanyForm />);
+    render(<AddCompanyForm {...defaultProps} />);
 
     const nameInput = screen.getByLabelText(/Название организации/i);
     const innInput = screen.getByLabelText(/ИНН/i);
@@ -169,7 +174,7 @@ describe("AddCompanyForm", () => {
     const user = userEvent.setup();
     mockAddCompanyAction.mockResolvedValue({ ok: true, data: { id: "test-uuid-2" } });
 
-    render(<AddCompanyForm />);
+    render(<AddCompanyForm {...defaultProps} />);
 
     const nameInput = screen.getByLabelText(/Название организации/i);
     const innInput = screen.getByLabelText(/ИНН/i);
@@ -185,5 +190,13 @@ describe("AddCompanyForm", () => {
         inn: "500100732259",
       });
     });
+  });
+
+  it("disables submit when basic plan company limit is reached", () => {
+    render(<AddCompanyForm plan="basic" totalCompanyCount={1} />);
+
+    expect(screen.getByRole("button", { name: "Добавить компанию" })).toBeDisabled();
+    expect(screen.getByText(/Удалите существующую компанию или/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "обновите тариф" })).toBeInTheDocument();
   });
 });

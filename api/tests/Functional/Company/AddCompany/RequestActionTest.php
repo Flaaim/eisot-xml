@@ -7,6 +7,11 @@ namespace Tests\Functional\Company\AddCompany;
 use App\Company\Entity\Company\CompanyRepository;
 use App\Company\Entity\Company\Id;
 use App\Company\Event\CompanyAdded;
+use App\Subscription\Entity\Subscription\Id as SubscriptionId;
+use App\Subscription\Entity\Subscription\Period;
+use App\Subscription\Entity\Subscription\Plan;
+use App\Subscription\Entity\Subscription\Subscription;
+use App\Subscription\Entity\Subscription\UserId as SubscriptionUserId;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -189,5 +194,45 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['message' => 'Company with this INN already exists.'], $data);
+    }
+
+    // -------------------------------------------------------------------------
+    // Тест 5: Лимит компаний для Basic Plan — 403 Forbidden
+    // -------------------------------------------------------------------------
+
+    public function testCompanyLimitReachedForBasicPlan(): void
+    {
+        /** @var EntityManagerInterface $em */
+        $em = $this->client->getContainer()->get(EntityManagerInterface::class);
+
+        $subscriptionRepo = $em->getRepository(Subscription::class);
+        $existingSubscriptions = $subscriptionRepo->findAll();
+        foreach ($existingSubscriptions as $existingSubscription) {
+            $em->remove($existingSubscription);
+        }
+        $em->flush();
+
+        $subscription = Subscription::activate(
+            SubscriptionId::generate(),
+            new SubscriptionUserId(RequestFixture::USER_ID),
+            Plan::BASIC,
+            Period::fromDurationDays(30),
+        );
+        $em->persist($subscription);
+        $em->flush();
+
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/companies',
+            ['name' => 'Вторая компания', 'inn' => '7736050003'],
+            $this->authHeaders($this->accessToken),
+        );
+
+        self::assertEquals(403, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+        $data = Json::decode($body);
+
+        self::assertEquals('company_limit_reached', $data['code']);
     }
 }

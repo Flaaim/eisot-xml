@@ -32,6 +32,19 @@ const PLANS: PlanOption[] = [
     price: "490 ₽ / мес.",
     durationDays: 30,
     features: [
+      "1 компания",
+      "RegistrySet XML для вашей компании",
+      "До 500 записей реестра в Subscription Period",
+      "Проверка СНИЛС и ИНН по контрольным суммам",
+    ],
+  },
+  {
+    id: "extended",
+    title: "Extended Plan",
+    price: "2 490 ₽ / мес.",
+    durationDays: 30,
+    features: [
+      "Безлимит компаний",
       "RegistrySet XML для всех ваших компаний",
       "До 500 записей реестра в Subscription Period",
       "Проверка СНИЛС и ИНН по контрольным суммам",
@@ -75,7 +88,7 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
         {access.hasAccess ? (
           <p>
             Active Status: активна · Plan:{" "}
-            <strong>{access.plan === "premium" ? "Премиум" : "Базовый"}</strong>
+            <strong>{access.plan === "extended" ? "Extended" : "Базовый"}</strong>
             {access.periodEnd && (
               <>
                 {" "}
@@ -88,7 +101,7 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
         ) : (
           <p>
             User Subscription разблокирует выгрузку реестра обученных лиц (RegistrySet) в ЕИСОТ для
-            всех ваших компаний. Выберите тарифный Plan и перейдите к оплате через ЮKassa.
+            ваших компаний. Выберите тарифный Plan и перейдите к оплате через ЮKassa.
           </p>
         )}
       </div>
@@ -122,7 +135,7 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
               <CardFooter>
                 <Button
                   className="w-full cursor-pointer"
-                  variant={plan.id === "premium" ? "default" : "outline"}
+                  variant={plan.id === "extended" ? "default" : "outline"}
                   disabled={isCurrent || loadingPlan !== null}
                   onClick={() => {
                     void handleCheckout(plan);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Worker\Entity\Worker;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
@@ -12,6 +13,7 @@ final class WorkerRepository
 {
     private EntityRepository $repo;
     private EntityManagerInterface $em;
+    private Connection $connection;
 
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(EntityManagerInterface $em)
@@ -20,6 +22,7 @@ final class WorkerRepository
         $repo = $em->getRepository(Worker::class);
         $this->repo = $repo;
         $this->em   = $em;
+        $this->connection = $em->getConnection();
     }
 
     /**
@@ -38,5 +41,13 @@ final class WorkerRepository
     public function add(Worker $worker): void
     {
         $this->em->persist($worker);
+    }
+
+    public function deleteAllByCompanyId(CompanyId $companyId): void
+    {
+        $this->connection->executeStatement(
+            'DELETE FROM workers WHERE company_id = :companyId',
+            ['companyId' => $companyId->getValue()],
+        );
     }
 }

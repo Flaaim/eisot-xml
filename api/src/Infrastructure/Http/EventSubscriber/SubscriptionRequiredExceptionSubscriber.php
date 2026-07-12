@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\EventSubscriber;
 
+use App\Subscription\Exception\CompanyLimitReachedException;
 use App\Subscription\Exception\SubscriptionRequiredException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Возвращает HTTP 403 при попытке сформировать RegistrySet XML без подписки.
+ * Возвращает HTTP 403 при отсутствии подписки или превышении лимита компаний.
  *
  * @psalm-suppress UnusedClass
  */
@@ -28,15 +29,20 @@ final class SubscriptionRequiredExceptionSubscriber implements EventSubscriberIn
     {
         $exception = $event->getThrowable();
 
-        if (!$exception instanceof SubscriptionRequiredException) {
+        if ($exception instanceof SubscriptionRequiredException) {
+            $event->setResponse(new JsonResponse([
+                'message' => $exception->getMessage(),
+                'code' => 'subscription_required',
+            ], JsonResponse::HTTP_FORBIDDEN));
+
             return;
         }
 
-        $response = new JsonResponse([
-            'message' => $exception->getMessage(),
-            'code' => 'subscription_required',
-        ], JsonResponse::HTTP_FORBIDDEN);
-
-        $event->setResponse($response);
+        if ($exception instanceof CompanyLimitReachedException) {
+            $event->setResponse(new JsonResponse([
+                'message' => $exception->getMessage(),
+                'code' => 'company_limit_reached',
+            ], JsonResponse::HTTP_FORBIDDEN));
+        }
     }
 }

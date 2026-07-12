@@ -1,4 +1,4 @@
-export type SubscriptionPlan = "basic" | "premium";
+export type SubscriptionPlan = "basic" | "extended";
 
 export type SubscriptionStatus = "active" | "expired" | "cancelled";
 
