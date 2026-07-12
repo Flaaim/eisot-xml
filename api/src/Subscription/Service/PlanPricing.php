@@ -14,7 +14,7 @@ final class PlanPricing
     {
         return match ($plan) {
             Plan::BASIC => Amount::fromRubles('490.00'),
-            Plan::EXTENDED => Amount::fromRubles('2490.00'),
+            Plan::EXTENDED => Amount::fromRubles('1490.00'),
         };
     }
 
@@ -28,8 +28,8 @@ final class PlanPricing
     public static function descriptionFor(Plan $plan): string
     {
         return match ($plan) {
-            Plan::BASIC => 'User Subscription: Базовый Plan',
-            Plan::EXTENDED => 'User Subscription: Extended Plan',
+            Plan::BASIC => 'User Subscription: Базовый',
+            Plan::EXTENDED => 'User Subscription: Расширенный',
         };
     }
 
