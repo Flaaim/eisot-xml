@@ -44,7 +44,11 @@ export default function SiteLayout({
       <footer className="border-t border-border bg-muted/30">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-center text-sm text-muted-foreground sm:flex-row sm:px-6 sm:text-left">
           <p>© 2026 eisot-xml · подготовка реестров для ЕИСОТ</p>
-          <p className="text-xs">Схема XSD v1.0.9 · актуальная редакция июнь 2026</p>
+          <p className="text-xs">
+            Схема XSD v1.0.9 · актуальная редакция июнь 2026
+            <br />
+            <small>Григорьев Александр Иванович, ИНН 272497691420, flaeim@gmail.com</small>
+          </p>
         </div>
       </footer>
     </div>
