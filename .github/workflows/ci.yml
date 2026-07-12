@@ -173,3 +173,5 @@ jobs:
           GRANT_TYPE: ${{secrets.GRANT_TYPE}}
           CLIENT_ID: ${{secrets.CLIENT_ID}}
           CLIENT_SECRET: ${{secrets.CLIENT_SECRET}}
+          YOOKASSA_SHOP_ID: ${{secrets.YOOKASSA_SHOP_ID}}
+          YOOKASSA_SECRET_KEY: ${{secrets.YOOKASSA_SECRET_KEY}}
