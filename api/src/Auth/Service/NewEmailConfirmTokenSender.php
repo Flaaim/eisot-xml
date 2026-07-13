@@ -23,7 +23,7 @@ final class NewEmailConfirmTokenSender
     public function send(Email $email, string $token): void
     {
         $message = new SymfonyEmail()
-            ->subject('New Email Confirmation')
+            ->subject('Новый email адрес')
             ->to($email->getValue())
             ->html($this->twig->render(self::TEMPLATE, ['token' => $token]));
         try {

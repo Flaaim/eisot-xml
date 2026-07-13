@@ -23,7 +23,7 @@ final class PasswordResetTokenSender
     public function send(Email $email, string $token): void
     {
         $message = new SymfonyEmail()
-            ->subject('Password Reset')
+            ->subject('Сброс пароля')
             ->to($email->getValue())
             ->html($this->twig->render(self::TEMPLATE, ['token' => $token]));
         try {

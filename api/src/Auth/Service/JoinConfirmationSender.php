@@ -23,7 +23,7 @@ final class JoinConfirmationSender
     public function send(Email $email, string $token): void
     {
         $message = new SymfonyEmail()
-            ->subject('Join confirmation')
+            ->subject('Подтверждение регистрации')
             ->to($email->getValue())
             ->html($this->twig->render(self::TEMPLATE, ['token' => $token]));
         try {

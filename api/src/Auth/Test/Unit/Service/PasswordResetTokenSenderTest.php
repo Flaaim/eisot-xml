@@ -32,7 +32,7 @@ final class PasswordResetTokenSenderTest extends TestCase
 
         $symfonyEmail = new SymfonyEmail()
             ->to($to->getValue())
-            ->subject('Password Reset')
+            ->subject('Сброс пароля')
             ->html($twig->render($template, ['token' => $token]));
 
         $mailer = $this->createMock(MailerInterface::class);

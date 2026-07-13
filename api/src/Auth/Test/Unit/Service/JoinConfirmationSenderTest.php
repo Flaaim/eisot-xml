@@ -32,7 +32,7 @@ final class JoinConfirmationSenderTest extends TestCase
 
         $symfonyEmail = new SymfonyEmail()
             ->to($to->getValue())
-            ->subject('Join confirmation')
+            ->subject('Подтверждение регистрации')
             ->html($twig->render($template, ['token' => $token]));
 
         $mailer = $this->createMock(MailerInterface::class);

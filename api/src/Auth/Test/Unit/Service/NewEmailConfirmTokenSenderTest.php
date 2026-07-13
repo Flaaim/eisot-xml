@@ -32,7 +32,7 @@ final class NewEmailConfirmTokenSenderTest extends TestCase
 
         $symfonyEmail = new SymfonyEmail()
             ->to($to->getValue())
-            ->subject('New Email Confirmation')
+            ->subject('Новый email адрес')
             ->html($twig->render($template, ['token' => $token]));
 
         $mailer = $this->createMock(MailerInterface::class);
