@@ -175,3 +175,4 @@ jobs:
           CLIENT_SECRET: ${{secrets.CLIENT_SECRET}}
           YOOKASSA_SHOP_ID: ${{secrets.YOOKASSA_SHOP_ID}}
           YOOKASSA_SECRET_KEY: ${{secrets.YOOKASSA_SECRET_KEY}}
+          FRONTEND_URL: ${{secrets.API_SITE_URL}}
