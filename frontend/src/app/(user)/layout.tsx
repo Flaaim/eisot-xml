@@ -52,7 +52,9 @@ export default async function UserDashboardLayout({
             </div>
           </header>
           <main className="flex-1 p-6 max-[765px]:p-2.5">{children}</main>
-          <footer className="border-t p-4 text-sm text-muted-foreground">Footer</footer>
+          <footer className="border-t p-4 text-sm text-muted-foreground">
+            <small>Григорьев Александр Иванович, ИНН 272497691420, flaeim@gmail.com</small>
+          </footer>
         </div>
       </div>
 
