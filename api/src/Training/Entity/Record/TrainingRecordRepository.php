@@ -38,6 +38,12 @@ final class TrainingRecordRepository
         return $record;
     }
 
+    public function find(Id $id): ?TrainingRecord
+    {
+        /** @var TrainingRecord */
+        return $this->repo->find($id->getValue());
+    }
+
     public function add(TrainingRecord $record): void
     {
         $this->em->persist($record);
@@ -54,5 +60,10 @@ final class TrainingRecordRepository
                 SQL,
             ['companyId' => $companyId],
         );
+    }
+
+    public function removeRecord(TrainingRecord $record): void
+    {
+        $this->em->remove($record);
     }
 }
