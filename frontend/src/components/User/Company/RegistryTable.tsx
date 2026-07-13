@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Download, FileCode, CheckCircle2, XCircle } from "lucide-react";
+import { Download, FileCode, CheckCircle2, XCircle, Trash2 } from "lucide-react";
 
 import {
   Table,
@@ -15,21 +15,39 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { RegistryRecordDto, exportRegistryToXmlAction } from "@/actions/registry";
+import {
+  RegistryRecordDto,
+  exportRegistryToXmlAction,
+  removeRecordAction,
+} from "@/actions/registry";
 import { AccessRestrictedDialog } from "@/components/User/Subscription/AccessRestrictedDialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 interface RegistryTableProps {
   readonly records: RegistryRecordDto[];
   readonly hasSubscriptionAccess: boolean;
+  readonly companyId: string;
 }
 
-export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableProps) {
+export function RegistryTable({ records, hasSubscriptionAccess, companyId }: RegistryTableProps) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isExporting, setIsExporting] = useState(false);
   const [accessDialogOpen, setAccessDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const isAllSelected = records.length > 0 && selectedIds.size === records.length;
-
+  const router = useRouter();
   const toggleSelectAll = () => {
     if (isAllSelected) {
       setSelectedIds(new Set());
@@ -49,7 +67,24 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
       return next;
     });
   };
-
+  const removePermanently = async (recordId: string) => {
+    try {
+      setLoading(true);
+      const response = await removeRecordAction(companyId, recordId);
+      if (response.ok) {
+        toast.success("Запись безвозвратно удалена.");
+        setDeleteDialogOpen(false);
+        router.refresh();
+      } else {
+        toast.error(response.error ?? "Не удалось удалить запись.");
+      }
+    } catch (error) {
+      console.error("Remove record error:", error);
+      toast.error("Не удалось удалить запись.");
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleExport = async () => {
     if (selectedIds.size === 0) {
       toast.warning("Выберите хотя бы одну запись для формирования экспорта.");
@@ -179,6 +214,7 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
                     <TableHead>Результат</TableHead>
                     <TableHead>Дата</TableHead>
                     <TableHead>№ Протокола</TableHead>
+                    <TableHead>Удалить</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -224,6 +260,45 @@ export function RegistryTable({ records, hasSubscriptionAccess }: RegistryTableP
                           })}
                         </TableCell>
                         <TableCell className="font-mono text-xs">{row.protocolNumber}</TableCell>
+                        <TableCell>
+                          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                            <DialogTrigger
+                              render={
+                                <button
+                                  type="button"
+                                  className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-destructive transition-colors hover:bg-destructive/10"
+                                >
+                                  <Trash2 className="size-4" />
+                                </button>
+                              }
+                            />
+                            <DialogContent showCloseButton={false}>
+                              <DialogHeader>
+                                <DialogTitle>Удалить запись?</DialogTitle>
+                                <DialogDescription>
+                                  Запись будет безвозвратно удалена. Это действие нельзя отменить.
+                                </DialogDescription>
+                              </DialogHeader>
+                              <DialogFooter>
+                                <DialogClose
+                                  render={<Button variant="outline" className="cursor-pointer" />}
+                                >
+                                  Отмена
+                                </DialogClose>
+                                <Button
+                                  variant="destructive"
+                                  className="cursor-pointer"
+                                  disabled={loading}
+                                  onClick={() => {
+                                    void removePermanently(row.id);
+                                  }}
+                                >
+                                  Удалить
+                                </Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                        </TableCell>
                       </TableRow>
                     );
                   })}

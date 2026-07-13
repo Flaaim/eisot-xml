@@ -4,6 +4,7 @@ import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
 import { ApiResponse } from "@/interfaces/response.interface";
 import { getApiErrorMessage, handleApiResponse, parseApiErrorBody } from "@/lib/handleApiResponse";
+import { revalidatePath } from "next/cache";
 
 export interface RegistryRecordDto {
   id: string;
@@ -71,6 +72,32 @@ export async function exportRegistryToXmlAction(
     return { ok: true, data: { xmlContent: text } };
   } catch (error) {
     console.error("exportRegistryToXmlAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+export async function removeRecordAction(
+  companyId: string,
+  recordId: string
+): Promise<ApiResponse> {
+  try {
+    const response = await apiFetch(API.training.remove(companyId, recordId), {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+    const parsed = await handleApiResponse(response);
+    if (!parsed.ok) {
+      return { ok: false, error: parsed.error };
+    }
+
+    revalidatePath("/user/company");
+    revalidatePath("/user/company/add");
+    revalidatePath(`/user/company/${companyId}/registry`);
+
+    return { ok: true };
+  } catch (error) {
+    console.error("removeRecordAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

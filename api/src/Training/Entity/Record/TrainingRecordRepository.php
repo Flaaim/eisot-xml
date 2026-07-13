@@ -66,4 +66,20 @@ final class TrainingRecordRepository
     {
         $this->em->remove($record);
     }
+
+    public function hasOtherRecordsByWorkerId(WorkerId $workerId, Id $excludeRecordId): bool
+    {
+        $result = $this->em->createQueryBuilder()
+            ->select('1')
+            ->from(TrainingRecord::class, 't')
+            ->where('t.workerId = :workerId')
+            ->andWhere('t.id != :excludeId')
+            ->setParameter('workerId', $workerId->getValue())
+            ->setParameter('excludeId', $excludeRecordId->getValue())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return null !== $result;
+    }
 }

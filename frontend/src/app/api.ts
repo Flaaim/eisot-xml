@@ -36,6 +36,8 @@ export const API = {
   },
   training: {
     export: () => BASE_URL + `/v1/training/export`,
+    remove: (companyId: string, recordId: string) =>
+      BASE_URL + `/v1/companies/${companyId}/${recordId}`,
   },
   subscription: {
     access: () => BASE_URL + `/v1/user/subscription/access`,

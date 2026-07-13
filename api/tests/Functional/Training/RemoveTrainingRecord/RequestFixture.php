@@ -14,6 +14,12 @@ use App\Company\Test\Builder\CompanyBuilder;
 use App\Training\Entity\Record\Id as RecordId;
 use App\Training\Entity\Record\WorkerId;
 use App\Training\Test\Builder\TrainingRecordBuilder;
+use App\Worker\Entity\Worker\CompanyId as WorkerCompanyId;
+use App\Worker\Entity\Worker\FullName;
+use App\Worker\Entity\Worker\Profession;
+use App\Worker\Entity\Worker\Snils;
+use App\Worker\Entity\Worker\SnilsInfo;
+use App\Worker\Entity\Worker\Worker;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -27,7 +33,8 @@ final class RequestFixture extends AbstractFixture
     public const string OTHER_USER_ID    = 'b2c3d4e5-f6a7-4b8c-9d0e-f1a2b3c4d5e6';
     public const string OTHER_USER_EMAIL = 'training-other@test.com';
 
-    public const string RECORD_ID = '388881ab-a0e3-4269-9d30-eb7e68844f1a';
+    public const string RECORD_ID_ONE = '388881ab-a0e3-4269-9d30-eb7e68844f1a';
+    public const string RECORD_ID_TWO = '7da54dcc-8aec-4a7a-890a-35556581045b';
 
     public function load(ObjectManager $manager): void
     {
@@ -54,11 +61,26 @@ final class RequestFixture extends AbstractFixture
             ->build();
         $manager->persist($company);
 
-        $record = new TrainingRecordBuilder()
-            ->withId(new RecordId(self::RECORD_ID))
+        $worker = Worker::register(
+            new \App\Worker\Entity\Worker\WorkerId(self::WORKER_ID),
+            new WorkerCompanyId(self::COMPANY_ID),
+            FullName::create('Иванов', 'Иван', 'Иванович'),
+            Profession::fromString('Слесарь'),
+            SnilsInfo::forCitizen(Snils::fromString('112-233-445 95')),
+        );
+        $manager->persist($worker);
+
+        $record1 = new TrainingRecordBuilder()
+            ->withId(new RecordId(self::RECORD_ID_ONE))
             ->withWorkerId(new WorkerId(self::WORKER_ID))
             ->build();
-        $manager->persist($record);
+        $manager->persist($record1);
+
+        $record2 = new TrainingRecordBuilder()
+            ->withId(new RecordId(self::RECORD_ID_TWO))
+            ->withWorkerId(new WorkerId(self::WORKER_ID))
+            ->build();
+        $manager->persist($record2);
 
         $manager->flush();
     }

@@ -50,4 +50,9 @@ final class WorkerRepository
             ['companyId' => $companyId->getValue()],
         );
     }
+
+    public function remove(Worker $worker): void
+    {
+        $this->em->remove($worker);
+    }
 }

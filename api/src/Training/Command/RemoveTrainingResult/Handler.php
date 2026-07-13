@@ -11,6 +11,8 @@ use App\Infrastructure\Doctrine\Flusher;
 use App\Training\Entity\Record\Id as RecordId;
 use App\Training\Entity\Record\TrainingRecordRepository;
 use App\Training\Exception\AccessDeniedException;
+use App\Worker\Entity\Worker\WorkerId;
+use App\Worker\Entity\Worker\WorkerRepository;
 use DomainException;
 
 final class Handler
@@ -19,6 +21,7 @@ final class Handler
     public function __construct(
         private TrainingRecordRepository $records,
         private CompanyRepository $companies,
+        private WorkerRepository $workers,
         private Flusher $flusher,
     ) {}
 
@@ -37,6 +40,11 @@ final class Handler
         }
 
         $this->records->removeRecord($record);
+
+        if (!$this->records->hasOtherRecordsByWorkerId($record->getWorkerId(), $record->getId())) {
+            $worker = $this->workers->get(new WorkerId($record->getWorkerId()->getValue()));
+            $this->workers->remove($worker);
+        }
 
         $this->flusher->flush();
     }

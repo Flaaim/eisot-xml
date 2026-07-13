@@ -41,7 +41,11 @@ export default async function CompanyRegistryPage({ params }: CompanyRegistryPag
 
   return (
     <div className="space-y-4">
-      <RegistryTable records={records} hasSubscriptionAccess={hasSubscriptionAccess} />
+      <RegistryTable
+        records={records}
+        hasSubscriptionAccess={hasSubscriptionAccess}
+        companyId={companyId}
+      />
     </div>
   );
 }

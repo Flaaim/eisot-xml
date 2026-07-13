@@ -6,7 +6,10 @@ namespace Tests\Functional\Training\RemoveTrainingRecord;
 
 use App\Training\Entity\Record\Id;
 use App\Training\Entity\Record\TrainingRecordRepository;
+use App\Worker\Entity\Worker\WorkerId;
+use App\Worker\Entity\Worker\WorkerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use DomainException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
@@ -26,6 +29,7 @@ final class RequestActionTest extends WebTestCase
     private string $otherToken;
 
     private TrainingRecordRepository $records;
+    private WorkerRepository $workers;
 
     protected function setUp(): void
     {
@@ -41,13 +45,14 @@ final class RequestActionTest extends WebTestCase
         /** @var EntityManagerInterface $em */
         $em = $container->get(EntityManagerInterface::class);
         $this->records = new TrainingRecordRepository($em);
+        $this->workers = new WorkerRepository($em);
     }
 
     public function testUnauthorized(): void
     {
         $this->client->jsonRequest(
             'DELETE',
-            '/v1/companies/' . RequestFixture::COMPANY_ID . '/' . RequestFixture::RECORD_ID,
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/' . RequestFixture::RECORD_ID_ONE,
         );
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
@@ -57,7 +62,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest(
             'DELETE',
-            '/v1/companies/' . RequestFixture::COMPANY_ID . '/' . RequestFixture::RECORD_ID,
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/' . RequestFixture::RECORD_ID_ONE,
             [],
             $this->authHeaders($this->otherToken),
         );
@@ -69,21 +74,46 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest(
             'DELETE',
-            '/v1/companies/' . RequestFixture::COMPANY_ID . '/' . RequestFixture::RECORD_ID,
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/' . RequestFixture::RECORD_ID_ONE,
             [],
             $this->authHeaders($this->ownerToken),
         );
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
 
-        self::assertNull($this->records->find(new Id(RequestFixture::RECORD_ID)));
+        self::assertNull($this->records->find(new Id(RequestFixture::RECORD_ID_ONE)));
+    }
+
+    public function testSuccessDeleteAllRecords(): void
+    {
+        $this->client->jsonRequest(
+            'DELETE',
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/' . RequestFixture::RECORD_ID_ONE,
+            [],
+            $this->authHeaders($this->ownerToken),
+        );
+
+        $this->client->jsonRequest(
+            'DELETE',
+            '/v1/companies/' . RequestFixture::COMPANY_ID . '/' . RequestFixture::RECORD_ID_TWO,
+            [],
+            $this->authHeaders($this->ownerToken),
+        );
+
+        self::assertEquals(204, $this->client->getResponse()->getStatusCode());
+
+        self::assertNull($this->records->find(new Id(RequestFixture::RECORD_ID_ONE)));
+        self::assertNull($this->records->find(new Id(RequestFixture::RECORD_ID_TWO)));
+
+        self::expectException(DomainException::class);
+        $this->workers->get(new WorkerId(RequestFixture::WORKER_ID));
     }
 
     public function testCompanyNotFound(): void
     {
         $this->client->jsonRequest(
             'DELETE',
-            '/v1/companies/a8953006-83bd-4878-860a-fed65afc4b44/' . RequestFixture::RECORD_ID,
+            '/v1/companies/a8953006-83bd-4878-860a-fed65afc4b44/' . RequestFixture::RECORD_ID_ONE,
             [],
             $this->authHeaders($this->ownerToken),
         );
