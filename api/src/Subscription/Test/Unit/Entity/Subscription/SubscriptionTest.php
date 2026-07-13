@@ -78,4 +78,19 @@ final class SubscriptionTest extends TestCase
         self::assertSame(SubscriptionStatus::EXPIRED, $subscription->getStatus());
         self::assertCount(2, $subscription->releaseEvents());
     }
+
+    public function testChangePlan(): void
+    {
+        $subscription = Subscription::activate(
+            Id::generate(),
+            new UserId(self::USER_ID),
+            Plan::BASIC,
+            Period::fromDurationDays(30),
+        );
+
+        $subscription->changePlan(Plan::EXTENDED);
+
+        self::assertTrue($subscription->isActive());
+        self::assertSame(Plan::EXTENDED, $subscription->getPlan());
+    }
 }

@@ -119,6 +119,14 @@ final class Subscription implements AggregateRoot
         }
     }
 
+    public function changePlan(Plan $plan): void
+    {
+        if ($this->getPlan()->value === $plan->value) {
+            return;
+        }
+        $this->plan = $plan;
+    }
+
     /**
      * Переводит подписку в статус expired и фиксирует событие.
      */

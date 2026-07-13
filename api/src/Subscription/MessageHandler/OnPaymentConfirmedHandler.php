@@ -7,6 +7,7 @@ namespace App\Subscription\MessageHandler;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Subscription\Command\ActivateSubscription\Command as ActivateSubscriptionCommand;
 use App\Subscription\Command\ActivateSubscription\Handler as ActivateSubscriptionHandler;
+use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Entity\Subscription\UserId;
 use App\Subscription\Event\PaymentConfirmed;
@@ -30,8 +31,9 @@ final readonly class OnPaymentConfirmedHandler
 
         if (null !== $activeSubscription) {
             $activeSubscription->extend($event->durationDays);
-            $this->flusher->flush();
+            $activeSubscription->changePlan(Plan::from($event->plan));
 
+            $this->flusher->flush();
             $this->logger->info('User Subscription extended after payment confirmation.', [
                 'paymentId' => $event->paymentId,
                 'userId' => $event->userId,
