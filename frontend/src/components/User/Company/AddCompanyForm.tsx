@@ -17,10 +17,12 @@ import {
 } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
-import { addCompanyAction } from "@/actions/company";
-import { normalizeInn, validateInn } from "@/lib/inn";
+import { addCompanyAction, fetchCompanyTitleByInnAction } from "@/actions/company";
+import { FNS_TITLE_LOOKUP_ENABLED, normalizeInn, validateInn } from "@/lib/inn";
 import { useRouter } from "next/navigation";
 import type { SubscriptionPlan } from "@/interfaces/subscription.interface";
+import { Loader2, Search } from "lucide-react";
+import { useState } from "react";
 
 const schema = z.object({
   name: z
@@ -58,7 +60,38 @@ function isCompanyLimitReached(plan: SubscriptionPlan | null, totalCompanyCount:
 
 export default function AddCompanyForm({ plan, totalCompanyCount }: AddCompanyFormProps) {
   const companyLimitReached = isCompanyLimitReached(plan, totalCompanyCount);
+  const [isLookupLoading, setIsLookupLoading] = useState(false);
 
+  async function handleLookupTitleByInn() {
+    const inn = form.getValues("inn");
+    const validationError = validateInn(inn);
+
+    if (validationError) {
+      form.setError("inn", {
+        type: "manual",
+        message: validationError,
+      });
+      return;
+    }
+
+    const normalizedInn = normalizeInn(inn);
+
+    setIsLookupLoading(true);
+    try {
+      const result = await fetchCompanyTitleByInnAction(normalizedInn);
+      if (!result.ok) {
+        toast.info(result.error ?? "Сервис получения наименования по ИНН недоступен.");
+        return;
+      }
+
+      if (result.data?.title) {
+        form.setValue("name", result.data.title, { shouldDirty: true, shouldValidate: true });
+        toast.success("Наименование получено по ИНН.");
+      }
+    } finally {
+      setIsLookupLoading(false);
+    }
+  }
   const form = useForm<AddCompanyFormData>({
     mode: "onBlur",
     resolver: zodResolver(schema),
@@ -128,6 +161,35 @@ export default function AddCompanyForm({ plan, totalCompanyCount }: AddCompanyFo
                 </Field>
               )}
             />
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={
+                      isLookupLoading || form.formState.isSubmitting || !FNS_TITLE_LOOKUP_ENABLED
+                    }
+                    onClick={() => {
+                      void handleLookupTitleByInn();
+                    }}
+                    className="shrink-0"
+                  >
+                    {isLookupLoading ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <Search className="size-4" />
+                    )}
+                    Получить наименование по ИНН
+                  </Button>
+                }
+              />
+              <TooltipContent side="bottom" className="max-w-xs text-center">
+                {FNS_TITLE_LOOKUP_ENABLED
+                  ? "Запросить Title организации в сервисе ФНС по указанному Inn"
+                  : "Интеграция с сервисом ФНС будет доступна в следующей версии (июнь 2026)"}
+              </TooltipContent>
+            </Tooltip>
             <Controller
               name="inn"
               control={form.control}
