@@ -252,11 +252,20 @@ export async function fetchCompanyTitleByInnAction(
   }
 
   try {
-    // TODO: подключить apiFetch(API.company.titleByInn(normalizedInn), ...) после появления эндпоинта
-    return await Promise.resolve({
-      ok: false,
-      error: "Эндпоинт прокси ФНС не настроен.",
+    const response = await apiFetch(API.company.fetchTitleByInn(inn), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
     });
+
+    const parsed = await handleApiResponse<CompanyTitleByInnResponse>(response);
+    if (!parsed.ok || !parsed.data) {
+      return { ok: false, error: parsed.error };
+    }
+
+    return parsed;
   } catch (error) {
     console.error("fetchCompanyTitleByInnAction Fetch error:", error);
     return await Promise.resolve({

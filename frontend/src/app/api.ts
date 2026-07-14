@@ -29,6 +29,7 @@ export const API = {
     stats: (id: string) => BASE_URL + `/v1/companies/${id}/stats`,
     rename: (id: string) => BASE_URL + `/v1/companies/${id}/name`,
     changeInn: (id: string) => BASE_URL + `/v1/companies/${id}/inn`,
+    fetchTitleByInn: (inn: string) => BASE_URL + `/v1/companies/suggestions?inn=${inn}`,
   },
   worker: {
     register: (companyId: string) => BASE_URL + `/v1/companies/${companyId}/workers`,

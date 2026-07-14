@@ -74,6 +74,7 @@ export function CompanySettingsForm({
         toast.info(result.error ?? "Сервис получения наименования по ИНН недоступен.");
         return;
       }
+
       if (result.data?.title) {
         form.setValue("title", result.data.title, { shouldDirty: true, shouldValidate: true });
         toast.success("Наименование получено по ИНН.");
