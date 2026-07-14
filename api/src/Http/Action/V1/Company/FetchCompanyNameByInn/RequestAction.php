@@ -40,7 +40,7 @@ final class RequestAction
         $this->validator->validate($command);
         try {
             $name = $this->handler->handle($command);
-            return new JsonResponse(['companyName' => $name]);
+            return new JsonResponse(['title' => $name]);
         } catch (RemoteException $e) {
             $this->logger->warning('Dadata API error: ' . $e->getMessage(), ['exception' => $e]);
 

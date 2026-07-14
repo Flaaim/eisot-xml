@@ -73,7 +73,7 @@ final class RequestActionTest extends WebTestCase
 
         $data = Json::decode($body);
 
-        self::assertEquals(['companyName' => 'ПАО СБЕРБАНК'], $data);
+        self::assertEquals(['title' => 'ПАО СБЕРБАНК'], $data);
     }
 
     public function testFailed(): void
