@@ -11,6 +11,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 final class RequestAction
 {
@@ -19,7 +20,7 @@ final class RequestAction
         private readonly Handler $handler,
     ) {}
 
-    #[Route('/v1/companies/{id}', name: 'company.get', methods: ['GET'])]
+    #[Route('/v1/companies/{id}', name: 'company.get', requirements: ['id' => Requirement::UUID], methods: ['GET'])]
     public function __invoke(string $id): Response
     {
         /** @var UserAdapter|null $userAdapter */
