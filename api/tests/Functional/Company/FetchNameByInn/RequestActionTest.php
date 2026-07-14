@@ -85,10 +85,10 @@ final class RequestActionTest extends WebTestCase
         $this->client->disableReboot();
 
         $this->container->set('dadata.client', $mockClient);
-
+        $untestedInn = '0000000000';
         $this->client->jsonRequest(
             'GET',
-            '/v1/companies/suggestions?inn=' . RequestFixture::COMPANY_INN,
+            '/v1/companies/suggestions?inn=' . $untestedInn,
             [],
             $this->authHeaders($this->ownerToken),
         );

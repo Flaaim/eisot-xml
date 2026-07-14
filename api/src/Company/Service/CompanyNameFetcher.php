@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
-final class CompanyNameFetcher
+final class CompanyNameFetcher implements CompanyNameFetcherInterface
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
@@ -17,7 +17,7 @@ final class CompanyNameFetcher
         private readonly HttpClientInterface $client,
     ) {}
 
-    public function get(string $inn): array
+    public function getCompanyName(string $inn): array
     {
         try {
             $response = $this->client->request('POST', 'findById/party', [

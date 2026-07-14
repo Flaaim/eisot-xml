@@ -77,6 +77,8 @@ services:
         arguments:
             $interval: 'PT1H'
 
+    App\Company\Service\CompanyNameFetcherInterface: '@App\Company\Service\CompanyNameFetcher'
+
 when@test:
     services:
         App\Subscription\Service\PaymentGatewayInterface:
