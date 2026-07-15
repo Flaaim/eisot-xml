@@ -25,6 +25,7 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
+
 interface RequestChangeEmailProps {
   profile: ProfileDTO;
 }
@@ -39,6 +40,7 @@ export default function RequestChangeEmail({ profile }: RequestChangeEmailProps)
       email: "",
     },
   });
+
   async function onSubmit(values: FormData) {
     const result = await requestEmailChange(values.email, profile.id);
 
@@ -49,6 +51,7 @@ export default function RequestChangeEmail({ profile }: RequestChangeEmailProps)
 
     setIsSuccess(true);
   }
+
   if (isSuccess) {
     return (
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">

@@ -275,3 +275,27 @@ export async function changeEmailConfirm(token: string): Promise<ApiResponse> {
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+export async function requestPasswordChange(
+  old_password: string,
+  new_password: string
+): Promise<ApiResponse> {
+  try {
+    const response = await apiFetch(API.auth.requestPasswordChange(old_password, new_password), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ currentPassword: old_password, newPassword: new_password }),
+    });
+    const parsed = await handleApiResponse(response);
+
+    if (!parsed.ok) {
+      return { ok: false, error: parsed.error };
+    }
+    return { ok: true };
+  } catch (error) {
+    console.error("Request password change error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}

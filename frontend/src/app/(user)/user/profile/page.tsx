@@ -106,7 +106,7 @@ export default async function ProfilePage() {
                 variant="secondary"
                 size="sm"
                 nativeButton={false}
-                render={<Link href="/user/dashboard/profile/change-password" />}
+                render={<Link href="/user/profile/change-password" />}
               >
                 Изменить пароль
               </Button>
