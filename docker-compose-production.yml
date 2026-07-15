@@ -58,6 +58,7 @@ services:
       JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+      DADATA_API_KEY: ${DADATA_API_KEY}
     depends_on:
       api-postgres:
         condition: service_started
@@ -89,6 +90,7 @@ services:
       JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+      DADATA_API_KEY: ${DADATA_API_KEY}
     depends_on:
       api-postgres:
           condition: service_started
@@ -149,6 +151,7 @@ services:
       JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+      DADATA_API_KEY: ${DADATA_API_KEY}
     secrets:
       - jwt_public_key
       - jwt_private_key
