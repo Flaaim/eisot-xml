@@ -27,6 +27,7 @@ framework:
             'App\Auth\Event\PasswordResetRequested': async
             'App\Auth\Event\UserRemoved': async
             'App\Auth\Event\PasswordReset': async
+            'App\Auth\Event\PasswordChanged': async
             'App\Auth\Event\UserCreated': async
             'App\Auth\Event\JoinByEmailRequested': async
             'App\Auth\Event\UserRoleChanged': async

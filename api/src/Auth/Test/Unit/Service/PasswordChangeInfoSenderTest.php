@@ -24,7 +24,7 @@ final class PasswordChangeInfoSenderTest extends TestCase
         $to = new Email('user@app.test');
         $template = 'auth/password/change.html.twig';
         $loader = new ArrayLoader([
-            $template => "<p>Изменение пароля</p>",
+            $template => '<p>Изменение пароля</p>',
         ]);
         $twig = new Environment($loader);
 
@@ -52,14 +52,9 @@ final class PasswordChangeInfoSenderTest extends TestCase
         $to = new Email('user@app.test');
         $template = 'auth/password/change.html.twig';
         $loader = new ArrayLoader([
-            $template => "<p>Изменение пароля</p>",
+            $template => '<p>Изменение пароля</p>',
         ]);
         $twig = new Environment($loader);
-
-        $symfonyEmail = new SymfonyEmail()
-            ->to($to->getValue())
-            ->subject('Смена пароля')
-            ->html($twig->render($template));
 
         $mailer = $this->createMock(MailerInterface::class);
         $mailer->expects(self::once())->method('send')->willThrowException(new TransportException('Transport failed'));
@@ -69,5 +64,4 @@ final class PasswordChangeInfoSenderTest extends TestCase
         $this->expectException(TransportException::class);
         $sender->send($to);
     }
-
 }

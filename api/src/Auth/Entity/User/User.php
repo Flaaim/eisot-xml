@@ -7,6 +7,7 @@ namespace App\Auth\Entity\User;
 use App\Auth\Event\ChangeEmailRequested;
 use App\Auth\Event\JoinByEmailRequested;
 use App\Auth\Event\NetworkAttached;
+use App\Auth\Event\PasswordChanged;
 use App\Auth\Event\PasswordReset;
 use App\Auth\Event\PasswordResetRequested;
 use App\Auth\Event\UserCreated;
@@ -174,6 +175,8 @@ final class User implements AggregateRoot
             throw new DomainException('Incorrect current password.');
         }
         $this->passwordHash = $hasher->hash($new);
+
+        $this->recordEvent(new PasswordChanged($this->id->getValue()));
     }
 
     public function requestEmailChanging(Token $token, DateTimeImmutable $date, Email $email): void
