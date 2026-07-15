@@ -78,7 +78,7 @@ export default function RequestChangePassword({ profile }: ChangePasswordFormPro
       <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-            <MailCheck className="h-10 w-10 text-green-600" />
+            <MailCheck className="size-10 text-green-600" />
           </div>
           <CardTitle className="text-2xl font-semibold tracking-tight">
             <h1>Пароль изменён</h1>
@@ -116,7 +116,7 @@ export default function RequestChangePassword({ profile }: ChangePasswordFormPro
       <Card className="shadow-sm">
         <CardHeader className="space-y-4">
           <div className="mx-auto w-fit rounded-full bg-blue-100 p-4">
-            <Wrench className="h-10 w-10 text-blue-600" />
+            <Wrench className="size-10 text-blue-600" />
           </div>
           <CardTitle className="text-center text-2xl font-semibold tracking-tight">
             Изменение пароля

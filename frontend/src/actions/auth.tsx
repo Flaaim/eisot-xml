@@ -280,7 +280,7 @@ export async function requestPasswordChange(
   new_password: string
 ): Promise<ApiResponse> {
   try {
-    const response = await apiFetch(API.auth.requestPasswordChange(old_password, new_password), {
+    const response = await apiFetch(API.auth.requestPasswordChange(), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

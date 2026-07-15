@@ -14,8 +14,7 @@ export const API = {
     passwordResetConfirm: () => BASE_URL + `/v1/auth/password/reset`,
     requestEmailChange: () => BASE_URL + `/v1/auth/email/change/request`,
     confirmEmailChange: () => BASE_URL + `/v1/auth/email/change/confirm`,
-    requestPasswordChange: (old_password: string, new_password: string) =>
-      BASE_URL + `/v1/auth/user/password/change`,
+    requestPasswordChange: () => BASE_URL + `/v1/auth/user/password/change`,
   },
   user: {
     profile: () => BASE_URL + `/v1/user/profile`,
