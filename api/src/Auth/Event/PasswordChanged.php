@@ -7,6 +7,7 @@ namespace App\Auth\Event;
 final class PasswordChanged
 {
     public function __construct(
-        public readonly string $id
+        public readonly string $id,
+        public readonly string $email
     ) {}
 }

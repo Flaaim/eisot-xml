@@ -176,7 +176,10 @@ final class User implements AggregateRoot
         }
         $this->passwordHash = $hasher->hash($new);
 
-        $this->recordEvent(new PasswordChanged($this->id->getValue()));
+        $this->recordEvent(new PasswordChanged(
+            $this->id->getValue(),
+            $this->getEmail()->getValue(),
+        ));
     }
 
     public function requestEmailChanging(Token $token, DateTimeImmutable $date, Email $email): void

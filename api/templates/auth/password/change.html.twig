@@ -1,0 +1,25 @@
+{% extends 'mail.html.twig' %}
+
+{% block title %}Пароль изменен | EISOT-XML.RU{% endblock %}
+{% block preheader %}Уведомление об успешной смене пароля в личном кабинете.{% endblock %}
+
+{% block body %}
+    <h2 style="margin: 0 0 20px 0; font-size: 20px; color: #0f172a;">Здравствуйте!</h2>
+
+    <p style="margin: 0 0 15px 0;">
+        Ваш пароль для входа в личный кабинет на сайте <strong>EISOT-XML.RU</strong> был успешно изменен.
+    </p>
+
+    <p style="margin: 0 0 20px 0; padding: 15px; background-color: #f8fafc; border-left: 4px solid #22c55e; font-size: 15px; color: #475569;">
+        <strong>✅ Это подтверждение:</strong> Если вы только что меняли пароль — никаких дополнительных действий не требуется. Теперь вы можете входить в аккаунт с новым паролем.
+    </p>
+
+    <p style="margin: 0 0 10px 0; font-size: 14px; color: #64748b;">
+        Для вашей безопасности мы рекомендуем:
+    </p>
+    <ul style="margin: 0 0 20px 0; padding-left: 20px; font-size: 14px; color: #475569;">
+        <li>Не использовать этот пароль на других сайтах.</li>
+        <li>Выходить из аккаунта после работы на общих устройствах.</li>
+    </ul>
+
+{% endblock %}

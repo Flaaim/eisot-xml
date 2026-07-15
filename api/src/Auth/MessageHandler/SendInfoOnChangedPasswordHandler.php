@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\Auth\MessageHandler;
 
+use App\Auth\Entity\User\Email;
 use App\Auth\Event\PasswordChanged;
-use Psr\Log\LoggerInterface;
+use App\Auth\Service\PasswordChangeInfoSender;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
-final class LogOnUserPasswordChangedHandler
+final class SendInfoOnChangedPasswordHandler
 {
     public function __construct(
-        private readonly LoggerInterface $logger,
+        private readonly PasswordChangeInfoSender $sender
     ) {}
 
     public function __invoke(PasswordChanged $event): void
     {
-        $userId = $event->id;
-        $email = $event->email;
-        $this->logger->info('User password changed ' . $userId . ' Email: ' . $email);
+        $this->sender->send(new Email($event->email));
     }
 }
