@@ -23,6 +23,7 @@ services:
       - GRANT_TYPE=${GRANT_TYPE}
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${CLIENT_SECRET}
+      - NEXT_PUBLIC_FNS_TITLE_LOOKUP_ENABLED=${NEXT_PUBLIC_FNS_TITLE_LOOKUP_ENABLED}
     expose:
       - "3000"
     depends_on:
