@@ -125,6 +125,7 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             NEXT_PUBLIC_BACKEND_URL=https://api.eisot-xml.ru
+            NEXT_PUBLIC_FNS_TITLE_LOOKUP_ENABLED=true
 
       - name: Build and Push GATEWAY Image
         uses: docker/build-push-action@v5
