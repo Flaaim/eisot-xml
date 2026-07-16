@@ -11,13 +11,14 @@ parameters:
         - 'common'
 
     oauth.clients:
-        - name: "rtn-tests"
+        - name: "eisot-xml"
           client_id: 'frontend'
           secret: 'my-super-secret-123'
           redirect_uri: '%env(FRONTEND_URL)%/oauth'
           grant_types:
               password:
               refresh_token:
+              social:
 
 
 services:
@@ -77,6 +78,17 @@ services:
         arguments:
             $interval: 'PT1H'
 
+    App\Infrastructure\Social\GoogleClient:
+        arguments:
+            $clientId: '%env(GOOGLE_CLIENT_ID)%'
+            $clientSecret: '%env(GOOGLE_CLIENT_SECRET)%'
+
+    App\Infrastructure\Social\Registry\ClientRegistryInterface: '@App\Infrastructure\Social\Registry\ClientRegistry'
+
+    App\Infrastructure\Social\Registry\ClientRegistry:
+        arguments:
+            $clients: [ '@App\Infrastructure\Social\GoogleClient' ]
+
     App\Company\Service\CompanyNameFetcherInterface: '@App\Company\Service\CompanyNameFetcher'
 
     App\Admin\ReadModel\AdminUserFetcherInterface: '@App\Admin\Query\AdminUserFetcher'
@@ -84,5 +96,11 @@ services:
 
 when@test:
     services:
+        _defaults:
+            autowire: true
+            autoconfigure: true
+
         App\Subscription\Service\PaymentGatewayInterface:
             class: App\Subscription\Test\Double\FakePaymentGateway
+
+        App\Infrastructure\Social\Registry\ClientRegistry: '@App\Infrastructure\Social\Registry\FakeRegistry'

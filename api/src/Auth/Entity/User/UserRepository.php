@@ -72,6 +72,18 @@ final class UserRepository
         return $this->repo->findOneBy(['newEmailToken.value' => $token]);
     }
 
+    public function findByNetwork(string $network, string $identity): ?User
+    {
+        return $this->repo->createQueryBuilder('u')
+            ->innerJoin('u.networks', 'n')
+            ->andWhere('n.network = :network')
+            ->andWhere('n.identity = :identity')
+            ->setParameter('network', $network)
+            ->setParameter('identity', $identity)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * @throws DomainException
      */

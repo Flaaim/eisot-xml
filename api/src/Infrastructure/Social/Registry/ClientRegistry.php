@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Infrastructure\Social\Registry;
+
+use App\Infrastructure\Social\ClientInterface;
+use App\Infrastructure\Social\SocialUserDTO;
+use DomainException;
+use InvalidArgumentException;
+
+/** @psalm-suppress UnusedClass */
+final class ClientRegistry implements ClientRegistryInterface
+{
+    /** @var array<ClientInterface> */
+    private array $clients;
+
+    public function __construct(array $clients)
+    {
+        foreach ($clients as $client) {
+            if (!$client instanceof ClientInterface) {
+                throw new InvalidArgumentException('Clients must implement ClientInterface');
+            }
+        }
+        $this->clients = $clients;
+    }
+
+    public function create(string $code, string $provider, string $redirectUri): SocialUserDTO
+    {
+        foreach ($this->clients as $client) {
+            if ($client->getProvider() === $provider) {
+                return $client->fetchUser($code, $redirectUri);
+            }
+        }
+        throw new DomainException('Provider {$provider} is not supported.');
+    }
+}
