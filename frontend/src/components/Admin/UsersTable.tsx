@@ -20,6 +20,9 @@ function planLabel(plan: AdminUserSummary["activeSubscriptionPlan"]): string {
   if (plan === "extended") {
     return "Extended";
   }
+  if (plan === "trial") {
+    return "Trial";
+  }
   return "—";
 }
 

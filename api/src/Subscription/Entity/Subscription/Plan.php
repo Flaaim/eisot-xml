@@ -11,12 +11,18 @@ enum Plan: string
 {
     case BASIC = 'basic';
     case EXTENDED = 'extended';
+    case TRIAL = 'trial';
 
     public function canAddMoreCompanies(int $currentCount): bool
     {
         return match ($this) {
-            self::BASIC => $currentCount < 1,
+            self::BASIC, self::TRIAL => $currentCount < 1,
             self::EXTENDED => true,
         };
+    }
+
+    public function isTrial(): bool
+    {
+        return self::TRIAL === $this;
     }
 }

@@ -37,6 +37,8 @@ final readonly class RequestAction
             'status' => $access->status,
             'periodStart' => $access->periodStart,
             'periodEnd' => $access->periodEnd,
+            'trialUsed' => $access->trialUsed,
+            'trialAvailable' => $access->trialAvailable,
         ]);
     }
 }

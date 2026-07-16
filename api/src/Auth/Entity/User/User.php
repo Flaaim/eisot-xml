@@ -44,6 +44,9 @@ final class User implements AggregateRoot
     #[ORM\Column(type: 'user_role')]
     private Role $role;
 
+    #[ORM\Column(name: 'trial_used', type: 'boolean', options: ['default' => false])]
+    private bool $trialUsed = false;
+
     private function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'auth_user_id')]
@@ -277,6 +280,23 @@ final class User implements AggregateRoot
     public function getRole(): Role
     {
         return $this->role;
+    }
+
+    public function isTrialUsed(): bool
+    {
+        return $this->trialUsed;
+    }
+
+    /**
+     * Фиксирует использование Trial Subscription (один раз за историю аккаунта).
+     */
+    public function markTrialAsUsed(): void
+    {
+        if ($this->trialUsed) {
+            throw new DomainException('Trial Subscription has already been used.');
+        }
+
+        $this->trialUsed = true;
     }
 
     /** @psalm-suppress PossiblyUnusedMethod */

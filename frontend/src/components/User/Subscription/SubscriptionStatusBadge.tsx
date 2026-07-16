@@ -1,10 +1,12 @@
 import { Crown } from "lucide-react";
 
 import type { SubscriptionAccess } from "@/interfaces/subscription.interface";
+import { daysRemainingUntil, formatDaysLabel } from "@/interfaces/subscription.interface";
 
 const PLAN_LABELS: Record<string, string> = {
   basic: "Базовый",
-  extended: "Extended",
+  extended: "Расширенный",
+  trial: "Пробный период",
 };
 
 interface SubscriptionStatusBadgeProps {
@@ -17,6 +19,16 @@ export function SubscriptionStatusBadge({ access }: SubscriptionStatusBadgeProps
       <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border ring-inset">
         <Crown className="size-3.5" />
         Подписка не активна
+      </span>
+    );
+  }
+
+  if (access.plan === "trial" && access.periodEnd) {
+    const remaining = daysRemainingUntil(access.periodEnd);
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-md bg-sky-500/10 px-2.5 py-1 text-xs font-medium text-sky-700 ring-1 ring-sky-500/20 ring-inset dark:text-sky-400">
+        <Crown className="size-3.5" />
+        Пробный период (осталось {formatDaysLabel(remaining)})
       </span>
     );
   }

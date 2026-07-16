@@ -99,3 +99,30 @@ export async function activateSubscriptionAction(
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function activateTrialAction(): Promise<ApiResponse<{ id: string }>> {
+  try {
+    const response = await apiFetch(API.subscription.activateTrial(), {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    const parsed = await handleApiResponse<{ id: string }>(response, {
+      defaultError: "Не удалось активировать Trial Subscription.",
+    });
+
+    if (!parsed.ok) {
+      return { ok: false, error: parsed.error };
+    }
+
+    revalidatePath("/user/subscription");
+    revalidatePath("/user/profile");
+    revalidatePath("/user/company");
+
+    return { ok: true, data: parsed.data ?? undefined };
+  } catch {
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}

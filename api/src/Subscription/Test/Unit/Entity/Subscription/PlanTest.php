@@ -26,4 +26,11 @@ final class PlanTest extends TestCase
         self::assertTrue(Plan::EXTENDED->canAddMoreCompanies(1));
         self::assertTrue(Plan::EXTENDED->canAddMoreCompanies(100));
     }
+
+    public function testTrialHasSameCompanyLimitAsBasic(): void
+    {
+        self::assertTrue(Plan::TRIAL->canAddMoreCompanies(0));
+        self::assertFalse(Plan::TRIAL->canAddMoreCompanies(1));
+        self::assertTrue(Plan::TRIAL->isTrial());
+    }
 }

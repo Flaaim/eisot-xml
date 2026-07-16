@@ -10,6 +10,8 @@ export default async function SubscriptionPage() {
     status: null,
     periodStart: null,
     periodEnd: null,
+    trialUsed: false,
+    trialAvailable: false,
   };
 
   return (

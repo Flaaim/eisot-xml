@@ -15,6 +15,7 @@ final class PlanPricing
         return match ($plan) {
             Plan::BASIC => Amount::fromRubles('490.00'),
             Plan::EXTENDED => Amount::fromRubles('1490.00'),
+            Plan::TRIAL => Amount::fromRubles('0.00'),
         };
     }
 
@@ -22,6 +23,7 @@ final class PlanPricing
     {
         return match ($plan) {
             Plan::BASIC, Plan::EXTENDED => 30,
+            Plan::TRIAL => 3,
         };
     }
 
@@ -30,6 +32,7 @@ final class PlanPricing
         return match ($plan) {
             Plan::BASIC => 'User Subscription: Базовый',
             Plan::EXTENDED => 'User Subscription: Расширенный',
+            Plan::TRIAL => 'Trial Subscription: 3 дня',
         };
     }
 

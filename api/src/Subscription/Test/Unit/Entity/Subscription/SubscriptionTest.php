@@ -11,6 +11,7 @@ use App\Subscription\Entity\Subscription\Subscription;
 use App\Subscription\Entity\Subscription\SubscriptionStatus;
 use App\Subscription\Entity\Subscription\UserId;
 use DateTimeImmutable;
+use DomainException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -92,5 +93,32 @@ final class SubscriptionTest extends TestCase
 
         self::assertTrue($subscription->isActive());
         self::assertSame(Plan::EXTENDED, $subscription->getPlan());
+    }
+
+    public function testTrialRequiresExactlyThreeDays(): void
+    {
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Trial Subscription Period must be exactly 3 days.');
+
+        Subscription::activate(
+            Id::generate(),
+            new UserId(self::USER_ID),
+            Plan::TRIAL,
+            Period::fromDurationDays(30),
+        );
+    }
+
+    public function testTrialActivatesForThreeDays(): void
+    {
+        $subscription = Subscription::activate(
+            Id::generate(),
+            new UserId(self::USER_ID),
+            Plan::TRIAL,
+            Period::fromDurationDays(3),
+        );
+
+        self::assertTrue($subscription->isActive());
+        self::assertSame(Plan::TRIAL, $subscription->getPlan());
+        self::assertSame(3, $subscription->getPeriod()->getDurationDays());
     }
 }

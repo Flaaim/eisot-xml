@@ -55,6 +55,7 @@ function isCompanyLimitReached(plan: SubscriptionPlan | null, totalCompanyCount:
     return false;
   }
 
+  // basic, trial и отсутствие подписки — лимит 1 компания
   return totalCompanyCount >= 1;
 }
 

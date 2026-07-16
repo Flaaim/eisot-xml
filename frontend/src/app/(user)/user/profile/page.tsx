@@ -23,6 +23,8 @@ export default async function ProfilePage() {
     status: null,
     periodStart: null,
     periodEnd: null,
+    trialUsed: false,
+    trialAvailable: false,
   };
 
   return (

@@ -34,6 +34,8 @@ export default async function UserDashboardLayout({
     status: null,
     periodStart: null,
     periodEnd: null,
+    trialUsed: false,
+    trialAvailable: false,
   };
 
   return (

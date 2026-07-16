@@ -51,6 +51,11 @@ final class Period
         return $this->endDate;
     }
 
+    public function getDurationDays(): int
+    {
+        return (int)$this->startDate->diff($this->endDate)->days;
+    }
+
     public function isActiveAt(DateTimeImmutable $moment): bool
     {
         $day = $moment->setTime(0, 0);

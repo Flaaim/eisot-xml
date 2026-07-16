@@ -44,6 +44,7 @@ export const API = {
   subscription: {
     access: () => BASE_URL + `/v1/user/subscription/access`,
     activate: () => BASE_URL + `/v1/user/subscription/activate`,
+    activateTrial: () => BASE_URL + `/v1/user/subscription/trial/activate`,
     createPayment: () => BASE_URL + `/v1/user/subscription/payment`,
     paymentStatus: (paymentId: string) => BASE_URL + `/v1/user/subscription/payment/${paymentId}`,
   },

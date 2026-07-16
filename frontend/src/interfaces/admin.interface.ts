@@ -6,7 +6,7 @@ export interface AdminUserSummary {
   status: string;
   role: string;
   createdAt: string;
-  activeSubscriptionPlan: "basic" | "extended" | null;
+  activeSubscriptionPlan: "basic" | "extended" | "trial" | null;
   subscriptionStatus: "active" | "expired" | "cancelled" | null;
   companiesCount: number;
 }

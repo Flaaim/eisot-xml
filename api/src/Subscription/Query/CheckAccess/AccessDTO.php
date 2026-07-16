@@ -12,5 +12,7 @@ final readonly class AccessDTO
         public ?string $status,
         public ?string $periodStart,
         public ?string $periodEnd,
+        public bool $trialUsed,
+        public bool $trialAvailable,
     ) {}
 }

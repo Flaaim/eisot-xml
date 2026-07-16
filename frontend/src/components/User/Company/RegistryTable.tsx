@@ -36,10 +36,16 @@ import { useRouter } from "next/navigation";
 interface RegistryTableProps {
   readonly records: RegistryRecordDto[];
   readonly hasSubscriptionAccess: boolean;
+  readonly trialAvailable: boolean;
   readonly companyId: string;
 }
 
-export function RegistryTable({ records, hasSubscriptionAccess, companyId }: RegistryTableProps) {
+export function RegistryTable({
+  records,
+  hasSubscriptionAccess,
+  trialAvailable,
+  companyId,
+}: RegistryTableProps) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isExporting, setIsExporting] = useState(false);
   const [accessDialogOpen, setAccessDialogOpen] = useState(false);
@@ -137,7 +143,11 @@ export function RegistryTable({ records, hasSubscriptionAccess, companyId }: Reg
 
   return (
     <>
-      <AccessRestrictedDialog open={accessDialogOpen} onOpenChange={setAccessDialogOpen} />
+      <AccessRestrictedDialog
+        open={accessDialogOpen}
+        onOpenChange={setAccessDialogOpen}
+        trialAvailable={trialAvailable}
+      />
       <Card className="shadow-sm">
         <CardHeader className="flex flex-col gap-4 pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>

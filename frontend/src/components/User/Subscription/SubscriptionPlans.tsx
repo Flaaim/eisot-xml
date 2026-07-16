@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, Crown, Loader2 } from "lucide-react";
+import { Check, Crown, Gift, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-import { createPaymentAction } from "@/actions/subscription";
-import type { SubscriptionAccess, SubscriptionPlan } from "@/interfaces/subscription.interface";
+import { activateTrialAction, createPaymentAction } from "@/actions/subscription";
+import type { PaidSubscriptionPlan, SubscriptionAccess } from "@/interfaces/subscription.interface";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,7 +19,7 @@ import {
 } from "@/components/ui/card";
 
 interface PlanOption {
-  id: SubscriptionPlan;
+  id: PaidSubscriptionPlan;
   title: string;
   price: string;
   durationDays: number;
@@ -52,13 +53,28 @@ const PLANS: PlanOption[] = [
   },
 ];
 
+function planTitle(plan: SubscriptionAccess["plan"]): string {
+  if (plan === "extended") {
+    return "Расширенный";
+  }
+  if (plan === "trial") {
+    return "Пробный период";
+  }
+  if (plan === "basic") {
+    return "Базовый";
+  }
+  return "—";
+}
+
 interface SubscriptionPlansProps {
   readonly initialAccess: SubscriptionAccess;
 }
 
 export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
-  const [access] = useState(initialAccess);
-  const [loadingPlan, setLoadingPlan] = useState<SubscriptionPlan | null>(null);
+  const router = useRouter();
+  const [access, setAccess] = useState(initialAccess);
+  const [loadingPlan, setLoadingPlan] = useState<PaidSubscriptionPlan | null>(null);
+  const [trialLoading, setTrialLoading] = useState(false);
 
   const handleCheckout = async (plan: PlanOption) => {
     setLoadingPlan(plan.id);
@@ -82,13 +98,33 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
     }
   };
 
+  const handleActivateTrial = async () => {
+    setTrialLoading(true);
+    try {
+      const result = await activateTrialAction();
+      if (!result.ok) {
+        toast.error(result.error ?? "Не удалось активировать Trial Subscription.");
+        return;
+      }
+
+      toast.success("Trial Subscription активирована на 3 дня.");
+      setAccess((prev) => ({
+        ...prev,
+        trialAvailable: false,
+        trialUsed: true,
+      }));
+      router.refresh();
+    } finally {
+      setTrialLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
         {access.hasAccess ? (
           <p>
-            Active Status: активна · План:{" "}
-            <strong>{access.plan === "extended" ? "Расширенный" : "Базовый"}</strong>
+            Active Status: активна · План: <strong>{planTitle(access.plan)}</strong>
             {access.periodEnd && (
               <>
                 {" "}
@@ -105,6 +141,44 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
           </p>
         )}
       </div>
+
+      {!access.hasAccess && (
+        <Card className="border-sky-500/30 shadow-sm ring-1 ring-sky-500/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Gift className="size-5 text-sky-600" />
+              Попробовать бесплатно
+            </CardTitle>
+            <CardDescription>
+              Trial Subscription на 3 дня с лимитом 1 компании и доступом к RegistrySet XML.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter>
+            {access.trialAvailable ? (
+              <Button
+                className="w-full cursor-pointer"
+                disabled={trialLoading || loadingPlan !== null}
+                onClick={() => {
+                  void handleActivateTrial();
+                }}
+              >
+                {trialLoading ? (
+                  <>
+                    <Loader2 className="mr-2 size-4 animate-spin" />
+                    Активация...
+                  </>
+                ) : (
+                  "Активировать 3 дня"
+                )}
+              </Button>
+            ) : (
+              <p className="w-full text-center text-sm text-muted-foreground">
+                Вы уже использовали пробный период.
+              </p>
+            )}
+          </CardFooter>
+        </Card>
+      )}
 
       <div className="grid gap-6 md:grid-cols-2">
         {PLANS.map((plan) => {
@@ -136,7 +210,7 @@ export function SubscriptionPlans({ initialAccess }: SubscriptionPlansProps) {
                 <Button
                   className="w-full cursor-pointer"
                   variant={plan.id === "extended" ? "default" : "outline"}
-                  disabled={isCurrent || loadingPlan !== null}
+                  disabled={isCurrent || loadingPlan !== null || trialLoading}
                   onClick={() => {
                     void handleCheckout(plan);
                   }}

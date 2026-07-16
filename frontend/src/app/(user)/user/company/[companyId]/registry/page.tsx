@@ -38,12 +38,14 @@ export default async function CompanyRegistryPage({ params }: CompanyRegistryPag
 
   const accessResult = await checkSubscriptionAccessAction();
   const hasSubscriptionAccess = accessResult.data?.hasAccess ?? false;
+  const trialAvailable = accessResult.data?.trialAvailable ?? false;
 
   return (
     <div className="space-y-4">
       <RegistryTable
         records={records}
         hasSubscriptionAccess={hasSubscriptionAccess}
+        trialAvailable={trialAvailable}
         companyId={companyId}
       />
     </div>

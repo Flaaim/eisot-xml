@@ -38,6 +38,7 @@ final class Subscription implements AggregateRoot
      * Активирует User Subscription.
      *
      * Инвариант «дата окончания не в прошлом» проверяется в Period.
+     * Trial Subscription допускается только на период ровно 3 дня.
      */
     public static function activate(
         Id $id,
@@ -45,6 +46,10 @@ final class Subscription implements AggregateRoot
         Plan $plan,
         Period $period,
     ): self {
+        if ($plan->isTrial() && 3 !== $period->getDurationDays()) {
+            throw new DomainException('Trial Subscription Period must be exactly 3 days.');
+        }
+
         $subscription = new self(
             $id,
             $userId,
@@ -121,6 +126,10 @@ final class Subscription implements AggregateRoot
 
     public function changePlan(Plan $plan): void
     {
+        if ($plan->isTrial()) {
+            throw new DomainException('Cannot change plan to Trial Subscription.');
+        }
+
         if ($this->getPlan()->value === $plan->value) {
             return;
         }
