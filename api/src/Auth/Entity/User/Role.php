@@ -25,6 +25,16 @@ final class Role
         return new self(self::USER);
     }
 
+    public static function admin(): self
+    {
+        return new self(self::ADMIN);
+    }
+
+    public function isAdmin(): bool
+    {
+        return self::ADMIN === $this->name;
+    }
+
     public function getName(): string
     {
         return $this->name;

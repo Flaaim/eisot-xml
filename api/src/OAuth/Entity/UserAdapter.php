@@ -8,13 +8,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class UserAdapter implements UserInterface
 {
+    /**
+     * @param list<string> $roles
+     */
     public function __construct(
         private readonly string $identifier,
+        private readonly array $roles = ['ROLE_USER'],
     ) {}
 
+    /**
+     * @return list<string>
+     */
     public function getRoles(): array
     {
-        return ['ROLE_USER', 'ROLE_ADMIN'];
+        return $this->roles;
     }
 
     public function getUserIdentifier(): string
@@ -22,4 +29,7 @@ final class UserAdapter implements UserInterface
         /** @var non-empty-string */
         return $this->identifier;
     }
+
+    /** @psalm-suppress PossiblyUnusedMethod */
+    public function eraseCredentials(): void {}
 }

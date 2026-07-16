@@ -6,6 +6,7 @@ namespace App\Auth\Fixture;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\User;
 use App\Auth\Service\PasswordHasher;
@@ -31,6 +32,18 @@ final class UserFixture extends AbstractFixture
         $user->confirmJoin($value, $date);
 
         $manager->persist($user);
+
+        $admin = User::requestJoinByEmail(
+            new Id('00000000-0000-0000-0000-000000000099'),
+            $date = new DateTimeImmutable('-30 days'),
+            new Email('admin@app.test'),
+            self::PASSWORD_HASH,
+            new Token($value = Uuid::uuid4()->toString(), $date->modify('+1 day'))
+        );
+
+        $admin->confirmJoin($value, $date);
+        $admin->changeRole(Role::admin());
+        $manager->persist($admin);
 
         $passwordHasher = new PasswordHasher();
 

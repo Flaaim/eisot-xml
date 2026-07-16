@@ -79,6 +79,9 @@ services:
 
     App\Company\Service\CompanyNameFetcherInterface: '@App\Company\Service\CompanyNameFetcher'
 
+    App\Admin\ReadModel\AdminUserFetcherInterface: '@App\Admin\Query\AdminUserFetcher'
+    App\Admin\ReadModel\AdminPaymentFetcherInterface: '@App\Admin\Query\AdminPaymentFetcher'
+
 when@test:
     services:
         App\Subscription\Service\PaymentGatewayInterface:

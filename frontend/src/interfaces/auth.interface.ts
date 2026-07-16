@@ -11,5 +11,6 @@ export interface LoginData {
 export interface ProfileDTO {
   id: string;
   email: string;
+  role: "user" | "admin";
   name?: string | null;
 }

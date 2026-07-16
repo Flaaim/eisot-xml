@@ -24,6 +24,7 @@ final class Handler
         return new ProfileDTO(
             $user['id'],
             $user['email'],
+            $user['role'],
         );
     }
 }

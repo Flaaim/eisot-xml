@@ -61,6 +61,9 @@
                 <directory name="src/Training/Command/RecordTrainingResult" />
                 <directory name="src/Subscription/Command/ActivateSubscription" />
                 <directory name="src/Auth/Query/GetProfile" />
+                <directory name="src/Admin/Query/GetUsersList" />
+                <directory name="src/Admin/Query/GetSubscriptionStats" />
+                <directory name="src/Admin/Query/GetPaymentsList" />
                 <directory name="src/Subscription/Query/GetPaymentStatus" />
                 <directory name="src/Subscription/Command/FailPayment" />
                 <directory name="src/Subscription/Command/CreatePayment" />

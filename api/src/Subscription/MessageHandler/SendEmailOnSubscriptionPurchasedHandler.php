@@ -25,7 +25,7 @@ final class SendEmailOnSubscriptionPurchasedHandler
         $userId = $event->userId;
         $user = $this->userFetcher->findDetail($userId);
 
-        if (null === $user || empty($user['email'])) {
+        if (null === $user || '' === $user['email']) {
             $this->logger->error('User not found', ['id' => $userId]);
             return;
         }

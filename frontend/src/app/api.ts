@@ -47,4 +47,9 @@ export const API = {
     createPayment: () => BASE_URL + `/v1/user/subscription/payment`,
     paymentStatus: (paymentId: string) => BASE_URL + `/v1/user/subscription/payment/${paymentId}`,
   },
+  admin: {
+    users: () => BASE_URL + `/v1/admin/users`,
+    stats: () => BASE_URL + `/v1/admin/stats`,
+    payments: () => BASE_URL + `/v1/admin/payments`,
+  },
 };

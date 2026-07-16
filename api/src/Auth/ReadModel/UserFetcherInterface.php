@@ -6,5 +6,8 @@ namespace App\Auth\ReadModel;
 
 interface UserFetcherInterface
 {
+    /**
+     * @return array{id: string, email: string, role: string}|null
+     */
     public function findDetail(string $id): ?array;
 }
