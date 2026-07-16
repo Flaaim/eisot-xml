@@ -299,3 +299,103 @@ export async function requestPasswordChange(
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function googleLoginAction(code: string): Promise<ApiResponse> {
+  const body = new URLSearchParams({
+    grant_type: "social",
+    client_id: "frontend",
+    client_secret: "my-super-secret-123",
+    network: "google",
+    code: code,
+    redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI ?? "",
+  });
+
+  try {
+    const response = await fetch(API.auth.socialLogin(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json",
+      },
+      body: body.toString(),
+    });
+    const parsed = await handleApiResponse<TokenResponseData>(response);
+    if (!parsed.ok || !parsed.data) {
+      return { ok: false, error: parsed.error ?? "Ошибка авторизации через Google" };
+    }
+
+    if (parsed.data.access_token) {
+      const cookieStore = await cookies();
+      cookieStore.set({
+        name: "access_token",
+        value: parsed.data.access_token,
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: parsed.data.expires_in,
+      });
+      cookieStore.set({
+        name: "refresh_token",
+        value: parsed.data.refresh_token,
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 2592000,
+      });
+    }
+    return { ok: true };
+  } catch (error) {
+    console.error("Google Auth Error:", error);
+    return { ok: false, error: "Ошибка соединения с сервером" };
+  }
+}
+
+export async function yandexLoginAction(code: string): Promise<ApiResponse> {
+  const body = new URLSearchParams({
+    grant_type: "social",
+    client_id: "frontend",
+    client_secret: "my-super-secret-123",
+    network: "yandex",
+    code: code,
+    redirect_uri: process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI ?? "",
+  });
+
+  try {
+    const response = await fetch(API.auth.socialLogin(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json",
+      },
+      body: body.toString(),
+    });
+    const parsed = await handleApiResponse<TokenResponseData>(response);
+    if (!parsed.ok || !parsed.data) {
+      return { ok: false, error: parsed.error ?? "Ошибка авторизации через Яндекс" };
+    }
+
+    if (parsed.data.access_token) {
+      const cookieStore = await cookies();
+      cookieStore.set({
+        name: "access_token",
+        value: parsed.data.access_token,
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: parsed.data.expires_in,
+      });
+      cookieStore.set({
+        name: "refresh_token",
+        value: parsed.data.refresh_token,
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 2592000,
+      });
+    }
+    return { ok: true };
+  } catch (error) {
+    console.error("Yandex Auth Error:", error);
+    return { ok: false, error: "Ошибка соединения с сервером" };
+  }
+}

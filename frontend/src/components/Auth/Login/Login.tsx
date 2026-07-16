@@ -39,7 +39,17 @@ export default function Login() {
       password: "",
     },
   });
-
+  const getGoogleAuthUrl = () => {
+    const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+    const options = {
+      response_type: "code",
+      scope: "email",
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "",
+      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI ?? "",
+    };
+    const qs = new URLSearchParams(options);
+    return `${rootUrl}?${qs.toString()}`;
+  };
   async function onSubmit(values: FormData) {
     const result = await LoginAction(values);
 
@@ -50,7 +60,16 @@ export default function Login() {
 
     router.push("/user/company");
   }
-
+  const getYandexAuthUrl = () => {
+    const rootUrl = "https://oauth.yandex.ru/authorize";
+    const options = {
+      response_type: "code",
+      client_id: process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID ?? "",
+      redirect_uri: process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI ?? "",
+    };
+    const qs = new URLSearchParams(options);
+    return `${rootUrl}?${qs.toString()}`;
+  };
   return (
     <div className="flex h-screen items-center justify-center">
       <Card className="mx-auto w-full max-w-md shadow-sm">
@@ -132,6 +151,15 @@ export default function Login() {
                 className="cursor-pointer py-2"
               >
                 {form.formState.isSubmitting ? "Загрузка..." : "Войти"}
+              </Button>
+            </div>
+            <h3 className="text-1xl mt-3 font-semibold">Или войдите в 1 клик.</h3>
+            <div className="flex gap-2 space-y-4 pt-4">
+              <Button variant="outline" type="button" className="cursor-pointer py-2">
+                <Link href={getGoogleAuthUrl()}>Войти через Google</Link>
+              </Button>
+              <Button variant="outline" type="button" className="cursor-pointer py-2">
+                <Link href={getYandexAuthUrl()}>Войти через Yandex</Link>
               </Button>
             </div>
             <div className="space-y-4 pt-4">
