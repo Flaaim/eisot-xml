@@ -87,7 +87,7 @@ services:
 
     App\Infrastructure\Social\Registry\ClientRegistry:
         arguments:
-            $clients: [ '@App\Infrastructure\Social\GoogleClient' ]
+            $clients: [ '@App\Infrastructure\Social\GoogleClient', '@App\Infrastructure\Social\YandexClient' ]
 
     App\Company\Service\CompanyNameFetcherInterface: '@App\Company\Service\CompanyNameFetcher'
 
