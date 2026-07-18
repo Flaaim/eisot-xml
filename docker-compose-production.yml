@@ -59,6 +59,12 @@ services:
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
       DADATA_API_KEY: ${DADATA_API_KEY}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URL: ${GOOGLE_REDIRECT_URL}
+      YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
+      YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
+      YANDEX_REDIRECT_URL: ${YANDEX_REDIRECT_URL}
     depends_on:
       api-postgres:
         condition: service_started
@@ -91,6 +97,12 @@ services:
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
       DADATA_API_KEY: ${DADATA_API_KEY}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URL: ${GOOGLE_REDIRECT_URL}
+      YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
+      YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
+      YANDEX_REDIRECT_URL: ${YANDEX_REDIRECT_URL}
     depends_on:
       api-postgres:
           condition: service_started
@@ -152,6 +164,12 @@ services:
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
       DADATA_API_KEY: ${DADATA_API_KEY}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URL: ${GOOGLE_REDIRECT_URL}
+      YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
+      YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
+      YANDEX_REDIRECT_URL: ${YANDEX_REDIRECT_URL}
     secrets:
       - jwt_public_key
       - jwt_private_key
