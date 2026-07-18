@@ -16,8 +16,6 @@ when@prod:
             # see https://docs.sentry.io/platforms/php/data-management/data-collected/ for more info
             # send_default_pii: true
             ignore_exceptions:
-                - 'Symfony\Component\ErrorHandler\Error\FatalError'
-                - 'Symfony\Component\Debug\Exception\FatalErrorException'
                 - 'Sentry\Integration\IgnoreErrorsIntegration'
                 - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
                 - 'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException'
