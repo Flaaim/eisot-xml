@@ -83,6 +83,11 @@ services:
             $clientId: '%env(GOOGLE_CLIENT_ID)%'
             $clientSecret: '%env(GOOGLE_CLIENT_SECRET)%'
 
+    App\Infrastructure\Social\YandexClient:
+        arguments:
+            $clientId: '%env(YANDEX_CLIENT_ID)%'
+            $clientSecret: '%env(YANDEX_CLIENT_SECRET)%'
+
     App\Infrastructure\Social\Registry\ClientRegistryInterface: '@App\Infrastructure\Social\Registry\ClientRegistry'
 
     App\Infrastructure\Social\Registry\ClientRegistry:
