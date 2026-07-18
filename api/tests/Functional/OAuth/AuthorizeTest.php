@@ -167,13 +167,17 @@ final class AuthorizeTest extends WebTestCase
                 'redirect_uri' => 'http://localhost/callback',
             ]
         );
-        self::assertEquals(400, $this->client->getResponse()->getStatusCode());
+        self::assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         self::assertJson($body = (string)$this->client->getResponse()->getContent());
         $data = Json::decode($body);
 
         self::assertArraySubset([
-            'hint' => 'Пользователь с таким email уже существует. Войдите обычным способом и привяжите аккаунт в настройках профиля.',
+            'token_type' => 'Bearer',
+            'expires_in' => 3600,
         ], $data);
+
+        self::assertArrayHasKey('access_token', $data);
+        self::assertArrayHasKey('refresh_token', $data);
     }
 }

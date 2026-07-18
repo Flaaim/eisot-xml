@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\OAuth\Grant;
 
-use App\Auth\Command\JoinByNetwork\Command;
-use App\Auth\Command\JoinByNetwork\Handler;
 use App\Auth\Command\AttachNetwork\Command as AttachNetworkCommand;
 use App\Auth\Command\AttachNetwork\Handler as AttachNetworkHandler;
+use App\Auth\Command\JoinByNetwork\Command;
+use App\Auth\Command\JoinByNetwork\Handler;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\UserRepository;
 use App\Infrastructure\Social\Registry\ClientRegistryInterface;
@@ -85,7 +85,7 @@ final class SocialGrant extends AbstractGrant
                         $socialUser->identity,
                     );
                     $this->attachNetworkHandler->handle($command);
-                }else{
+                } else {
                     $command = new Command($socialUser->email, $socialUser->network, $socialUser->identity);
                     $this->joinHandler->handle($command);
                 }
