@@ -126,6 +126,10 @@ jobs:
           build-args: |
             NEXT_PUBLIC_BACKEND_URL=https://api.eisot-xml.ru
             NEXT_PUBLIC_FNS_TITLE_LOOKUP_ENABLED=${{ secrets.NEXT_PUBLIC_FNS_TITLE_LOOKUP_ENABLED }}
+            NEXT_PUBLIC_YANDEX_CLIENT_ID=${{ secrets.YANDEX_CLIENT_ID }}
+            NEXT_PUBLIC_YANDEX_REDIRECT_URI=${{ secrets.YANDEX_REDIRECT_URL }}
+            NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            NEXT_PUBLIC_GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URL }}
 
       - name: Build and Push GATEWAY Image
         uses: docker/build-push-action@v5
