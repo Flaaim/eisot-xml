@@ -26,7 +26,7 @@ const YandexCallbackContent = () => {
       const result = await yandexLoginAction(code);
 
       if (result.ok) {
-        router.replace("/user/dashboard");
+        router.replace("/user/company");
       } else {
         setError(result.error ?? "Неизвестная ошибка авторизации");
         setTimeout(() => {
