@@ -71,9 +71,6 @@ final class SocialGrant extends AbstractGrant
             ]);
             throw OAuthServerException::serverError('Ошибка авторизации через соцсеть: ' . $e->getMessage());
         }
-        $this->logger->error('Social Auth Error (Provider fetch): {message}', [
-            'message' => $socialUser->email,
-        ]);
         try {
             $localUser = $this->domainUserRepository->findByNetwork($socialUser->network, $socialUser->identity);
             if (!$localUser) {
