@@ -6,6 +6,8 @@ namespace App\OAuth\Grant;
 
 use App\Auth\Command\JoinByNetwork\Command;
 use App\Auth\Command\JoinByNetwork\Handler;
+use App\Auth\Command\AttachNetwork\Command as AttachNetworkCommand;
+use App\Auth\Command\AttachNetwork\Handler as AttachNetworkHandler;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\UserRepository;
 use App\Infrastructure\Social\Registry\ClientRegistryInterface;
@@ -32,6 +34,7 @@ final class SocialGrant extends AbstractGrant
         private readonly Handler $joinHandler,
         private readonly UserRepository $domainUserRepository,
         private readonly LoggerInterface $logger,
+        private readonly AttachNetworkHandler $attachNetworkHandler,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
     ) {
         $this->setRefreshTokenRepository($refreshTokenRepository);
@@ -76,11 +79,16 @@ final class SocialGrant extends AbstractGrant
             if (!$localUser) {
                 $existingEmailUser = $this->domainUserRepository->findByEmail(new Email($socialUser->email));
                 if ($existingEmailUser) {
-                    throw new DomainException('Пользователь с таким email уже существует. Войдите обычным способом и привяжите аккаунт в настройках профиля.');
+                    $command = new AttachNetworkCommand(
+                        $existingEmailUser->getEmail()->getValue(),
+                        $socialUser->network,
+                        $socialUser->identity,
+                    );
+                    $this->attachNetworkHandler->handle($command);
+                }else{
+                    $command = new Command($socialUser->email, $socialUser->network, $socialUser->identity);
+                    $this->joinHandler->handle($command);
                 }
-
-                $command = new Command($socialUser->email, $socialUser->network, $socialUser->identity);
-                $this->joinHandler->handle($command);
 
                 $localUser = $this->domainUserRepository->findByNetwork($socialUser->network, $socialUser->identity);
             }
